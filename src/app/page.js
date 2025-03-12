@@ -59,277 +59,207 @@ export default function Home() {
   };
 
   return (
-    <div className="container">
-      <header className="card" style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2.5rem', color: 'var(--primary-color)', marginBottom: '0.5rem' }}>
-          StudySync
-        </h1>
-        <p style={{ color: '#64748b', fontSize: '1.1rem' }}>
-          Your intelligent exam planning companion
-        </p>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12">
+      <div className="container mx-auto px-4 max-w-5xl">
+        <header className="bg-white rounded-2xl p-8 shadow-xl mb-8 text-center transform hover:scale-[1.02] transition-transform">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-3">
+            StudySync
+          </h1>
+          <p className="text-slate-600 text-lg">
+            Your intelligent exam planning companion
+          </p>
+        </header>
 
-      <form onSubmit={handleSubmit}>
-        <div className="card">
-          <h2 style={{ marginBottom: '1.5rem', color: 'var(--text-color)' }}>Syllabus Details</h2>
-          
-          <div style={{ marginBottom: '2rem' }}>
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-              <input
-                type="text"
-                className="input"
-                placeholder="Enter subject name"
-                value={currentSubject}
-                onChange={(e) => setCurrentSubject(e.target.value)}
-              />
-              <button type="button" className="btn" onClick={addSubject}>
-                Add Subject
-              </button>
-            </div>
-
-            {subjects.map((subject, subjectIndex) => (
-              <div key={subjectIndex} style={{ marginBottom: '2rem' }}>
-                <h3 style={{ 
-                  marginBottom: '1rem', 
-                  color: 'var(--primary-color)',
-                  fontSize: '1.5rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem'
-                }}>
-                  <span>📚</span> {subject.name}
-                </h3>
-
-                <div style={{ marginBottom: '1rem' }}>
-                  <input
-                    type="text"
-                    className="input"
-                    placeholder="Enter topic name"
-                    value={currentTopic}
-                    onChange={(e) => setCurrentTopic(e.target.value)}
-                    style={{ marginBottom: '0.5rem' }}
-                  />
-                  <input
-                    type="text"
-                    className="input"
-                    placeholder="Enter subtopics (comma-separated)"
-                    value={currentSubtopics}
-                    onChange={(e) => setCurrentSubtopics(e.target.value)}
-                    style={{ marginBottom: '0.5rem' }}
-                  />
-                  <button
-                    type="button"
-                    className="btn"
-                    onClick={() => addTopic(subjectIndex)}
-                  >
-                    Add Topic
-                  </button>
-                </div>
-
-                <div style={{ marginLeft: '1rem' }}>
-                  {subject.topics.map((topic, topicIndex) => (
-                    <div key={topicIndex} style={{ marginBottom: '1rem' }}>
-                      <div style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '0.5rem',
-                        marginBottom: '0.5rem'
-                      }}>
-                        <span style={{ color: 'var(--primary-color)', fontWeight: '600' }}>
-                          📑 {topic.name}
-                        </span>
-                      </div>
-                      <ul style={{ 
-                        listStyle: 'none', 
-                        padding: '0',
-                        marginLeft: '1.5rem'
-                      }}>
-                        {topic.subtopics.map((subtopic, subtopicIndex) => (
-                          <li
-                            key={subtopicIndex}
-                            style={{
-                              padding: '0.5rem',
-                              background: '#f1f5f9',
-                              borderRadius: '0.5rem',
-                              marginBottom: '0.5rem',
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '0.5rem'
-                            }}
-                          >
-                            <span>•</span>
-                            <span>{subtopic}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="card" style={{ background: '#f8fafc' }}>
-            <h2 style={{ marginBottom: '1.5rem', color: 'var(--text-color)' }}>Study Timeline</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', color: '#64748b' }}>
-                  Days
-                </label>
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="bg-white rounded-2xl p-8 shadow-lg">
+            <h2 className="text-2xl font-semibold text-slate-800 mb-6">Syllabus Details</h2>
+            
+            <div className="space-y-8">
+              <div className="flex gap-4">
                 <input
-                  type="number"
-                  className="input"
-                  value={studyTime.days}
-                  onChange={(e) => setStudyTime({ ...studyTime, days: e.target.value })}
+                  type="text"
+                  className="input flex-1"
+                  placeholder="Enter subject name"
+                  value={currentSubject}
+                  onChange={(e) => setCurrentSubject(e.target.value)}
                 />
+                <button type="button" className="btn whitespace-nowrap" onClick={addSubject}>
+                  Add Subject
+                </button>
               </div>
-              <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', color: '#64748b' }}>
-                  Hours per Day
-                </label>
-                <input
-                  type="number"
-                  className="input"
-                  value={studyTime.hours}
-                  onChange={(e) => setStudyTime({ ...studyTime, hours: e.target.value })}
-                />
-              </div>
-              <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', color: '#64748b' }}>
-                  Weeks
-                </label>
-                <input
-                  type="number"
-                  className="input"
-                  value={studyTime.weeks}
-                  onChange={(e) => setStudyTime({ ...studyTime, weeks: e.target.value })}
-                />
-              </div>
-            </div>
-          </div>
 
-          <button
-            type="submit"
-            className="btn"
-            style={{
-              marginTop: '2rem',
-              width: '100%',
-              padding: '1rem',
-              fontSize: '1.1rem',
-              opacity: isLoading ? 0.7 : 1,
-              cursor: isLoading ? 'not-allowed' : 'pointer'
-            }}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Generating Study Plan...' : 'Generate Study Plan'}
-          </button>
-        </div>
-      </form>
+              {subjects.map((subject, subjectIndex) => (
+                <div key={subjectIndex} className="bg-slate-50 rounded-xl p-6">
+                  <h3 className="text-xl font-semibold text-primary flex items-center gap-2 mb-4">
+                    <span>📚</span> {subject.name}
+                  </h3>
 
-      {error && (
-        <div className="card" style={{ background: '#fee2e2', color: '#991b1b' }}>
-          {error}
-        </div>
-      )}
+                  <div className="space-y-4 mb-6">
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="Enter topic name"
+                      value={currentTopic}
+                      onChange={(e) => setCurrentTopic(e.target.value)}
+                    />
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="Enter subtopics (comma-separated)"
+                      value={currentSubtopics}
+                      onChange={(e) => setCurrentSubtopics(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className="btn w-full sm:w-auto"
+                      onClick={() => addTopic(subjectIndex)}
+                    >
+                      Add Topic
+                    </button>
+                  </div>
 
-      {studyPlan.length > 0 && (
-        <div className="card">
-          <h2 style={{ marginBottom: '1.5rem', color: 'var(--text-color)' }}>Your Study Plan</h2>
-          {studyPlan.map((subject, subjectIndex) => (
-            <div key={subjectIndex} style={{ marginBottom: '2rem' }}>
-              <h3 style={{ 
-                fontSize: '1.8rem', 
-                color: 'var(--primary-color)',
-                marginBottom: '1rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem'
-              }}>
-                <span>📚</span> {subject.subject}
-              </h3>
-              
-              {subject.topics.map((topic, topicIndex) => (
-                <div key={topicIndex} style={{ marginBottom: '1.5rem', marginLeft: '1rem' }}>
-                  <h4 style={{ 
-                    fontSize: '1.4rem',
-                    color: 'var(--text-color)',
-                    marginBottom: '1rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem'
-                  }}>
-                    <span>📑</span> {topic.topic}
-                  </h4>
-
-                  <div style={{ marginLeft: '1rem' }}>
-                    {topic.subtopics.map((subtopic, subtopicIndex) => (
-                      <div 
-                        key={subtopicIndex}
-                        style={{
-                          background: '#f8fafc',
-                          borderRadius: '0.75rem',
-                          padding: '1.5rem',
-                          marginBottom: '1rem',
-                          border: '1px solid #e2e8f0'
-                        }}
-                      >
-                        <h5 style={{ 
-                          fontSize: '1.2rem',
-                          color: 'var(--primary-color)',
-                          marginBottom: '0.75rem'
-                        }}>
-                          {subtopic.subTopic}
-                        </h5>
-                        
-                        <div style={{ marginBottom: '0.75rem' }}>
-                          <strong style={{ color: '#64748b' }}>YouTube Search: </strong>
-                          <span>{subtopic.searchTerm}</span>
+                  <div className="pl-4">
+                    {subject.topics.map((topic, topicIndex) => (
+                      <div key={topicIndex} className="mb-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-primary font-semibold flex items-center gap-2">
+                            📑 {topic.name}
+                          </span>
                         </div>
-
-                        <div style={{ marginBottom: '0.75rem' }}>
-                          <strong style={{ color: '#64748b' }}>Description: </strong>
-                          <span>{subtopic.description}</span>
-                        </div>
-
-                        <div style={{ marginBottom: '0.75rem' }}>
-                          <strong style={{ color: '#64748b' }}>Time Alloted: </strong>
-                          <span>{subtopic.timeAlloted}</span>
-                        </div>
-
-                        <div>
-                          <strong style={{ color: '#64748b' }}>Focus Areas: </strong>
-                          <ul style={{ 
-                            listStyle: 'none', 
-                            padding: '0',
-                            marginTop: '0.5rem',
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            gap: '0.5rem'
-                          }}>
-                            {subtopic.focusAreas.map((area, areaIndex) => (
-                              <li
-                                key={areaIndex}
-                                style={{
-                                  background: '#e2e8f0',
-                                  padding: '0.25rem 0.75rem',
-                                  borderRadius: '1rem',
-                                  fontSize: '0.9rem'
-                                }}
-                              >
-                                {area}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                        <ul className="space-y-2 pl-6">
+                          {topic.subtopics.map((subtopic, subtopicIndex) => (
+                            <li
+                              key={subtopicIndex}
+                              className="bg-white rounded-lg p-3 flex items-center gap-2 shadow-sm"
+                            >
+                              <span className="text-primary">•</span>
+                              <span>{subtopic}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     ))}
                   </div>
                 </div>
               ))}
             </div>
-          ))}
-        </div>
-      )}
+
+            <div className="bg-slate-50 rounded-xl p-6 mt-8">
+              <h2 className="text-2xl font-semibold text-slate-800 mb-6">Study Timeline</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div>
+                  <label className="block text-slate-600 mb-2">Days</label>
+                  <input
+                    type="number"
+                    className="input"
+                    value={studyTime.days}
+                    onChange={(e) => setStudyTime({ ...studyTime, days: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-600 mb-2">Hours per Day</label>
+                  <input
+                    type="number"
+                    className="input"
+                    value={studyTime.hours}
+                    onChange={(e) => setStudyTime({ ...studyTime, hours: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-600 mb-2">Weeks</label>
+                  <input
+                    type="number"
+                    className="input"
+                    value={studyTime.weeks}
+                    onChange={(e) => setStudyTime({ ...studyTime, weeks: e.target.value })}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className={`btn w-full mt-8 py-4 text-lg font-medium ${
+                isLoading ? 'opacity-70 cursor-not-allowed' : ''
+              }`}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Generating Study Plan...' : 'Generate Study Plan'}
+            </button>
+          </div>
+        </form>
+
+        {error && (
+          <div className="bg-red-50 text-red-800 rounded-xl p-6 mt-8 shadow-lg">
+            {error}
+          </div>
+        )}
+
+        {studyPlan.length > 0 && (
+          <div className="bg-white rounded-2xl p-8 shadow-lg mt-8">
+            <h2 className="text-2xl font-semibold text-slate-800 mb-6">Your Study Plan</h2>
+            {studyPlan.map((subject, subjectIndex) => (
+              <div key={subjectIndex} className="mb-8">
+                <h3 className="text-2xl font-bold text-primary flex items-center gap-2 mb-4">
+                  <span>📚</span> {subject.subject}
+                </h3>
+                
+                {subject.topics.map((topic, topicIndex) => (
+                  <div key={topicIndex} className="mb-6 ml-4">
+                    <h4 className="text-xl font-semibold text-slate-800 flex items-center gap-2 mb-4">
+                      <span>📑</span> {topic.topic}
+                    </h4>
+
+                    <div className="space-y-4 ml-4">
+                      {topic.subtopics.map((subtopic, subtopicIndex) => (
+                        <div 
+                          key={subtopicIndex}
+                          className="bg-slate-50 rounded-xl p-6 border border-slate-200"
+                        >
+                          <h5 className="text-lg font-semibold text-primary mb-3">
+                            {subtopic.subTopic}
+                          </h5>
+                          
+                          <div className="space-y-3 text-slate-700">
+                            <div>
+                              <span className="font-medium text-slate-600">YouTube Search: </span>
+                              {subtopic.searchTerm}
+                            </div>
+
+                            <div>
+                              <span className="font-medium text-slate-600">Description: </span>
+                              {subtopic.description}
+                            </div>
+
+                            <div>
+                              <span className="font-medium text-slate-600">Time Alloted: </span>
+                              {subtopic.timeAlloted}
+                            </div>
+
+                            <div>
+                              <span className="font-medium text-slate-600 block mb-2">Focus Areas: </span>
+                              <ul className="flex flex-wrap gap-2">
+                                {subtopic.focusAreas.map((area, areaIndex) => (
+                                  <li
+                                    key={areaIndex}
+                                    className="bg-white px-3 py-1 rounded-full text-sm text-primary border border-primary/20"
+                                  >
+                                    {area}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
