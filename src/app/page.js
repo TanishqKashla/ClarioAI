@@ -1,63 +1,19 @@
 'use client';
 
-import SubtopicYouTubeSearch from './components/SubtopicYouTubeSearch';
-import SubtopicNotes from './components/SubtopicNotes';
 import { useState } from 'react';
-import { generateStudyPlan } from './services/groqService';
+import SubjectForm from '@/components/forms/SubjectForm';
+import TopicForm from '@/components/forms/TopicForm';
+import TimelineForm from '@/components/forms/TimelineForm';
+import Button from '@/components/common/Button';
+import StudyPlanList from '@/components/study-plan/StudyPlanList';
+import { StudyPlanProvider, useStudyPlan } from '@/contexts/StudyPlanContext';
 
-export default function Home() {
-  const [subjects, setSubjects] = useState([]);
-  const [currentSubject, setCurrentSubject] = useState('');
-  const [currentTopic, setCurrentTopic] = useState('');
-  const [currentSubtopics, setCurrentSubtopics] = useState('');
-  const [studyTime, setStudyTime] = useState({
-    days: '',
-    hours: '',
-    weeks: ''
-  });
-  const [studyPlan, setStudyPlan] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const addSubject = () => {
-    if (currentSubject.trim()) {
-      setSubjects([...subjects, { name: currentSubject, topics: [] }]);
-      setCurrentSubject('');
-    }
-  };
-
-  const addTopic = (subjectIndex) => {
-    if (currentTopic.trim() && currentSubtopics.trim()) {
-      const newSubjects = [...subjects];
-      const subtopicsList = currentSubtopics.split(',').map(st => st.trim()).filter(st => st);
-      newSubjects[subjectIndex].topics.push({
-        name: currentTopic,
-        subtopics: subtopicsList
-      });
-      setSubjects(newSubjects);
-      setCurrentTopic('');
-      setCurrentSubtopics('');
-    }
-  };
+function StudyPlanContent() {
+  const { subjects, studyPlan, isLoading, error, generatePlan } = useStudyPlan();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError('');
-    setStudyPlan([]);
-
-    try {
-      const plan = await generateStudyPlan({
-        subjects,
-        studyTime
-      });
-      setStudyPlan(plan);
-    } catch (err) {
-      setError('Failed to generate study plan. Please try again.');
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
+    await generatePlan();
   };
 
   return (
@@ -77,18 +33,7 @@ export default function Home() {
             <h2 className="text-2xl font-semibold text-slate-800 mb-6">Syllabus Details</h2>
 
             <div className="space-y-8">
-              <div className="flex gap-4">
-                <input
-                  type="text"
-                  className="input flex-1"
-                  placeholder="Enter subject name"
-                  value={currentSubject}
-                  onChange={(e) => setCurrentSubject(e.target.value)}
-                />
-                <button type="button" className="btn whitespace-nowrap" onClick={addSubject}>
-                  Add Subject
-                </button>
-              </div>
+              <SubjectForm />
 
               {subjects.map((subject, subjectIndex) => (
                 <div key={subjectIndex} className="bg-slate-50 rounded-xl p-6">
@@ -96,29 +41,7 @@ export default function Home() {
                     <span>📚</span> {subject.name}
                   </h3>
 
-                  <div className="space-y-4 mb-6">
-                    <input
-                      type="text"
-                      className="input"
-                      placeholder="Enter topic name"
-                      value={currentTopic}
-                      onChange={(e) => setCurrentTopic(e.target.value)}
-                    />
-                    <input
-                      type="text"
-                      className="input"
-                      placeholder="Enter subtopics (comma-separated)"
-                      value={currentSubtopics}
-                      onChange={(e) => setCurrentSubtopics(e.target.value)}
-                    />
-                    <button
-                      type="button"
-                      className="btn w-full sm:w-auto"
-                      onClick={() => addTopic(subjectIndex)}
-                    >
-                      Add Topic
-                    </button>
-                  </div>
+                  <TopicForm subjectIndex={subjectIndex} />
 
                   <div className="pl-4">
                     {subject.topics.map((topic, topicIndex) => (
@@ -146,47 +69,17 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="bg-slate-50 rounded-xl p-6 mt-8">
-              <h2 className="text-2xl font-semibold text-slate-800 mb-6">Study Timeline</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div>
-                  <label className="block text-slate-600 mb-2">Days</label>
-                  <input
-                    type="number"
-                    className="input"
-                    value={studyTime.days}
-                    onChange={(e) => setStudyTime({ ...studyTime, days: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label className="block text-slate-600 mb-2">Hours per Day</label>
-                  <input
-                    type="number"
-                    className="input"
-                    value={studyTime.hours}
-                    onChange={(e) => setStudyTime({ ...studyTime, hours: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label className="block text-slate-600 mb-2">Weeks</label>
-                  <input
-                    type="number"
-                    className="input"
-                    value={studyTime.weeks}
-                    onChange={(e) => setStudyTime({ ...studyTime, weeks: e.target.value })}
-                  />
-                </div>
-              </div>
-            </div>
+            <TimelineForm />
 
-            <button
+            <Button
               type="submit"
-              className={`btn w-full mt-8 py-4 text-lg font-medium ${isLoading ? 'opacity-70 cursor-not-allowed' : ''
-                }`}
+              className="w-full mt-8 py-4 text-lg font-medium"
               disabled={isLoading}
+              isLoading={isLoading}
+              fullWidth
             >
-              {isLoading ? 'Generating Study Plan...' : 'Generate Study Plan'}
-            </button>
+              Generate Study Plan
+            </Button>
           </div>
         </form>
 
@@ -197,83 +90,17 @@ export default function Home() {
         )}
 
         <div className="mt-10">
-          {isLoading && <div className="text-center">Generating your study plan...</div>}
-          {error && <div className="text-red-500">{error}</div>}
-          {studyPlan.length > 0 && (
-            <div>
-              <h2 className="text-2xl font-semibold text-slate-800 mb-6">Your Study Plan</h2>
-              {studyPlan.map((subject, subjectIndex) => (
-                <div key={subjectIndex} className="mb-8">
-                  <h3 className="text-2xl font-bold text-primary flex items-center gap-2 mb-4">
-                    <span>📚</span> {subject.subject}
-                  </h3>
-
-                  {subject.topics.map((topic, topicIndex) => (
-                    <div key={topicIndex} className="mb-6 ml-4">
-                      <h4 className="text-xl font-semibold text-slate-800 flex items-center gap-2 mb-4">
-                        <span>📑</span> {topic.topic}
-                      </h4>
-
-                      <div className="space-y-4 ml-4">
-                        {topic.subtopics.map((subtopic, subtopicIndex) => (
-                          <div
-                            key={subtopicIndex}
-                            className="bg-slate-50 rounded-xl p-6 border border-slate-200"
-                          >
-                            <h5 className="text-lg font-semibold text-primary mb-3">
-                              {subtopic.subTopic}
-                            </h5>
-
-                            <div className="space-y-3 text-slate-700">
-                              <div>
-                                <span className="font-medium text-slate-600">YouTube Search: </span>
-                                {subtopic.searchTerm}
-                                <SubtopicYouTubeSearch searchTerm={subtopic.searchTerm} />
-                              </div>
-
-                              <div>
-                                <span className="font-medium text-slate-600">Descripton: </span>
-                                {subtopic.description}
-                              </div>
-
-                              <div>
-                                <span className="font-medium text-slate-600">Time Alloted: </span>
-                                {subtopic.timeAlloted}
-                              </div>
-
-                              <div>
-                                <span className="font-medium text-slate-600 block mb-2">Focus Areas: </span>
-                                <ul className="flex flex-wrap gap-2">
-                                  {subtopic.focusAreas.map((area, areaIndex) => (
-                                    <li
-                                      key={areaIndex}
-                                      className="bg-white px-3 py-1 rounded-full text-sm text-primary border border-primary/20"
-                                    >
-                                      {area}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                              
-                              <div>
-                                <SubtopicNotes 
-                                  subject={subject.subject} 
-                                  topic={topic.topic} 
-                                  subtopic={subtopic.subTopic} 
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
+          <StudyPlanList studyPlan={studyPlan} />
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <StudyPlanProvider>
+      <StudyPlanContent />
+    </StudyPlanProvider>
   );
 }
