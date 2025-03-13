@@ -34,7 +34,7 @@ Please provide a JSON response with the following structure for each subject, to
         {
           "subTopic": "SubTopic Name (exactly as provided)",
           "searchTerm": "Best YouTube search term for this topic",
-          "description": "Explain the topic in details and generate study notes",
+          "notes": "Generate detailed notes for the respective topic in depth with respect to the level of understanding required for that subject",
           "timeAlloted": "Recommended time to spend on this topic",
           "focusAreas": ["Key focus area 1", "Key focus area 2", "Key focus area 3"]
         }
@@ -46,7 +46,7 @@ Please provide a JSON response with the following structure for each subject, to
 Make sure to:
 1. Keep the exact same subject, topic, and subtopic names as provided
 2. Generate relevant search terms for YouTube
-3. Provide concise but informative descriptions
+3. Provide concise but informative notes
 4. Suggest realistic time allocations based on the total study time provided
 5. List 3-4 specific focus areas for each subtopic
 6. Return ONLY the JSON array, no additional text or formatting`;

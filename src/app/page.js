@@ -1,5 +1,6 @@
 'use client';
 
+import YouTubeSearch from './components/YouTubeSearch';
 import { useState } from 'react';
 import { generateStudyPlan } from './services/groqService';
 
@@ -73,7 +74,7 @@ export default function Home() {
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="bg-white rounded-2xl p-8 shadow-lg">
             <h2 className="text-2xl font-semibold text-slate-800 mb-6">Syllabus Details</h2>
-            
+
             <div className="space-y-8">
               <div className="flex gap-4">
                 <input
@@ -179,9 +180,8 @@ export default function Home() {
 
             <button
               type="submit"
-              className={`btn w-full mt-8 py-4 text-lg font-medium ${
-                isLoading ? 'opacity-70 cursor-not-allowed' : ''
-              }`}
+              className={`btn w-full mt-8 py-4 text-lg font-medium ${isLoading ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
               disabled={isLoading}
             >
               {isLoading ? 'Generating Study Plan...' : 'Generate Study Plan'}
@@ -203,7 +203,7 @@ export default function Home() {
                 <h3 className="text-2xl font-bold text-primary flex items-center gap-2 mb-4">
                   <span>📚</span> {subject.subject}
                 </h3>
-                
+
                 {subject.topics.map((topic, topicIndex) => (
                   <div key={topicIndex} className="mb-6 ml-4">
                     <h4 className="text-xl font-semibold text-slate-800 flex items-center gap-2 mb-4">
@@ -212,14 +212,14 @@ export default function Home() {
 
                     <div className="space-y-4 ml-4">
                       {topic.subtopics.map((subtopic, subtopicIndex) => (
-                        <div 
+                        <div
                           key={subtopicIndex}
                           className="bg-slate-50 rounded-xl p-6 border border-slate-200"
                         >
                           <h5 className="text-lg font-semibold text-primary mb-3">
                             {subtopic.subTopic}
                           </h5>
-                          
+
                           <div className="space-y-3 text-slate-700">
                             <div>
                               <span className="font-medium text-slate-600">YouTube Search: </span>
@@ -227,8 +227,8 @@ export default function Home() {
                             </div>
 
                             <div>
-                              <span className="font-medium text-slate-600">Description: </span>
-                              {subtopic.description}
+                              <span className="font-medium text-slate-600">notes: </span>
+                              {subtopic.notes}
                             </div>
 
                             <div>
@@ -260,6 +260,8 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      <YouTubeSearch />
     </div>
   );
 }
