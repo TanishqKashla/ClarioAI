@@ -1,6 +1,7 @@
 'use client';
 
-import YouTubeSearch from './components/YouTubeSearch';
+import SubtopicYouTubeSearch from './components/SubtopicYouTubeSearch';
+import SubtopicNotes from './components/SubtopicNotes';
 import { useState } from 'react';
 import { generateStudyPlan } from './services/groqService';
 
@@ -195,73 +196,84 @@ export default function Home() {
           </div>
         )}
 
-        {studyPlan.length > 0 && (
-          <div className="bg-white rounded-2xl p-8 shadow-lg mt-8">
-            <h2 className="text-2xl font-semibold text-slate-800 mb-6">Your Study Plan</h2>
-            {studyPlan.map((subject, subjectIndex) => (
-              <div key={subjectIndex} className="mb-8">
-                <h3 className="text-2xl font-bold text-primary flex items-center gap-2 mb-4">
-                  <span>📚</span> {subject.subject}
-                </h3>
+        <div className="mt-10">
+          {isLoading && <div className="text-center">Generating your study plan...</div>}
+          {error && <div className="text-red-500">{error}</div>}
+          {studyPlan.length > 0 && (
+            <div>
+              <h2 className="text-2xl font-semibold text-slate-800 mb-6">Your Study Plan</h2>
+              {studyPlan.map((subject, subjectIndex) => (
+                <div key={subjectIndex} className="mb-8">
+                  <h3 className="text-2xl font-bold text-primary flex items-center gap-2 mb-4">
+                    <span>📚</span> {subject.subject}
+                  </h3>
 
-                {subject.topics.map((topic, topicIndex) => (
-                  <div key={topicIndex} className="mb-6 ml-4">
-                    <h4 className="text-xl font-semibold text-slate-800 flex items-center gap-2 mb-4">
-                      <span>📑</span> {topic.topic}
-                    </h4>
+                  {subject.topics.map((topic, topicIndex) => (
+                    <div key={topicIndex} className="mb-6 ml-4">
+                      <h4 className="text-xl font-semibold text-slate-800 flex items-center gap-2 mb-4">
+                        <span>📑</span> {topic.topic}
+                      </h4>
 
-                    <div className="space-y-4 ml-4">
-                      {topic.subtopics.map((subtopic, subtopicIndex) => (
-                        <div
-                          key={subtopicIndex}
-                          className="bg-slate-50 rounded-xl p-6 border border-slate-200"
-                        >
-                          <h5 className="text-lg font-semibold text-primary mb-3">
-                            {subtopic.subTopic}
-                          </h5>
+                      <div className="space-y-4 ml-4">
+                        {topic.subtopics.map((subtopic, subtopicIndex) => (
+                          <div
+                            key={subtopicIndex}
+                            className="bg-slate-50 rounded-xl p-6 border border-slate-200"
+                          >
+                            <h5 className="text-lg font-semibold text-primary mb-3">
+                              {subtopic.subTopic}
+                            </h5>
 
-                          <div className="space-y-3 text-slate-700">
-                            <div>
-                              <span className="font-medium text-slate-600">YouTube Search: </span>
-                              {subtopic.searchTerm}
-                            </div>
+                            <div className="space-y-3 text-slate-700">
+                              <div>
+                                <span className="font-medium text-slate-600">YouTube Search: </span>
+                                {subtopic.searchTerm}
+                                <SubtopicYouTubeSearch searchTerm={subtopic.searchTerm} />
+                              </div>
 
-                            <div>
-                              <span className="font-medium text-slate-600">notes: </span>
-                              {subtopic.notes}
-                            </div>
+                              <div>
+                                <span className="font-medium text-slate-600">Descripton: </span>
+                                {subtopic.description}
+                              </div>
 
-                            <div>
-                              <span className="font-medium text-slate-600">Time Alloted: </span>
-                              {subtopic.timeAlloted}
-                            </div>
+                              <div>
+                                <span className="font-medium text-slate-600">Time Alloted: </span>
+                                {subtopic.timeAlloted}
+                              </div>
 
-                            <div>
-                              <span className="font-medium text-slate-600 block mb-2">Focus Areas: </span>
-                              <ul className="flex flex-wrap gap-2">
-                                {subtopic.focusAreas.map((area, areaIndex) => (
-                                  <li
-                                    key={areaIndex}
-                                    className="bg-white px-3 py-1 rounded-full text-sm text-primary border border-primary/20"
-                                  >
-                                    {area}
-                                  </li>
-                                ))}
-                              </ul>
+                              <div>
+                                <span className="font-medium text-slate-600 block mb-2">Focus Areas: </span>
+                                <ul className="flex flex-wrap gap-2">
+                                  {subtopic.focusAreas.map((area, areaIndex) => (
+                                    <li
+                                      key={areaIndex}
+                                      className="bg-white px-3 py-1 rounded-full text-sm text-primary border border-primary/20"
+                                    >
+                                      {area}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                              
+                              <div>
+                                <SubtopicNotes 
+                                  subject={subject.subject} 
+                                  topic={topic.topic} 
+                                  subtopic={subtopic.subTopic} 
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        )}
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-
-      <YouTubeSearch />
     </div>
   );
 }

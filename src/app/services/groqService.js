@@ -34,7 +34,7 @@ Please provide a JSON response with the following structure for each subject, to
         {
           "subTopic": "SubTopic Name (exactly as provided)",
           "searchTerm": "Best YouTube search term for this topic",
-          "notes": "Generate detailed notes for the respective topic in depth with respect to the level of understanding required for that subject",
+          "description": "Generate 2-3 lines description for the subtopic",
           "timeAlloted": "Recommended time to spend on this topic",
           "focusAreas": ["Key focus area 1", "Key focus area 2", "Key focus area 3"]
         }
@@ -46,7 +46,7 @@ Please provide a JSON response with the following structure for each subject, to
 Make sure to:
 1. Keep the exact same subject, topic, and subtopic names as provided
 2. Generate relevant search terms for YouTube
-3. Provide concise but informative notes
+3. Provide concise but informative description for the subtopic
 4. Suggest realistic time allocations based on the total study time provided
 5. List 3-4 specific focus areas for each subtopic
 6. Return ONLY the JSON array, no additional text or formatting`;
@@ -84,6 +84,43 @@ Make sure to:
     }
   } catch (error) {
     console.error("Error generating study plan:", error);
+    throw error;
+  }
+}
+
+export async function generateSubtopicNotes(subject, topic, subtopic) {
+  const prompt = `As a subject matter expert in ${subject}, specifically focusing on ${topic}, please generate comprehensive study notes about "${subtopic}".
+
+Your notes should include:
+1. Key concepts and definitions
+2. Important principles or theories
+3. Examples or applications where relevant
+4. Common misconceptions or challenging aspects
+5. Summary of main points
+
+Format the notes in a clear, structured way that would be helpful for a student studying this topic.
+`;
+
+  try {
+    const chatCompletion = await groq.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: "You are an expert educator and subject matter specialist. Provide clear, accurate, and comprehensive notes on the requested topic."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.5,
+      max_tokens: 1500
+    });
+
+    return chatCompletion.choices[0]?.message?.content || "Unable to generate notes.";
+  } catch (error) {
+    console.error("Error generating subtopic notes:", error);
     throw error;
   }
 }
