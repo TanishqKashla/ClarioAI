@@ -1,12 +1,15 @@
+'use client';
+
 import React, { useState } from 'react';
-import { generateSubtopicNotes } from '../services/groqService';
 import ReactMarkdown from 'react-markdown';
+import { generateSubtopicNotes } from '@/services/groqService';
 
 const SubtopicNotes = ({ subject, topic, subtopic }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [notes, setNotes] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    console.log("PRINTING FROM SUBTOPICNOTES", subject, topic);
 
     const handleGenerateNotes = async () => {
         if (!subject || !topic || !subtopic) return;
@@ -69,4 +72,4 @@ const SubtopicNotes = ({ subject, topic, subtopic }) => {
     );
 };
 
-export default SubtopicNotes; 
+export default SubtopicNotes;

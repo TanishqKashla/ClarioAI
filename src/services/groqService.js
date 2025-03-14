@@ -32,8 +32,8 @@ Please provide a JSON response with the following structure for each subject, to
       "topic": "Topic Name",
       "subtopics": [
         {
-          "subTopic": "SubTopic Name (exactly as provided)",
-          "searchTerm": "Best YouTube search term for this topic",
+          "subTopic": "SubTopic Name : (one liner explanation for that subtopic name, keep it short)",
+          "searchTerm": "best youtube search term for this topic which will help students to understand the topic better, search term should be in context with the subject and subtopics, it may include what, why, how terms to accurately search an informative video on the youtube search term",
           "description": "Generate 2-3 lines description for the subtopic",
           "timeAlloted": "Recommended time to spend on this topic",
           "focusAreas": ["Key focus area 1", "Key focus area 2", "Key focus area 3"]
@@ -69,13 +69,13 @@ Make sure to:
     });
 
     const response = chatCompletion.choices[0]?.message?.content || "";
-    
+
     // Extract JSON from the response, handling potential markdown formatting
     const jsonMatch = response.match(/\[[\s\S]*\]/);
     if (!jsonMatch) {
       throw new Error("No valid JSON found in the response");
     }
-    
+
     try {
       return JSON.parse(jsonMatch[0]);
     } catch (parseError) {
