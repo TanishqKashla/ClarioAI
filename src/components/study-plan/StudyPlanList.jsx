@@ -6,6 +6,7 @@ const StudyPlanList = ({ studyPlan }) => {
     if (!studyPlan || studyPlan.length === 0) {
         return null;
     }
+    console.log("PRINTING FROM STudyPLANLIST", studyPlan);
 
     return (
         <div>

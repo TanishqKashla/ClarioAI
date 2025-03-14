@@ -9,6 +9,7 @@ const SubtopicNotes = ({ subject, topic, subtopic }) => {
     const [notes, setNotes] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    console.log("PRINTING FROM SUBTOPICNOTES", subject, topic);
 
     const handleGenerateNotes = async () => {
         if (!subject || !topic || !subtopic) return;

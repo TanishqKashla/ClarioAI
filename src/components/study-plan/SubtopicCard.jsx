@@ -2,12 +2,13 @@ import React from 'react';
 import YouTubeSearch from '@/components/youtube/YouTubeSearch';
 import SubtopicNotes from '@/components/notes/SubtopicNotes';
 
-const SubtopicCard = ({ subtopic }) => {
+const SubtopicCard = ({ subject, topic, subtopic }) => {
     const { subTopic, searchTerm, description, timeAlloted, focusAreas } = subtopic;
+
 
     return (
         <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-            <h5 className="text-lg font-semibold text-primary mb-3">
+            <h5 className="text-lg font-semibold text-primary mb-3 uppercase">
                 {subTopic}
             </h5>
 
@@ -44,10 +45,11 @@ const SubtopicCard = ({ subtopic }) => {
 
                 <div>
                     <SubtopicNotes
-                        subject={subtopic.subject || ''}
-                        topic={subtopic.topic || ''}
+                        subject={subject || ''}
+                        topic={topic || ''}
                         subtopic={subTopic}
                     />
+
                 </div>
             </div>
         </div>
