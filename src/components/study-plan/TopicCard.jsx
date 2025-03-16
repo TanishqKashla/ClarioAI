@@ -5,7 +5,7 @@ const TopicCard = ({subject, topic }) => {
 
     return (
         <div className="mb-6 ml-4 ">
-            <h4 className="text-xl font-semibold text-slate-800 flex items-center gap-2 mb-4">
+            <h4 className="text-xl font-semibold text-light-100 flex items-center gap-2 mb-4">
                 <span>📑</span> {topic.topic}
             </h4>
             <div className="space-y-4 ml-4">

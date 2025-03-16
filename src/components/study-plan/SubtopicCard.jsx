@@ -12,25 +12,25 @@ const SubtopicCard = ({ subject, topic, subtopic }) => {
                 {subTopic}
             </h5>
 
-            <div className="space-y-3 text-text-secondary">
+            <div className="space-y-3 text-light-200">
                 <div>
-                    <span className="font-medium text-slate-600">YouTube Search: </span>
+                    <span className="font-medium text-light-100">YouTube Search: </span>
                     {searchTerm}
                     <YouTubeSearch searchTerm={searchTerm} />
                 </div>
 
                 <div>
-                    <span className="font-medium text-slate-600">Description: </span>
+                    <span className="font-medium text-light-100">Description: </span>
                     {description}
                 </div>
 
                 <div>
-                    <span className="font-medium text-slate-600">Time Alloted: </span>
+                    <span className="font-medium text-light-100">Time Alloted: </span>
                     {timeAlloted}
                 </div>
 
                 <div>
-                    <span className="font-medium text-slate-600 block mb-2">Focus Areas: </span>
+                    <span className="font-medium text-light-100 block mb-2">Focus Areas: </span>
                     <ul className="flex flex-wrap gap-2">
                         {focusAreas.map((area, index) => (
                             <li

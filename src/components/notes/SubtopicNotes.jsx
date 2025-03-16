@@ -60,7 +60,7 @@ const SubtopicNotes = ({ subject, topic, subtopic }) => {
             {isOpen && (
                 <div className="mt-2 bg-dark-300 p-4 rounded-md border border-border shadow-sm text-light-200">
                     {loading && <div className="text-center py-4">Generating expert notes...</div>}
-                    {error && <div className="text-red-500 py-2">{error}</div>}
+                    {error && <div className="text-warning py-2">{error}</div>}
                     {notes && (
                         <div className="prose prose-sm max-w-none prose-invert">
                             <ReactMarkdown>{notes}</ReactMarkdown>

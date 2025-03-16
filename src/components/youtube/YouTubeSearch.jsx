@@ -40,7 +40,7 @@ const YouTubeSearch = ({ searchTerm }) => {
             {isOpen && (
                 <div className="mt-2">
                     {loading && <div className="text-center py-4">Loading video...</div>}
-                    {error && <div className="text-red-500 py-2">{error}</div>}
+                    {error && <div className="text-warning py-2">{error}</div>}
                     {video && (
                         <VideoPlayer
                             videoId={video.id.videoId}
