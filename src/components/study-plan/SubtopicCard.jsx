@@ -35,7 +35,7 @@ const SubtopicCard = ({ subject, topic, subtopic }) => {
                         {focusAreas.map((area, index) => (
                             <li
                                 key={index}
-                                className="bg-white px-3 py-1 rounded-full text-sm text-primary border border-primary/20"
+                                className="bg-success-faded px-3 py-1 rounded-full text-sm text-primary border border-primary/20"
                             >
                                 {area}
                             </li>

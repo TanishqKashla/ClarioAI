@@ -88,24 +88,31 @@ Make sure to:
 }
 
 export async function generateSubtopicNotes(subject, topic, subtopic) {
-  const prompt = `As a subject matter expert in ${subject}, specifically focusing on ${topic}, please generate comprehensive study notes about "${subtopic}".
+  const prompt = `As a subject matter expert in ${subject}, specifically focusing on ${topic}, create comprehensive and insightful educational content about "${subtopic}".
 
-Your notes should include:
-1. Key concepts and definitions
-2. Important principles or theories
-3. Examples or applications where relevant
-4. Common misconceptions or challenging aspects
-5. Summary of main points
+Feel free to structure this content in the way you believe will be most effective for deep learning. You should include any relevant elements such as:
 
-Format the notes in a clear, structured way that would be helpful for a student studying this topic.
-`;
+- Core concepts, principles, and theoretical frameworks
+- Mathematical formulas, equations, and notations where applicable
+- Chemical reactions, biological processes, or physical laws with proper notation
+- Algorithms, code snippets, or pseudocode for computing concepts
+- Historical context and development of ideas
+- Practical applications and real-world examples
+- Advanced insights that go beyond basic understanding
+- Visual descriptions or conceptual models when helpful
+- Connections to related fields or interdisciplinary perspectives
+- Thought-provoking questions that encourage critical thinking
+
+For technical subjects in mathematics, physics, chemistry, engineering, computer science, or similar fields, be sure to include all relevant formulas, equations, and technical notations properly formatted.
+
+Don't feel constrained by conventional formats - organize the information in whatever way best represents the knowledge architecture of this topic. Your goal is to create content that would genuinely help someone develop expertise in this area.`;
 
   try {
     const chatCompletion = await groq.chat.completions.create({
       messages: [
         {
           role: "system",
-          content: "You are an expert educator and subject matter specialist. Provide clear, accurate, and comprehensive notes on the requested topic."
+          content: "You are a world-class expert and educator with deep knowledge across multiple domains including highly technical subjects. You create rich, nuanced educational content that reflects sophisticated understanding and pedagogical excellence. Your explanations are authoritative, technically precise, and include all relevant formulas, equations, and specialized notations when appropriate to the subject matter."
         },
         {
           role: "user",
@@ -113,8 +120,8 @@ Format the notes in a clear, structured way that would be helpful for a student 
         }
       ],
       model: "llama-3.3-70b-versatile",
-      temperature: 0.5,
-      max_tokens: 1500
+      temperature: 0.7,
+      max_tokens: 6000
     });
 
     return chatCompletion.choices[0]?.message?.content || "Unable to generate notes.";
