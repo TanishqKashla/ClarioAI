@@ -6,16 +6,18 @@ const Button = ({
     onClick,
     type = 'button',
     disabled = false,
-    className = '',
     isLoading = false,
-    variant = 'primary', // primary, secondary
+    variant = 'primary',
     fullWidth = false,
+    ClassName = ''
 }) => {
-    const baseClasses = 'font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2';
+    const baseClasses = 'btn';
 
     const variantClasses = {
-        primary: 'text-white bg-primary hover:bg-primary/90 focus:ring-primary',
-        secondary: 'text-white bg-secondary hover:bg-secondary/90 focus:ring-secondary',
+        primary: 'btn',
+        success: 'success',
+        info: 'info',
+        warning: 'warning',
     };
 
     const sizeClasses = fullWidth ? 'w-full' : '';
@@ -26,7 +28,7 @@ const Button = ({
             type={type}
             onClick={onClick}
             disabled={disabled || isLoading}
-            className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses} ${disabledClasses} px-4 py-2 ${className}`}
+            className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses} ${disabledClasses} ${ClassName}`}
         >
             {isLoading ? (
                 <span className="flex items-center justify-center">

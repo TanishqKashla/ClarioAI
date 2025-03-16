@@ -33,7 +33,7 @@ Please provide a JSON response with the following structure for each subject, to
       "subtopics": [
         {
           "subTopic": "SubTopic Name : (one liner explanation for that subtopic name, keep it short)",
-          "searchTerm": "best youtube search term for this topic which will help students to understand the topic better, search term should be in context with the subject and subtopics, it may include what, why, how terms to accurately search an informative video on the youtube search term",
+          "searchTerm": "best youtube search term for this topic which will help students who are learning the topic for the first time to understand the topic better without having any knowledge about that topic (do not literraly convey this in the search term), search term should be in context with the subject and subtopics, it may include what, why, how terms to accurately search an informative video on the youtube search term",
           "description": "Generate 2-3 lines description for the subtopic",
           "timeAlloted": "Recommended time to spend on this topic",
           "focusAreas": ["Key focus area 1", "Key focus area 2", "Key focus area 3"]
@@ -64,8 +64,7 @@ Make sure to:
         }
       ],
       model: "llama-3.3-70b-versatile",
-      temperature: 0.7,
-      max_tokens: 2000
+      temperature: 0.7
     });
 
     const response = chatCompletion.choices[0]?.message?.content || "";

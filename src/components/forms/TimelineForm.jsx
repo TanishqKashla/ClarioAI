@@ -9,8 +9,8 @@ const TimelineForm = () => {
     const { studyTime, setStudyTime } = useStudyPlan();
 
     return (
-        <div className="bg-slate-50 rounded-xl p-6 mt-8">
-            <h2 className="text-2xl font-semibold text-slate-800 mb-6">Study Timeline</h2>
+        <div className="bg-dark-100 rounded-xl p-6 mt-8">
+            <h2 className="text-2xl font-semibold mb-6">Study Timeline</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <Input
                     type="number"

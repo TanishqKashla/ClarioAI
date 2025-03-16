@@ -7,12 +7,12 @@ const SubtopicCard = ({ subject, topic, subtopic }) => {
 
 
     return (
-        <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+        <div className="bg-dark-200 rounded-xl p-6 border border-border">
             <h5 className="text-lg font-semibold text-primary mb-3 uppercase">
                 {subTopic}
             </h5>
 
-            <div className="space-y-3 text-slate-700">
+            <div className="space-y-3 text-text-secondary">
                 <div>
                     <span className="font-medium text-slate-600">YouTube Search: </span>
                     {searchTerm}

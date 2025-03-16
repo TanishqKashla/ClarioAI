@@ -8,12 +8,44 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#4f46e5',
-        secondary: '#818cf8',
+        // New color palette
+        primary: '#A9D47F',       // accent
+        secondary: '#202917',     // accent-faded
+        dark: {
+          100: '#141415',         // foreground
+          200: '#09090B',         // background
+          300: '#0D0D0F',         // slightly lighter background
+          400: '#070709',         // slightly darker background
+        },
+        light: {
+          100: '#D9D9D9',         // text-secondary
+          200: '#ACACAC',         // text-primary
+          300: '#8A8A8A',         // more muted text
+        },
+        border: '#5F5F69',        // border
+        info: {
+          DEFAULT: '#8EC5FC',     // info
+          faded: '#17222D',       // info-faded
+        },
+        warning: {
+          DEFAULT: '#FF6B6B',     // warning
+          faded: '#321616',       // warning-faded
+        },
+        success: {
+          DEFAULT: '#A9D47F',     // success
+          faded: '#202917',       // success-faded
+        }
+      },
+      boxShadow: {
+        'dark-lg': '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
+        'dark-xl': '0 20px 25px -5px rgba(0, 0, 0, 0.4)',
+      },
+      backgroundImage: {
+        'gradient-dark': 'linear-gradient(135deg, var(--tw-gradient-stops))',
       },
     },
   },
   plugins: [
     require('@tailwindcss/typography'),
   ],
-} 
+}

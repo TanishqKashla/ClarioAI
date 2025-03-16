@@ -1,4 +1,3 @@
-// src/components/forms/SubjectForm.jsx
 'use client';
 
 import React, { useState } from 'react';
@@ -17,16 +16,16 @@ const SubjectForm = () => {
     };
 
     return (
-        <div className="flex gap-4">
+        <div className="flex gap-4 min-w-[300px]">
             <Input
                 type="text"
                 placeholder="Enter subject name"
                 value={currentSubject}
                 onChange={(e) => setCurrentSubject(e.target.value)}
-                className="flex-1"
+                className="flex-grow"
             />
-            <Button onClick={handleAddSubject} className="whitespace-nowrap">
-                Add Subject
+            <Button onClick={handleAddSubject} className="flex-shrink-0">
+                Add it
             </Button>
         </div>
     );
