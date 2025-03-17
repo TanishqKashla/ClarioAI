@@ -1,4 +1,5 @@
 import './globals.css'
+import StudyPlanWrapper from '@/components/providers/StudyPlanWrapper';
 
 export const metadata = {
   title: 'StudySync - Your Study Planning Companion',
@@ -8,7 +9,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <StudyPlanWrapper>
+          {children}
+        </StudyPlanWrapper>
+      </body>
     </html>
-  )
+  );
 }

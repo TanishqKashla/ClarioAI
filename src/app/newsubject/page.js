@@ -1,20 +1,24 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import SubjectForm from '@/components/forms/SubjectForm';
 import TopicForm from '@/components/forms/TopicForm';
 import TimelineForm from '@/components/forms/TimelineForm';
 import Button from '@/components/common/Button';
-import StudyPlanList from '@/components/study-plan/StudyPlanList';
-import { StudyPlanProvider, useStudyPlan } from '@/contexts/StudyPlanContext';
+import { useStudyPlan } from '@/contexts/StudyPlanContext';
 import Input from '@/components/common/Input';
 
-function StudyPlanContent() {
-  const { subjects, studyPlan, isLoading, error, generatePlan } = useStudyPlan();
+export default function NewSubjectPage() {
+  const { subjects, isLoading, error, generatePlan } = useStudyPlan();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await generatePlan();
+    const plan = await generatePlan();
+    if (plan) {
+      router.push('/studyplan');
+    }
   };
 
   return (
@@ -80,19 +84,7 @@ function StudyPlanContent() {
             {error}
           </div>
         )}
-
-        <div className="mt-10">
-          <StudyPlanList studyPlan={studyPlan} />
-        </div>
       </div>
     </div>
-  );
-}
-
-export default function Home() {
-  return (
-    <StudyPlanProvider>
-      <StudyPlanContent />
-    </StudyPlanProvider>
   );
 }
