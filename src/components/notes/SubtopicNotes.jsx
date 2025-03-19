@@ -39,7 +39,7 @@ const SubtopicNotes = ({ subject, topic, subtopic }) => {
         <div className="mt-3">
             <button
                 onClick={toggleDropdown}
-                className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-white bg-secondary rounded-md hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
+                className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-white bg-dark-200 border border-border rounded-md hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
             >
                 <span>Generate Expert Notes</span>
                 <svg

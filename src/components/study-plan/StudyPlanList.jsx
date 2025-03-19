@@ -9,7 +9,7 @@ const StudyPlanList = ({ studyPlan }) => {
     console.log("PRINTING FROM STudyPLANLIST", studyPlan);
 
     return (
-        <div className='bg-dark-100 rounded-2xl p-8 shadow-dark-lg border border-border/40'>
+        <div className='rounded-2xl'>
             <h2 className="text-2xl font-semibold text-light-100 mb-6">Your Study Plan</h2>
             {studyPlan.map((subject, index) => (
                 <SubjectCard key={index} subject={subject} />

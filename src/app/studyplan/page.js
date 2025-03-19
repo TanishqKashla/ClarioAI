@@ -22,7 +22,7 @@ export default function StudyPlanPage() {
 
   return (
     <div className="min-h-screen bg-dark-200 py-12">
-      <div className="container mx-auto px-4">
+      <div className="mx-auto px-4">
         <StudyPlanList studyPlan={studyPlan} />
       </div>
     </div>
