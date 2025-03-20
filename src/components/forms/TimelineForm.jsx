@@ -8,28 +8,52 @@ import { useStudyPlan } from '@/contexts/StudyPlanContext';
 const TimelineForm = () => {
     const { studyTime, setStudyTime } = useStudyPlan();
 
+    const handleTimeChange = (field, value) => {
+        setStudyTime({
+            ...studyTime,
+            [field]: value
+        });
+    };
+
     return (
-        <div className="bg-dark-100 rounded-xl p-6 mt-8">
-            <h2 className="text-2xl font-semibold mb-6">Study Timeline</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <Input
-                    type="number"
-                    label="Days"
-                    value={studyTime.days}
-                    onChange={(e) => setStudyTime({ ...studyTime, days: e.target.value })}
-                />
-                <Input
-                    type="number"
-                    label="Hours per Day"
-                    value={studyTime.hours}
-                    onChange={(e) => setStudyTime({ ...studyTime, hours: e.target.value })}
-                />
-                <Input
-                    type="number"
-                    label="Weeks"
-                    value={studyTime.weeks}
-                    onChange={(e) => setStudyTime({ ...studyTime, weeks: e.target.value })}
-                />
+        <div>
+            <h3 className="text-xl font-semibold text-light-100 mb-4">Study Timeline</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label className="block text-light-100 mb-2">Weeks</label>
+                    <Input
+                        type="number"
+                        min="1"
+                        placeholder="Number of weeks"
+                        value={studyTime.weeks}
+                        onChange={(e) => handleTimeChange('weeks', e.target.value)}
+                        className="w-full"
+                    />
+                </div>
+                <div>
+                    <label className="block text-light-100 mb-2">Days per week</label>
+                    <Input
+                        type="number"
+                        min="1"
+                        max="7"
+                        placeholder="Days per week"
+                        value={studyTime.days}
+                        onChange={(e) => handleTimeChange('days', e.target.value)}
+                        className="w-full"
+                    />
+                </div>
+                <div>
+                    <label className="block text-light-100 mb-2">Hours per day</label>
+                    <Input
+                        type="number"
+                        min="1"
+                        max="24"
+                        placeholder="Hours per day"
+                        value={studyTime.hours}
+                        onChange={(e) => handleTimeChange('hours', e.target.value)}
+                        className="w-full"
+                    />
+                </div>
             </div>
         </div>
     );

@@ -68,6 +68,10 @@ export function StudyPlanProvider({ children }) {
         addSubject,
         addTopic,
         setStudyTime,
+        setSubjects,
+        setStudyPlan,
+        setIsLoading,
+        setError,
         generatePlan
     };
 

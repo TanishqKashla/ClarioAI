@@ -44,7 +44,7 @@ Please provide a JSON response with the following structure for each subject, to
 }
 
 Make sure to:
-1. Keep the exact same subject, topic, and subtopic names as provided
+1. Keep the exact same subject, topic as provided
 2. Generate relevant search terms for YouTube
 3. Provide concise but informative description for the subtopic
 4. Suggest realistic time allocations based on the total study time provided
@@ -95,7 +95,7 @@ Feel free to structure this content in the way you believe will be most effectiv
 - Core concepts, principles, and theoretical frameworks
 - Mathematical formulas, equations, and notations where applicable
 - Chemical reactions, biological processes, or physical laws with proper notation
-- Algorithms, code snippets, or pseudocode for computing concepts
+- Algorithms, code snippets, or pseudocode for technical concepts
 - Historical context and development of ideas
 - Practical applications and real-world examples
 - Advanced insights that go beyond basic understanding
@@ -104,7 +104,7 @@ Feel free to structure this content in the way you believe will be most effectiv
 - Thought-provoking questions that encourage critical thinking
 
 For technical subjects in mathematics, physics, chemistry, engineering, computer science, or similar fields, be sure to include all relevant formulas, equations, and technical notations properly formatted.
-
+Provide Algorithms, code snippets, or pseudocode ONLY for technical subjects.
 Don't feel constrained by conventional formats - organize the information in whatever way best represents the knowledge architecture of this topic. Your goal is to create content that would genuinely help someone develop expertise in this area.`;
 
   try {

@@ -33,7 +33,7 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                     />
                 </div>
                 <div onClick={toggleDropdown} className="w-full flex justify-between items-center">
-                    <h5 className={`text-md font-semibold text-light-100 ${isOpen ? 'text-primary' : ''}`}>
+                    <h5 className={`text-md font-semibold text-light-100 ${isOpen ? 'text-primary' : ''} ${isCompleted ? 'line-through opacity-70' : ''}`}>
                         Step {stepNumber}: {subTopic.charAt(0).toUpperCase() + subTopic.slice(1)}
                     </h5>
                     <svg

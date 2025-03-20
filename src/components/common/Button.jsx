@@ -9,7 +9,7 @@ const Button = ({
     isLoading = false,
     variant = 'primary',
     fullWidth = false,
-    ClassName = ''
+    className = ''
 }) => {
     const baseClasses = 'btn';
 
@@ -29,7 +29,7 @@ const Button = ({
             type={type}
             onClick={onClick}
             disabled={disabled || isLoading}
-            className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses} ${disabledClasses} ${ClassName}`}
+            className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses} ${disabledClasses} ${className}`}
         >
             {isLoading ? (
                 <span className="flex items-center justify-center">

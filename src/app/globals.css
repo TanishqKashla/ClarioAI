@@ -121,7 +121,13 @@ body {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px var(--secondary-color);
-  
+}
+
+textarea.input {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.5;
+  font-family: inherit;
 }
 
 /* Custom styles for App component */
