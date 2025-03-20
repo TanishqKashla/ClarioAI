@@ -51,9 +51,9 @@
   /* warning */
   --warning-faded: #321616;
   /* warning-faded */
-  --success-color: #A9D47F;
+  --success-color: #FFD166;
   /* success */
-  --success-faded: #202917;
+  --success-faded: #2D2917;
   /* success-faded */
 }
 
@@ -230,4 +230,10 @@ code {
   background-color: var(--success-faded);
   color: var(--success-color);
   border-color: var(--success-color);
+}
+
+.inactive {
+  background-color: var(--background-light);
+  color: var(--text-primary);
+  border-color: var(--border-color);
 }

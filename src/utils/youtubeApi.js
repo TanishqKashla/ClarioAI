@@ -9,7 +9,12 @@ export async function searchYouTubeVideos(query) {
         );
 
         if (!response.ok) {
-            throw new Error('YouTube API request failed');
+            // Log the response status and status text
+            console.error(`YouTube API request failed: ${response.status} ${response.statusText}`);
+            const errorBody = await response.text(); // Read the error response body
+            console.error('Error response body:', errorBody);
+
+            throw new Error(`YouTube API request failed: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();

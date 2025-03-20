@@ -32,8 +32,8 @@ module.exports = {
           faded: '#321616',       // warning-faded
         },
         success: {
-          DEFAULT: '#A9D47F',     // success
-          faded: '#202917',       // success-faded
+          DEFAULT: '#FFD166',     // success
+          faded: '#2D2917',       // success-faded
         }
       },
       boxShadow: {

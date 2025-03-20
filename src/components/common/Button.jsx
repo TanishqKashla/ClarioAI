@@ -15,6 +15,7 @@ const Button = ({
 
     const variantClasses = {
         primary: 'btn',
+        inactive: 'inactive',
         success: 'success',
         info: 'info',
         warning: 'warning',
