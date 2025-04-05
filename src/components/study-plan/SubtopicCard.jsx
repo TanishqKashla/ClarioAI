@@ -54,7 +54,7 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
             </button>
 
             {isOpen && (
-                <div className="space-y-3 p-6 pt-0 text-light-200 mt-3 flex gap-5">
+                <div className="space-y-3 p-6 pt-0 text-light-200 mt-3 gap-5 flex">
                     <div className="flex-1 max-h-[700px] pr-5 overflow-y-scroll">
                         <div>
                             <span className="font-medium text-light-100 block mb-2">Focus Areas: </span>

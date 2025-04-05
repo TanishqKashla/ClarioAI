@@ -1,4 +1,3 @@
-// src/components/common/Button.jsx
 import React from 'react';
 
 const Button = ({
@@ -6,12 +5,21 @@ const Button = ({
     onClick,
     type = 'button',
     disabled = false,
+    size = 'md',
     isLoading = false,
     variant = 'primary',
     fullWidth = false,
-    className = ''
+    className = '',
+    icon,
+    ...props
 }) => {
     const baseClasses = 'btn';
+
+    const sizes = {
+        sm: "px-3 py-1.5 text-xs",
+        md: "px-4 py-2 text-sm",
+        lg: "px-6 py-3 text-base"
+    };
 
     const variantClasses = {
         primary: 'btn',
@@ -29,7 +37,8 @@ const Button = ({
             type={type}
             onClick={onClick}
             disabled={disabled || isLoading}
-            className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses} ${disabledClasses} ${className}`}
+            className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses} ${disabledClasses} ${sizes[size]} ${className} flex items-center justify-center`}
+            {...props}
         >
             {isLoading ? (
                 <span className="flex items-center justify-center">
@@ -40,7 +49,10 @@ const Button = ({
                     Loading...
                 </span>
             ) : (
-                children
+                <>
+                    {icon && <span className="mr-2">{icon}</span>}
+                    {children}
+                </>
             )}
         </button>
     );

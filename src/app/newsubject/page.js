@@ -132,7 +132,7 @@ export default function NewSubjectPage() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-dark-200 py-12">
+    <div className="min-h-screen flex justify-center items-center pb-10">
       <div className="container mx-auto px-4 max-w-2xl">
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="bg-dark-100 rounded-2xl p-8 shadow-dark-lg border border-border/40">
@@ -237,6 +237,7 @@ export default function NewSubjectPage() {
             )}
 
             <Button
+              size='lg'
               type="submit"
               disabled={isLoading}
               isLoading={isLoading}

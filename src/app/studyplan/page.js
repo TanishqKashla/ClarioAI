@@ -21,8 +21,8 @@ export default function StudyPlanPage() {
   }
 
   return (
-    <div className="min-h-screen bg-dark-200 py-12">
-      <div className="mx-auto px-4">
+    <div className="min-h-screen bg-dark-200">
+      <div className="">
         <StudyPlanList studyPlan={studyPlan} />
       </div>
     </div>
