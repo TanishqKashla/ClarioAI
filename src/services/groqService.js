@@ -19,23 +19,17 @@ ${subject.topics.map(topic => `
 `).join('\n')}
 `).join('\n')}
 
-Study Timeline:
-- Days: ${request.studyTime.days}
-- Hours per day: ${request.studyTime.hours}
-- Weeks: ${request.studyTime.weeks}
-
 Please provide a JSON response with the following structure for each subject, topic, and subtopic:
 {
-  "subject": "Subject Name",
+  "subject": "Subject Name, also add a relevant emoji at the beginning of the subject name",
   "topics": [
     {
-      "topic": "Topic Name : (a small description about the topic)",
+      "topic": "Topic Name : (a small description (10-13 words max) about the topic)",
       "subtopics": [
         {
           "subTopic": "SubTopic Name",
-          "searchTerm": "best youtube search term for this topic which will help students who are learning the topic for the first time to understand the topic better without having any knowledge about that topic (do not literraly convey this in the search term), search term should be in context with the subject and subtopics, it may include what, why, how terms to accurately search an informative video on the youtube search term",
-          "description": "Generate 2-3 lines description for the subtopic",
-          "timeAlloted": "Recommended time to spend on this topic",
+          "searchTerm": "best youtube search term for this topic which will help students who are learning the topic for the first time to understand the topic better without having any knowledge about that topic (do not literraly convey this in the search term), search term should be in context with the subject and subtopics, it may include what, why, how terms to accurately search an informative video on the youtube search term.",
+          "description": "Generate 2-3 lines to-the-point and detailed description for the subtopic",
           "focusAreas": ["Key focus area 1", "Key focus area 2", "Key focus area 3"]
         }
       ]
@@ -45,10 +39,9 @@ Please provide a JSON response with the following structure for each subject, to
 
 Make sure to:
 1. Keep the exact same subject, topic as provided
-2. Generate relevant search terms for YouTube
+2. Generate relevant search terms for YouTube, pretend as if youre a student who is learning the topic for the first time and searching for a video on YouTube
 3. Provide concise but informative description for the subtopic
-4. Suggest realistic time allocations based on the total study time provided
-5. List 3-4 specific focus areas for each subtopic
+5. List 3-4 specific focus areas for each subtopic, these should be the key areas that a student should focus on while studying the subtopic. number of focus areas may vary according to the topic, but it should be relevant to the subtopic.
 6. Return ONLY the JSON array, no additional text or formatting`;
 
   try {
@@ -64,7 +57,7 @@ Make sure to:
         }
       ],
       model: "llama-3.3-70b-versatile",
-      temperature: 0.7
+      temperature: 0.5
     });
 
     const response = chatCompletion.choices[0]?.message?.content || "";
@@ -93,10 +86,10 @@ export async function generateSubtopicNotes(subject, topic, subtopic) {
 Feel free to structure this content in the way you believe will be most effective for deep learning. You should include any relevant elements such as:
 
 - Core concepts, principles, and theoretical frameworks
-- Mathematical formulas, equations, and notations where applicable
-- Chemical reactions, biological processes, or physical laws with proper notation
-- Algorithms, code snippets, or pseudocode for technical concepts
-- Historical context and development of ideas
+- Mathematical formulas, equations, and notations only where applicable
+- Chemical reactions, biological processes, or physical laws with proper notation only where applicable
+- Algorithms, code snippets, or pseudocode for technical concepts only where applicable
+- Historical context and development of ideas only where applicable
 - Practical applications and real-world examples
 - Advanced insights that go beyond basic understanding
 - Visual descriptions or conceptual models when helpful
@@ -120,7 +113,7 @@ Don't feel constrained by conventional formats - organize the information in wha
         }
       ],
       model: "llama-3.3-70b-versatile",
-      temperature: 0.7,
+      temperature: 0.5,
       max_tokens: 6000
     });
 

@@ -2,13 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import TimelineForm from '@/components/forms/TimelineForm';
 import Button from '@/components/common/Button';
 import { useStudyPlan } from '@/contexts/StudyPlanContext';
 import { generateStudyPlan } from '@/services/groqService';
 
 export default function NewSubjectPage() {
-  const { isLoading, error, setIsLoading, setError, setStudyPlan, studyTime, setSubjects } = useStudyPlan();
+  const { isLoading, error, setIsLoading, setError, setStudyPlan, setSubjects } = useStudyPlan();
   const router = useRouter();
   const [subjectName, setSubjectName] = useState('');
   const [topicName, setTopicName] = useState('');
@@ -26,7 +25,7 @@ export default function NewSubjectPage() {
     if (subtopics.length <= 1) {
       return;
     }
-    
+
     const newSubtopics = subtopics.filter((_, index) => index !== indexToDelete);
     setSubtopics(newSubtopics);
   };
@@ -48,25 +47,25 @@ export default function NewSubjectPage() {
       const validSubtopics = subtopics.filter(st => st.trim());
       setBulkSubtopics(validSubtopics.join('\n'));
     }
-    
+
     setIsBulkMode(!isBulkMode);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError('');
-    
+
     // Validate inputs
     if (!subjectName.trim()) {
       setFormError('Please enter a subject name');
       return;
     }
-    
+
     if (!topicName.trim()) {
       setFormError('Please enter a topic name');
       return;
     }
-    
+
     // Get valid subtopics based on current mode
     let validSubtopics = [];
     if (isBulkMode) {
@@ -77,18 +76,18 @@ export default function NewSubjectPage() {
     } else {
       validSubtopics = subtopics.filter(st => st.trim());
     }
-    
+
     // if (validSubtopics.length === 0) {
     //   setFormError('Please enter at least one subtopic');
     //   return;
     // }
-    
+
     // Validate study time
-    if (!studyTime.days || !studyTime.hours || !studyTime.weeks) {
-      setFormError('Please fill in all study timeline fields');
-      return;
-    }
-    
+    // if (!studyTime.days || !studyTime.hours || !studyTime.weeks) {
+    //   setFormError('Please fill in all study timeline fields');
+    //   return;
+    // }
+
     // Create the subject with topic directly for the context state
     const subject = {
       name: subjectName,
@@ -97,29 +96,33 @@ export default function NewSubjectPage() {
         subtopics: validSubtopics
       }]
     };
-    
+
+
+
     // Set subjects in context
     setSubjects([subject]);
-    
+
     // Generate the plan directly calling the API with the expected format
     setIsLoading(true);
     setError('');
     setStudyPlan([]);
-    
+
     try {
       // Log the data we're sending to the API for debugging
       console.log('Sending to API:', {
-        subjects: [subject],
-        studyTime
+        subjects: [subject]
+        // studyTime
       });
-      
+
       const plan = await generateStudyPlan({
-        subjects: [subject],
-        studyTime
+        subjects: [subject]
+        // studyTime
       });
-      
+
+      console.log('Received from API:', plan);
+
       setStudyPlan(plan);
-      
+
       if (plan) {
         router.push('/studyplan');
       }
@@ -149,8 +152,8 @@ export default function NewSubjectPage() {
                   className="input w-full"
                 />
               </div>
-              
-              <div className="ml-6">
+
+              <div className="ml-0">
                 <h3 className="text-light-100 mb-2">Enter Topic Name</h3>
                 <input
                   type="text"
@@ -160,8 +163,8 @@ export default function NewSubjectPage() {
                   className="input w-full"
                 />
               </div>
-              
-              <div className="ml-12">
+
+              <div className="ml-0">
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="text-light-100">Enter SubTopic Name (if any)</h3>
                   <div className="flex items-center gap-2">
@@ -177,7 +180,7 @@ export default function NewSubjectPage() {
                     </button>
                   </div>
                 </div>
-                
+
                 {isBulkMode ? (
                   <div>
                     <textarea
@@ -226,9 +229,9 @@ export default function NewSubjectPage() {
               </div>
             </div>
 
-            <div className="mt-8">
+            {/* <div className="mt-8">
               <TimelineForm />
-            </div>
+            </div> */}
 
             {formError && (
               <div className="mt-4 p-3 bg-warning-faded text-warning rounded-lg border border-warning/30">

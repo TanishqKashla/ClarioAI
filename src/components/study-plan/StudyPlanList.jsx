@@ -7,7 +7,7 @@ const StudyPlanList = ({ studyPlan }) => {
     }
 
     return (
-        <div className="bg-slate-950 p-6">
+        <div className=" p-6">
             {/* <h2 className="text-2xl font-semibold text-light-100 mb-6">Your Study Plan</h2> */}
             {studyPlan.map((subject, index) => (
                 <SubjectCard

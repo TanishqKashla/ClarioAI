@@ -15,14 +15,14 @@ const TopicCard = ({ subject, topic, onSubtopicCompletionChange }) => {
     };
 
     return (
-        <div className="mb-6 ml-4 border-4 border-l-primary">
+        <div className="mb-6">
             {/* Topic Name */}
             <h4 className="text-xl font-semibold text-light-100 flex items-center gap-2 mb-4">
                 <span>📑</span> {topic.topic}
             </h4>
 
             {/* Progress Bar */}
-            <div className="w-full bg-dark-300 rounded-full h-2 mt-2 mb-4">
+            <div className="w-full bg-dark-100 rounded-full h-2 mt-2 mb-4">
                 <div
                     className="bg-primary h-2 rounded-full transition-all duration-300"
                     style={{ width: `${progressPercentage}%` }}
