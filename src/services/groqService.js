@@ -20,22 +20,36 @@ ${subject.topics.map(topic => `
 `).join('\n')}
 
 Please provide a JSON response with the following structure for each subject, topic, and subtopic:
-{
-  "subject": "Subject Name, also add a relevant emoji at the beginning of the subject name",
-  "topics": [
-    {
-      "topic": "Topic Name : (a small description (10-13 words max) about the topic)",
-      "subtopics": [
-        {
-          "subTopic": "SubTopic Name",
-          "searchTerm": "best youtube search term for this topic which will help students who are learning the topic for the first time to understand the topic better without having any knowledge about that topic (do not literraly convey this in the search term), search term should be in context with the subject and subtopics, it may include what, why, how terms to accurately search an informative video on the youtube search term.",
-          "description": "Generate 2-3 lines to-the-point and detailed description for the subtopic",
-          "focusAreas": ["Key focus area 1", "Key focus area 2", "Key focus area 3"]
-        }
-      ]
-    }
-  ]
-}
+[
+  {
+    "subjectName": "Subject Name (add a relevant emoji at the beginning of the subject name, Capitalise the first letter of each word)",
+    "subjectId": "" // (Initially leave this empty),
+    "topics": [
+      {
+        "name": "Topic Name",
+        "topicId": "", // (Initially leave this empty),
+        "subtopics": [
+          {
+            "name": "Subtopic Name",
+            "subtopicId": "", // (Initially leave this empty),
+            "searchTerm": "A well-crafted YouTube search term to understand this subtopic (should feel natural to a student searching this for the first time)",
+            "description": "2–3 lines of clear and informative description about the subtopic",
+            "focusAreas": [
+              "Key concept 1 to focus on",
+              "Key concept 2",
+              "Key concept 3"
+            ],
+            "recommendedVideos": [],          // (Initially leave this empty)
+            "selectedVideoId": "",            // (Initially leave this empty)
+            "aiNotes": ""                     // (Initially leave this empty)
+            isCompleted: false
+          }
+        ]
+      }
+    ]
+  }
+]
+
 
 Make sure to:
 1. Keep the exact same subject, topic as provided

@@ -3,9 +3,8 @@ import YouTubeSearch from '@/components/youtube/YouTubeSearch';
 import SubtopicNotes from '@/components/notes/SubtopicNotes';
 
 const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange }) => {
-    const { subTopic, searchTerm, description, focusAreas } = subtopic;
+    const { subTopic, searchTerm, description, focusAreas, isCompleted } = subtopic; // ← use isCompleted from props
     const [isOpen, setIsOpen] = useState(false);
-    const [isCompleted, setIsCompleted] = useState(false); // State to track completion status
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -13,18 +12,16 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
 
     const toggleCompletion = (e) => {
         e.stopPropagation(); // Prevent triggering the dropdown toggle
-        const newCompletionStatus = !isCompleted;
-        setIsCompleted(newCompletionStatus);
-        onCompletionChange(newCompletionStatus); // Notify parent about the change
+        onCompletionChange(e.target.checked); // Notify parent of checkbox status
     };
 
     return (
-        <div className="bg-dark-100 overflow-hidden rounded-md border border-border w-full">
+        <div className="bg-dark-100 overflow-hidden rounded-md  w-full">
             <button
-                className={`p-4 flex gap-3 w-full text-left ${isOpen ? '' : ''}`}
+                className={`p-4 flex gap-3 w-full text-left`}
             >
                 <div className="flex items-center gap-2">
-                    {/* Checkbox for marking completion */}
+                    {/* ✅ Checkbox now reflects actual isCompleted prop */}
                     <input
                         type="checkbox"
                         checked={isCompleted}
@@ -34,11 +31,10 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                 </div>
                 <div onClick={toggleDropdown} className="w-full flex justify-between items-center">
                     <h5 className={`text-md font-semibold text-light-100 ${isOpen ? 'text-primary' : ''} ${isCompleted ? 'line-through opacity-70' : ''}`}>
-                        Step {stepNumber}: {subTopic.charAt(0).toUpperCase() + subTopic.slice(1)}
+                        Step {stepNumber}: {subTopic}
                     </h5>
                     <svg
-                        className={`w-5 h-5 text-light-100 transition-transform duration-200 ${isOpen ? 'transform rotate-180 text-primary' : ''
-                            }`}
+                        className={`w-5 h-5 text-light-100 transition-transform duration-200 ${isOpen ? 'transform rotate-180 text-primary' : ''}`}
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"

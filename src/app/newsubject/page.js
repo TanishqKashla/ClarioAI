@@ -5,6 +5,11 @@ import { useRouter } from 'next/navigation';
 import Button from '@/components/common/Button';
 import { useStudyPlan } from '@/contexts/StudyPlanContext';
 import { generateStudyPlan } from '@/services/groqService';
+import { getSession } from 'next-auth/react';
+import { nanoid } from 'nanoid';
+
+//check if the user is logged in
+
 
 export default function NewSubjectPage() {
   const { isLoading, error, setIsLoading, setError, setStudyPlan, setSubjects } = useStudyPlan();
@@ -107,34 +112,79 @@ export default function NewSubjectPage() {
     setError('');
     setStudyPlan([]);
 
-    try {
-      // Log the data we're sending to the API for debugging
-      console.log('Sending to API:', {
-        subjects: [subject]
-        // studyTime
+    // try {
+    //   // Log the data we're sending to the API for debugging
+    //   console.log('Sending to API:', {
+    //     subjects: [subject]
+    //     // studyTime
+    //   });
+
+    // const plan = await generateStudyPlan({
+    //   subjects: [subject]
+    //   // studyTime
+    // });
+
+    //   console.log('Received from API:', plan);
+
+    //   // setStudyPlan(plan);
+    //   // if (plan) {
+    //   //   router.push('/studyplan');
+    //   // }
+
+
+    // } catch (err) {
+    //   setError('Failed to generate study plan. Please try again.');
+    //   console.error(err);
+    // } finally {
+    //   setIsLoading(false);
+    // }
+
+    const plan = await generateStudyPlan({
+      subjects: [subject]
+      // studyTime
+    });
+
+
+    plan.forEach((subject) => {
+      subject.subjectId = nanoid();
+      subject.topics.forEach((topic) => {
+        topic.topicId = nanoid();
+        topic.subtopics.forEach((subtopic) => {
+          subtopic.subtopicId = nanoid();
+        });
       });
+    });
 
-      const plan = await generateStudyPlan({
-        subjects: [subject]
-        // studyTime
-      });
+    console.log(plan);
 
-      console.log('Received from API:', plan);
+    const session = await getSession();
 
-      setStudyPlan(plan);
+    const res = await fetch('/api/studyplans', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: session.user.email, // from session or auth
+        studyPlan: plan,
+      }),
+    });
 
-      if (plan) {
-        router.push('/studyplan');
-      }
-    } catch (err) {
-      setError('Failed to generate study plan. Please try again.');
-      console.error(err);
-    } finally {
-      setIsLoading(false);
+
+    const result = await res.json();
+
+    if (result.success) {
+      console.log("Saved successfully with ID:", result.id);
+    } else {
+      console.error("Save failed:", result.error);
     }
+
+    setIsLoading(false);
+
   };
 
   return (
+
     <div className="min-h-screen flex justify-center items-center pb-10">
       <div className="container mx-auto px-4 max-w-2xl">
         <form onSubmit={handleSubmit} className="space-y-8">

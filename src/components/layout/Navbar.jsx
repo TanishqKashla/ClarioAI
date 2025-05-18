@@ -19,26 +19,29 @@ const Navbar = () => {
           {isLoading ? (
             <div className="h-8 w-24 bg-gray-600 animate-pulse rounded"></div>
           ) : session ? (
-            <>
-              <span className="text-light-100">Hello, {session.user.name}</span>
+              <>
+                {console.log(session)}
+                <span className="text-light-100">Hello, {session.user.name}</span>
+                <img src={session.user.image} alt="User Image" className="w-8 h-8 rounded-full" />
               <Button
                 onClick={() => signOut({ callbackUrl: "/" })}
                 children={"Sign Out"}
-                ClassName="border-none"
+                className="border-none"
                 variant="inactive"
               />
             </>
           ) : (
             <>
               <Button
-                onClick={() => signIn()}
-                children={"Sign In"}
-                ClassName="border-none"
+                onClick={() => signIn("google")}
+                children={"Sign In with Google"}
+                className="border-none"
                 variant="inactive"
               />
-              <Link href="/auth/signin">
+              {/* If you want to keep signup button (optional) */}
+              {/* <Link href="/auth/signin">
                 <Button children={"Sign Up"} />
-              </Link>
+              </Link> */}
             </>
           )}
         </div>

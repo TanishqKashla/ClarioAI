@@ -1,22 +1,21 @@
 import React from 'react';
 import TopicCard from './TopicCard';
 
-const SubjectCard = ({ subject, onSubtopicCompletionChange }) => {
+const SubjectCard = ({ subject, topic, onSubtopicCompletionChange }) => {
+
+    if (!subject) return <div>Subject not found.</div>;
     return (
         <div className="mb-8">
             {/* Subject Name */}
             <h3 className="text-2xl font-bold text-primary uppercase flex items-center gap-2 mb-4">
-                <span></span> {subject.subject}
+                <span></span> {subject}
             </h3>
-            {/* Render Topics */}
-            {subject.topics.map((topic, index) => (
-                <TopicCard
-                    key={index}
-                    subject={subject.subject}
-                    topic={topic}
-                    onSubtopicCompletionChange={onSubtopicCompletionChange}
-                />
-            ))}
+
+            <TopicCard
+                topic={topic}
+                onSubtopicCompletionChange={onSubtopicCompletionChange}
+            />
+
         </div>
     );
 };

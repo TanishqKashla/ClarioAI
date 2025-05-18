@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SubtopicCard from './SubtopicCard';
 
-const TopicCard = ({ subject, topic, onSubtopicCompletionChange }) => {
+const TopicCard = ({ topic, onSubtopicCompletionChange }) => {
     const [completedCount, setCompletedCount] = useState(0); // Track the number of completed subtopics
     const totalSubtopics = topic.subtopics.length;
     const progressPercentage = (completedCount / totalSubtopics) * 100;
@@ -18,7 +18,7 @@ const TopicCard = ({ subject, topic, onSubtopicCompletionChange }) => {
         <div className="mb-6">
             {/* Topic Name */}
             <h4 className="text-xl font-semibold text-light-100 flex items-center gap-2 mb-4">
-                <span>📑</span> {topic.topic}
+                <span>📑</span> {topic.name}
             </h4>
 
             {/* Progress Bar */}
@@ -32,14 +32,16 @@ const TopicCard = ({ subject, topic, onSubtopicCompletionChange }) => {
             {/* Render Subtopic Cards */}
             <div className="space-y-5 ml-4 mt-4">
                 {topic.subtopics.map((subtopic, index) => (
-                    <SubtopicCard
-                        key={index}
-                        subject={subject}
-                        topic={topic.topic}
-                        subtopic={subtopic}
-                        stepNumber={index + 1}
-                        onCompletionChange={handleCompletionChange}
-                    />
+                    <div key={index}>
+                        <div >{subtopic}</div>
+                        <SubtopicCard
+                            key={index}
+                            // topic={topic.topic}
+                            subtopic={subtopic.name}
+                            stepNumber={index + 1}
+                            onCompletionChange={handleCompletionChange}
+                        />
+                    </div>
                 ))}
             </div>
         </div>
