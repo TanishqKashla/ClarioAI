@@ -56,7 +56,8 @@ Make sure to:
 2. Generate relevant search terms for YouTube, pretend as if youre a student who is learning the topic for the first time and searching for a video on YouTube
 3. Provide concise but informative description for the subtopic
 5. List 3-4 specific focus areas for each subtopic, these should be the key areas that a student should focus on while studying the subtopic. number of focus areas may vary according to the topic, but it should be relevant to the subtopic.
-6. Return ONLY the JSON array, no additional text or formatting`;
+6. Return ONLY the JSON array, no additional text or formatting
+7. Make sure you only return one JSON array for the subject name`;
 
   try {
     const chatCompletion = await groq.chat.completions.create({
