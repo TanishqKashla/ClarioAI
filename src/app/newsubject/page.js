@@ -5,13 +5,15 @@ import { useRouter } from 'next/navigation';
 import Button from '@/components/common/Button';
 import { useStudyPlan } from '@/contexts/StudyPlanContext';
 import { generateStudyPlan } from '@/services/groqService';
-import { getSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { nanoid } from 'nanoid';
+import SignInOverlay from '@/components/auth/SignInOverlay';
 
 //check if the user is logged in
 
 
 export default function NewSubjectPage() {
+  const { data: session, status } = useSession();
   const { isLoading, error, setIsLoading, setError, setStudyPlan, setSubjects } = useStudyPlan();
   const router = useRouter();
   const [subjectName, setSubjectName] = useState('');
@@ -20,6 +22,7 @@ export default function NewSubjectPage() {
   const [bulkSubtopics, setBulkSubtopics] = useState('');
   const [isBulkMode, setIsBulkMode] = useState(false);
   const [formError, setFormError] = useState('');
+  const [showSignInOverlay, setShowSignInOverlay] = useState(false);
 
   const handleAddSubtopic = () => {
     setSubtopics([...subtopics, '']);
@@ -60,6 +63,12 @@ export default function NewSubjectPage() {
     e.preventDefault();
     setFormError('');
 
+    // Check if user is authenticated
+    if (!session) {
+      setShowSignInOverlay(true);
+      return;
+    }
+
     // Validate inputs
     if (!subjectName.trim()) {
       setFormError('Please enter a subject name');
@@ -74,24 +83,12 @@ export default function NewSubjectPage() {
     // Get valid subtopics based on current mode
     let validSubtopics = [];
     if (isBulkMode) {
-      // In bulk mode, just use the entire text as a single subtopic
       if (bulkSubtopics.trim()) {
         validSubtopics = [bulkSubtopics.trim()];
       }
     } else {
       validSubtopics = subtopics.filter(st => st.trim());
     }
-
-    // if (validSubtopics.length === 0) {
-    //   setFormError('Please enter at least one subtopic');
-    //   return;
-    // }
-
-    // Validate study time
-    // if (!studyTime.days || !studyTime.hours || !studyTime.weeks) {
-    //   setFormError('Please fill in all study timeline fields');
-    //   return;
-    // }
 
     // Create the subject with topic directly for the context state
     const subject = {
@@ -102,91 +99,62 @@ export default function NewSubjectPage() {
       }]
     };
 
-
-
     // Set subjects in context
     setSubjects([subject]);
 
-    // Generate the plan directly calling the API with the expected format
+    // Generate the plan
     setIsLoading(true);
     setError('');
     setStudyPlan([]);
 
-    // try {
-    //   // Log the data we're sending to the API for debugging
-    //   console.log('Sending to API:', {
-    //     subjects: [subject]
-    //     // studyTime
-    //   });
+    try {
+      const plan = await generateStudyPlan({
+        subjects: [subject]
+      });
 
-    // const plan = await generateStudyPlan({
-    //   subjects: [subject]
-    //   // studyTime
-    // });
-
-    //   console.log('Received from API:', plan);
-
-    //   // setStudyPlan(plan);
-    //   // if (plan) {
-    //   //   router.push('/studyplan');
-    //   // }
-
-
-    // } catch (err) {
-    //   setError('Failed to generate study plan. Please try again.');
-    //   console.error(err);
-    // } finally {
-    //   setIsLoading(false);
-    // }
-
-    const plan = await generateStudyPlan({
-      subjects: [subject]
-      // studyTime
-    });
-
-
-    plan.forEach((subject) => {
-      subject.subjectId = nanoid();
-      subject.topics.forEach((topic) => {
-        topic.topicId = nanoid();
-        topic.subtopics.forEach((subtopic) => {
-          subtopic.subtopicId = nanoid();
+      plan.forEach((subject) => {
+        subject.subjectId = nanoid();
+        subject.topics.forEach((topic) => {
+          topic.topicId = nanoid();
+          topic.subtopics.forEach((subtopic) => {
+            subtopic.subtopicId = nanoid();
+          });
         });
       });
-    });
 
-    console.log(plan);
+      const res = await fetch('/api/studyplans', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: session.user.email,
+          studyPlan: plan,
+        }),
+      });
 
-    const session = await getSession();
+      const result = await res.json();
 
-    const res = await fetch('/api/studyplans', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId: session.user.email, // from session or auth
-        studyPlan: plan,
-      }),
-    });
-
-
-    const result = await res.json();
-
-    if (result.success) {
-      console.log("Saved successfully with ID:", result.id);
-    } else {
-      console.error("Save failed:", result.error);
+      if (result.success) {
+        console.log("Saved successfully with ID:", result.id);
+        router.push('/studyplan');
+      } else {
+        console.error("Save failed:", result.error);
+        setError('Failed to save study plan. Please try again.');
+      }
+    } catch (err) {
+      setError('Failed to generate study plan. Please try again.');
+      console.error(err);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
-
   };
 
   return (
-
-    <div className="min-h-screen flex justify-center items-center pb-10">
-      <div className="container mx-auto px-4 max-w-2xl">
+    <div className="min-h-screen bg-dark-200 p-8">
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-3xl font-bold text-light-100 mb-8">Create New Subject</h1>
+        
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="bg-dark-100 rounded-2xl p-8 shadow-dark-lg border border-border/40">
             <h2 className="text-2xl font-semibold text-light-100 mb-6">Syllabus Details</h2>
@@ -308,6 +276,11 @@ export default function NewSubjectPage() {
           </div>
         )}
       </div>
+
+      <SignInOverlay 
+        isOpen={showSignInOverlay} 
+        onClose={() => setShowSignInOverlay(false)} 
+      />
     </div>
   );
 }
