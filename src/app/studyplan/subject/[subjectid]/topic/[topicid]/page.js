@@ -43,11 +43,42 @@ const TopicPage = () => {
         fetchTopic();
     }, [subjectid, topicid]);
 
-    const handleCompletionChange = (index, newStatus) => {
+    const handleCompletionChange = async (index, newStatus) => {
         const updatedSubtopics = [...topic.subtopics];
         updatedSubtopics[index].isCompleted = newStatus;
         setTopic({ ...topic, subtopics: updatedSubtopics });
         updateProgress(updatedSubtopics);
+
+        // Find the plan ID from the fetched plans
+        const res = await fetch('/api/studyplans');
+        const plans = await res.json();
+        const plan = plans.find(p => 
+            p.studyPlan.some(s => s.subjectId === subjectid)
+        );
+
+        if (plan) {
+            try {
+                await fetch('/api/studyplans', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        planId: plan.id,
+                        subjectId: subjectid,
+                        topicId: topicid,
+                        subtopicId: updatedSubtopics[index].subtopicId,
+                        isCompleted: newStatus
+                    }),
+                });
+            } catch (error) {
+                console.error('Failed to update completion status:', error);
+                // Optionally revert the local state if the update fails
+                updatedSubtopics[index].isCompleted = !newStatus;
+                setTopic({ ...topic, subtopics: updatedSubtopics });
+                updateProgress(updatedSubtopics);
+            }
+        }
     };
 
     if (loading) return <div className="text-light-100 p-4">Loading...</div>;
