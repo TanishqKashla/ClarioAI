@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { searchYouTubeVideos } from '@/utils/youtubeApi';
 
 export function useYouTubeSearch() {
-    const [video, setVideo] = useState(null);
+    const [videos, setVideos] = useState([]);
+    const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -15,15 +16,32 @@ export function useYouTubeSearch() {
         setError(null);
 
         try {
-            const result = await searchYouTubeVideos(searchTerm);
-            setVideo(result);
+            const results = await searchYouTubeVideos(searchTerm);
+            setVideos(results);
+            setSelectedVideoIndex(0); // Reset to first video when new search is performed
         } catch (err) {
-            setError('Failed to fetch video. Please try again.');
+            setError('Failed to fetch videos. Please try again.');
             console.error(err);
         } finally {
             setLoading(false);
         }
     };
 
-    return { video, loading, error, searchVideos };
+    const selectVideo = (index) => {
+        if (index >= 0 && index < videos.length) {
+            setSelectedVideoIndex(index);
+        }
+    };
+
+    const selectedVideo = videos[selectedVideoIndex] || null;
+
+    return { 
+        videos, 
+        selectedVideo, 
+        selectedVideoIndex,
+        loading, 
+        error, 
+        searchVideos,
+        selectVideo 
+    };
 }

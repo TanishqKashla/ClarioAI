@@ -9,6 +9,7 @@ const TopicPage = () => {
     const [topic, setTopic] = useState(null);
     const [loading, setLoading] = useState(true);
     const [completedCount, setCompletedCount] = useState(0);
+    const [planId, setPlanId] = useState(null);
 
     const updateProgress = (updatedSubtopics) => {
         const completed = updatedSubtopics.filter(sub => sub.isCompleted).length;
@@ -22,12 +23,14 @@ const TopicPage = () => {
 
             let foundSubject = null;
             let foundTopic = null;
+            let foundPlanId = null;
 
             for (const plan of plans) {
                 const subj = plan.studyPlan.find(sub => sub.subjectId === subjectid);
                 if (subj) {
                     foundSubject = subj;
                     foundTopic = subj.topics.find(t => t.topicId === topicid);
+                    foundPlanId = plan.id;
                     break;
                 }
             }
@@ -37,7 +40,7 @@ const TopicPage = () => {
                 setTopic({ ...foundTopic });
                 updateProgress(foundTopic.subtopics);
             }
-
+            setPlanId(foundPlanId);
             setLoading(false);
         };
         fetchTopic();
@@ -49,35 +52,26 @@ const TopicPage = () => {
         setTopic({ ...topic, subtopics: updatedSubtopics });
         updateProgress(updatedSubtopics);
 
-        // Find the plan ID from the fetched plans
-        const res = await fetch('/api/studyplans');
-        const plans = await res.json();
-        const plan = plans.find(p => 
-            p.studyPlan.some(s => s.subjectId === subjectid)
-        );
-
-        if (plan) {
-            try {
-                await fetch('/api/studyplans', {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        planId: plan.id,
-                        subjectId: subjectid,
-                        topicId: topicid,
-                        subtopicId: updatedSubtopics[index].subtopicId,
-                        isCompleted: newStatus
-                    }),
-                });
-            } catch (error) {
-                console.error('Failed to update completion status:', error);
-                // Optionally revert the local state if the update fails
-                updatedSubtopics[index].isCompleted = !newStatus;
-                setTopic({ ...topic, subtopics: updatedSubtopics });
-                updateProgress(updatedSubtopics);
-            }
+        try {
+            await fetch('/api/studyplans', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    planId,
+                    subjectId: subjectid,
+                    topicId: topicid,
+                    subtopicId: updatedSubtopics[index].subtopicId,
+                    isCompleted: newStatus
+                }),
+            });
+        } catch (error) {
+            console.error('Failed to update completion status:', error);
+            // Optionally revert the local state if the update fails
+            updatedSubtopics[index].isCompleted = !newStatus;
+            setTopic({ ...topic, subtopics: updatedSubtopics });
+            updateProgress(updatedSubtopics);
         }
     };
 
@@ -109,11 +103,13 @@ const TopicPage = () => {
                 {topic.subtopics.map((subtopic, index) => (
                     <SubtopicCard
                         key={subtopic.subtopicId}
-                        subtopic={{ ...subtopic, subTopic: subtopic.name }}
+                        subject={subject}
+                        topic={topic}
+                        subtopic={subtopic}
                         stepNumber={index + 1}
-                        onCompletionChange={(status) => handleCompletionChange(index, status)}
+                        onCompletionChange={(checked) => handleCompletionChange(index, checked)}
+                        planId={planId}
                     />
-                
                 ))}
             </div>
         </div>

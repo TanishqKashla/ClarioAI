@@ -2,51 +2,109 @@ import React, { useState } from 'react';
 import YouTubeSearch from '@/components/youtube/YouTubeSearch';
 import SubtopicNotes from '@/components/notes/SubtopicNotes';
 
-const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange }) => {
-    const { subTopic, searchTerm, description, focusAreas, isCompleted } = subtopic; // ← use isCompleted from props
+const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange, planId }) => {
+    const { name, searchTerm, description, focusAreas } = subtopic;
+    // Use local state for isCompleted and selectedVideoId for optimistic UI
+    const [isCompleted, setIsCompleted] = useState(subtopic.isCompleted);
+    const [selectedVideoId, setSelectedVideoId] = useState(subtopic.selectedVideoId || '');
+    const [syncing, setSyncing] = useState(false);
+    const [syncError, setSyncError] = useState('');
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
 
-    const toggleCompletion = (e) => {
-        e.stopPropagation(); // Prevent triggering the dropdown toggle
-        onCompletionChange(e.target.checked); // Notify parent of checkbox status
+    // Unified sync function
+    const syncSubtopic = async (newCompleted, newVideoId) => {
+        setSyncing(true);
+        setSyncError('');
+        try {
+            await fetch('/api/studyplans', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    planId,
+                    subjectId: subject?.subjectId,
+                    topicId: topic?.topicId,
+                    subtopicId: subtopic?.subtopicId,
+                    isCompleted: newCompleted,
+                    selectedVideoId: newVideoId
+                }),
+            });
+            setSyncing(false);
+        } catch (error) {
+            setSyncError('Failed to sync. Please try again.');
+            setSyncing(false);
+            return false;
+        }
+        return true;
+    };
+
+    // Checkbox handler
+    const toggleCompletion = async (e) => {
+        e.stopPropagation();
+        const newCompleted = e.target.checked;
+        const prevCompleted = isCompleted;
+        setIsCompleted(newCompleted);
+        const success = await syncSubtopic(newCompleted, selectedVideoId);
+        if (!success) {
+            setIsCompleted(prevCompleted); // revert
+        } else {
+            onCompletionChange(newCompleted);
+        }
+    };
+
+    // Video select handler
+    const handleVideoSelect = async (videoId) => {
+        const prevVideoId = selectedVideoId;
+        setSelectedVideoId(videoId);
+        const success = await syncSubtopic(isCompleted, videoId);
+        if (!success) {
+            setSelectedVideoId(prevVideoId); // revert
+        }
     };
 
     return (
-        <div className="bg-dark-100 overflow-hidden rounded-md  w-full">
+        <div className="bg-dark-100 overflow-hidden rounded-md w-full relative">
+            {syncing && (
+                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center z-10">
+                    <span className="text-primary font-semibold">Syncing...</span>
+                </div>
+            )}
             <button
-                className={`p-4 flex gap-3 w-full text-left`}
+                className={`p-4 flex gap-3 w-full text-left ${syncing ? 'opacity-60 pointer-events-none' : ''}`}
+                onClick={toggleDropdown}
+                disabled={syncing}
             >
-                <div className="flex items-center gap-2">
-                    {/* ✅ Checkbox now reflects actual isCompleted prop */}
-                    <input
-                        type="checkbox"
-                        checked={isCompleted}
-                        onChange={toggleCompletion}
-                        className="w-5 h-5 accent-primary cursor-pointer"
-                    />
-                </div>
-                <div onClick={toggleDropdown} className="w-full flex justify-between items-center">
-                    <h5 className={`text-md font-semibold text-light-100 ${isOpen ? 'text-primary' : ''} ${isCompleted ? 'line-through opacity-70' : ''}`}>
-                        Step {stepNumber}: {subTopic}
-                    </h5>
-                    <svg
-                        className={`w-5 h-5 text-light-100 transition-transform duration-200 ${isOpen ? 'transform rotate-180 text-primary' : ''}`}
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                    >
-                        <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
+                <div className="flex-1">
+                    <div className="flex items-center gap-3">
+                        <input
+                            type="checkbox"
+                            checked={isCompleted}
+                            onChange={toggleCompletion}
+                            className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+                            disabled={syncing}
                         />
-                    </svg>
+                        <h3 className="text-lg font-medium text-light-100">
+                            {stepNumber}. {name}
+                        </h3>
+                    </div>
                 </div>
+                <svg
+                    className={`w-5 h-5 transition-transform duration-200 ${isOpen ? 'transform rotate-180' : ''}`}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                >
+                    <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                    />
+                </svg>
             </button>
 
             {isOpen && (
@@ -65,22 +123,36 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                                 ))}
                             </ul>
                         </div>
-
                         <div className="my-5">{description}</div>
-
                         <div>
                             <SubtopicNotes
                                 subject={subject || ''}
                                 topic={topic || ''}
-                                subtopic={subTopic}
+                                subtopic={name}
                             />
                         </div>
                     </div>
                     <div className="w-[550px]">
                         <span className="font-medium text-light-100">YouTube Search: </span>
                         {searchTerm}
-                        <YouTubeSearch searchTerm={searchTerm} isOpen={isOpen} />
+                        <YouTubeSearch 
+                            searchTerm={searchTerm} 
+                            isOpen={isOpen}
+                            planId={planId}
+                            subjectId={subject?.subjectId}
+                            topicId={topic?.topicId}
+                            subtopicId={subtopic?.subtopicId}
+                            selectedVideoId={selectedVideoId}
+                            onVideoSelect={handleVideoSelect}
+                            syncing={syncing}
+                            recommendedVideos={subtopic.recommendedVideos}
+                        />
                     </div>
+                </div>
+            )}
+            {syncError && (
+                <div className="absolute bottom-2 left-2 right-2 bg-red-700 text-white text-center rounded p-2 z-20">
+                    {syncError}
                 </div>
             )}
         </div>

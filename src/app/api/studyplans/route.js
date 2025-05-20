@@ -58,7 +58,7 @@ export async function PATCH(req) {
         }
 
         const body = await req.json();
-        const { planId, subjectId, topicId, subtopicId, isCompleted } = body;
+        const { planId, subjectId, topicId, subtopicId, isCompleted, selectedVideoId, recommendedVideos } = body;
 
         // Find the study plan
         const studyPlan = await prisma.studyPlan.findFirst({
@@ -72,7 +72,7 @@ export async function PATCH(req) {
             return new Response(JSON.stringify({ error: "Study plan not found" }), { status: 404 });
         }
 
-        // Update the completion status in the study plan
+        // Update the completion status, selected video, and recommended videos in the study plan
         const updatedStudyPlan = studyPlan.studyPlan.map(subject => {
             if (subject.subjectId === subjectId) {
                 return {
@@ -83,7 +83,12 @@ export async function PATCH(req) {
                                 ...topic,
                                 subtopics: topic.subtopics.map(subtopic => {
                                     if (subtopic.subtopicId === subtopicId) {
-                                        return { ...subtopic, isCompleted };
+                                        return { 
+                                            ...subtopic, 
+                                            isCompleted,
+                                            selectedVideoId: selectedVideoId || subtopic.selectedVideoId,
+                                            recommendedVideos: recommendedVideos || subtopic.recommendedVideos || []
+                                        };
                                     }
                                     return subtopic;
                                 })

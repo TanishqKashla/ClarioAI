@@ -3,7 +3,7 @@ export async function searchYouTubeVideos(query) {
 
     try {
         const response = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${encodeURIComponent(
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=3&q=${encodeURIComponent(
                 query
             )}&key=${apiKey}&type=video`
         );
@@ -18,7 +18,7 @@ export async function searchYouTubeVideos(query) {
         }
 
         const data = await response.json();
-        return data.items && data.items.length > 0 ? data.items[0] : null;
+        return data.items || [];
     } catch (error) {
         console.error('Error searching YouTube:', error);
         throw error;
