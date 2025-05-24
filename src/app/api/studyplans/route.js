@@ -58,7 +58,7 @@ export async function PATCH(req) {
         }
 
         const body = await req.json();
-        const { planId, subjectId, topicId, subtopicId, isCompleted, selectedVideoId, recommendedVideos } = body;
+        const { planId, subjectId, topicId, subtopicId, isCompleted, selectedVideoId, recommendedVideos, aiNotes } = body;
 
         // Find the study plan
         const studyPlan = await prisma.studyPlan.findFirst({
@@ -72,7 +72,7 @@ export async function PATCH(req) {
             return new Response(JSON.stringify({ error: "Study plan not found" }), { status: 404 });
         }
 
-        // Update the completion status, selected video, and recommended videos in the study plan
+        // Update the completion status, selected video, recommended videos, and AI notes in the study plan
         const updatedStudyPlan = studyPlan.studyPlan.map(subject => {
             if (subject.subjectId === subjectId) {
                 return {
@@ -85,9 +85,10 @@ export async function PATCH(req) {
                                     if (subtopic.subtopicId === subtopicId) {
                                         return { 
                                             ...subtopic, 
-                                            isCompleted,
+                                            isCompleted: isCompleted !== undefined ? isCompleted : subtopic.isCompleted,
                                             selectedVideoId: selectedVideoId || subtopic.selectedVideoId,
-                                            recommendedVideos: recommendedVideos || subtopic.recommendedVideos || []
+                                            recommendedVideos: recommendedVideos || subtopic.recommendedVideos || [],
+                                            aiNotes: aiNotes || subtopic.aiNotes || ''
                                         };
                                     }
                                     return subtopic;
@@ -109,8 +110,8 @@ export async function PATCH(req) {
 
         return new Response(JSON.stringify({ success: true }), { status: 200 });
     } catch (error) {
-        console.error("PATCH /api/studyplans error:", error);
-        return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 });
+        console.error('Error updating study plan:', error);
+        return new Response(JSON.stringify({ error: "Failed to update study plan" }), { status: 500 });
     }
 }
 

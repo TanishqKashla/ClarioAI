@@ -128,7 +128,8 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                             <SubtopicNotes
                                 subject={subject || ''}
                                 topic={topic || ''}
-                                subtopic={name}
+                                subtopic={subtopic}
+                                planId={planId}
                             />
                         </div>
                     </div>

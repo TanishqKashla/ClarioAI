@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { generateSubtopicNotes } from '@/services/groqService';
 
-const SubtopicNotes = ({ subject, topic, subtopic }) => {
+const SubtopicNotes = ({ subject, topic, subtopic, planId }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [notes, setNotes] = useState('');
+    const [notes, setNotes] = useState(subtopic.aiNotes || '');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     console.log("PRINTING FROM SUBTOPICNOTES", subject, topic);
@@ -18,8 +18,23 @@ const SubtopicNotes = ({ subject, topic, subtopic }) => {
         setError(null);
 
         try {
-            const result = await generateSubtopicNotes(subject, topic, subtopic);
+            const result = await generateSubtopicNotes(subject, topic, subtopic.name);
             setNotes(result);
+            
+            // Store the generated notes in the database
+            await fetch('/api/studyplans', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    planId,
+                    subjectId: subject.subjectId,
+                    topicId: topic.topicId,
+                    subtopicId: subtopic.subtopicId,
+                    aiNotes: result
+                }),
+            });
         } catch (err) {
             setError('Failed to generate notes. Please try again.');
             console.error(err);
