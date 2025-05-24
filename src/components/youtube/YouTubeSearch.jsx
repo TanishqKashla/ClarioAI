@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import VideoPlayer from './VideoPlayer';
 import { searchYouTubeVideos } from '@/utils/youtubeApi';
+import { useSession } from 'next-auth/react';
 
 const YouTubeSearch = ({ searchTerm, isOpen, planId, subjectId, topicId, subtopicId, selectedVideoId, onVideoSelect, syncing, recommendedVideos: initialRecommendedVideos }) => {
+    const { data: session } = useSession();
     const [videos, setVideos] = useState(initialRecommendedVideos || []);
     const [selectedIdx, setSelectedIdx] = useState(0);
     const [loading, setLoading] = useState(false);
@@ -24,6 +26,11 @@ const YouTubeSearch = ({ searchTerm, isOpen, planId, subjectId, topicId, subtopi
         if (!isOpen) return;
         if (videos.length > 0) return;
         if (!searchTerm) return;
+        if (!session) {
+            setError('Please sign in with Google to access YouTube videos');
+            return;
+        }
+
         setLoading(true);
         setError('');
         searchYouTubeVideos(searchTerm)
@@ -51,9 +58,16 @@ const YouTubeSearch = ({ searchTerm, isOpen, planId, subjectId, topicId, subtopi
                     }).then(() => setHasPatched(true));
                 }
             })
-            .catch(() => setError('Failed to fetch videos.'))
+            .catch((err) => {
+                if (err.message.includes('No access token available')) {
+                    setError('Please sign in with Google to access YouTube videos');
+                } else {
+                    setError('Failed to fetch videos. Please try again.');
+                }
+                console.error(err);
+            })
             .finally(() => setLoading(false));
-    }, [isOpen, searchTerm, planId, subjectId, topicId, subtopicId, videos.length, hasPatched]);
+    }, [isOpen, searchTerm, planId, subjectId, topicId, subtopicId, videos.length, hasPatched, session]);
 
     // Handle video selection
     const handleSelect = (e) => {

@@ -1,23 +1,34 @@
 export async function searchYouTubeVideos(query) {
-    const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
-
     try {
-        const response = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=3&q=${encodeURIComponent(
-                query
-            )}&key=${apiKey}&type=video`
-        );
-
-        if (!response.ok) {
-            // Log the response status and status text
-            console.error(`YouTube API request failed: ${response.status} ${response.statusText}`);
-            const errorBody = await response.text(); // Read the error response body
-            console.error('Error response body:', errorBody);
-
-            throw new Error(`YouTube API request failed: ${response.status} ${response.statusText}`);
+        // Get the session to access the user's token
+        const response = await fetch('/api/auth/session');
+        const session = await response.json();
+        
+        if (!session?.accessToken) {
+            throw new Error('No access token available');
         }
 
-        const data = await response.json();
+        const searchResponse = await fetch(
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=3&q=${encodeURIComponent(
+                query
+            )}&type=video`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${session.accessToken}`
+                }
+            }
+        );
+
+        if (!searchResponse.ok) {
+            // Log the response status and status text
+            console.error(`YouTube API request failed: ${searchResponse.status} ${searchResponse.statusText}`);
+            const errorBody = await searchResponse.text(); // Read the error response body
+            console.error('Error response body:', errorBody);
+
+            throw new Error(`YouTube API request failed: ${searchResponse.status} ${searchResponse.statusText}`);
+        }
+
+        const data = await searchResponse.json();
         return data.items || [];
     } catch (error) {
         console.error('Error searching YouTube:', error);

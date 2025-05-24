@@ -10,7 +10,12 @@ export const authOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            authorization: {
+                params: {
+                    scope: 'openid email profile https://www.googleapis.com/auth/youtube.readonly'
+                }
+            }
         })
     ],
     session: {
@@ -21,9 +26,30 @@ export const authOptions = {
             // Attach user id to session
             if (session?.user) {
                 session.user.id = user.id;
+                // Get the access token from the user's account
+                const account = await prisma.account.findFirst({
+                    where: { userId: user.id, provider: 'google' }
+                });
+                if (account) {
+                    session.accessToken = account.access_token;
+                }
             }
             return session;
         },
+        async signIn({ account }) {
+            if (account) {
+                // Store the access token in the database
+                await prisma.account.update({
+                    where: { id: account.id },
+                    data: {
+                        access_token: account.access_token,
+                        refresh_token: account.refresh_token,
+                        expires_at: account.expires_at
+                    }
+                });
+            }
+            return true;
+        }
     },
 };
 
