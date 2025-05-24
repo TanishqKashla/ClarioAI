@@ -137,7 +137,14 @@ export default function NewSubjectPage() {
 
       if (result.success) {
         console.log("Saved successfully with ID:", result.id);
-        router.push('/studyplan');
+        // Redirect first, before updating context
+        if (plan[0]?.subjectId) {
+          router.push(`/studyplan/subject/${plan[0].subjectId}`);
+        } else {
+          router.push('/studyplan');
+        }
+        setStudyPlan(plan);
+        window.dispatchEvent(new Event('studyPlanUpdated'));
       } else {
         console.error("Save failed:", result.error);
         setError('Failed to save study plan. Please try again.');
