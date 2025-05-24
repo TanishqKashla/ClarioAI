@@ -49,8 +49,7 @@ const SubjectPage = () => {
 
     return (
         <div className=" w-full p-4">
-
-            <h1 className="text-3xl font-bold mb-6 text-white">{subject.subjectName}</h1>
+            <h1 className="text-3xl font-bold mb-6 text-white font-styrene">{subject.subjectName}</h1>
 
             {subject.topics && subject.topics.length > 0 ? (
                 subject.topics.map(topic => (
@@ -59,7 +58,7 @@ const SubjectPage = () => {
                         className="mb-6 bg-dark-100 border border-border rounded-md p-4 px-5 flex justify-between items-center gap-5 cursor-pointer hover:bg-secondary transition"
                         onClick={() => handleTopicClick(topic.topicId)}
                     >
-                        <h2 className="text-lg font-semibold">{topic.name}</h2>
+                        <h2 className="text-lg font-semibold font-styrene">{topic.name}</h2>
                         <div className='flex items-center gap-3 flex-1 max-w-96 '>
                             <div className="w-full bg-dark-200 rounded-full h-2">
                                 <div

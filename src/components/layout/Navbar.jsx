@@ -12,8 +12,8 @@ const Navbar = () => {
   return (
     <nav className="bg-dark-100 border-b border-border z-10 fixed w-full left-0 right-0">
       <div className="flex h-16 px-10 justify-between items-center">
-        <Link href="/" className="text-light-100 text-2xl font-bold">
-          Study Sync
+        <Link href="/" className="text-light-100 text-2xl font-bold font-styrene">
+          ClarioAI
         </Link>
         <div className="flex gap-3 text-sm items-center">
           {isLoading ? (

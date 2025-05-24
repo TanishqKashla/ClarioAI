@@ -83,10 +83,10 @@ const TopicPage = () => {
 
     return (
         <div className="min-h-screen bg-dark-200 p-8">
-            <h2 className="text-lg text-light-100 mb-2">
+            <h2 className="text-lg text-light-100 mb-2 font-styrene">
                 {subject.subjectName}
             </h2>
-            <h1 className="text-3xl font-bold  mb-6">
+            <h1 className="text-3xl font-bold mb-6 font-styrene">
                 {topic.name}
             </h1>
 

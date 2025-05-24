@@ -17,7 +17,7 @@ const TopicCard = ({ topic, onSubtopicCompletionChange }) => {
     return (
         <div className="mb-6">
             {/* Topic Name */}
-            <h4 className="text-xl font-semibold text-light-100 flex items-center gap-2 mb-4">
+            <h4 className="text-xl font-semibold text-light-100 flex items-center gap-2 mb-4 font-styrene">
                 <span>📑</span> {topic.name}
             </h4>
 

@@ -7,7 +7,7 @@ const SubjectCard = ({ subject, topic, onSubtopicCompletionChange }) => {
     return (
         <div className="mb-8">
             {/* Subject Name */}
-            <h3 className="text-2xl font-bold text-primary uppercase flex items-center gap-2 mb-4">
+            <h3 className="text-2xl font-bold text-primary uppercase flex items-center gap-2 mb-4 font-styrene">
                 <span></span> {subject}
             </h3>
 

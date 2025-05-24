@@ -153,15 +153,15 @@ export default function NewSubjectPage() {
   return (
     <div className="min-h-screen bg-dark-200 p-8">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold text-light-100 mb-8">Create New Subject</h1>
+        <h1 className="text-3xl font-bold text-light-100 mb-8 font-styrene">Create New Subject</h1>
         
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="bg-dark-100 rounded-2xl p-8 shadow-dark-lg border border-border/40">
-            <h2 className="text-2xl font-semibold text-light-100 mb-6">Syllabus Details</h2>
+            <h2 className="text-2xl font-semibold text-light-100 mb-6 font-styrene">Syllabus Details</h2>
 
             <div className="space-y-6">
               <div>
-                <h3 className="text-light-100 mb-2">Enter Subject Name</h3>
+                <h3 className="text-light-100 mb-2 font-styrene">Enter Subject Name</h3>
                 <input
                   type="text"
                   placeholder="Enter Subject"
@@ -172,7 +172,7 @@ export default function NewSubjectPage() {
               </div>
 
               <div className="ml-0">
-                <h3 className="text-light-100 mb-2">Enter Topic Name</h3>
+                <h3 className="text-light-100 mb-2 font-styrene">Enter Topic Name</h3>
                 <input
                   type="text"
                   placeholder="Enter Topic"
@@ -184,7 +184,7 @@ export default function NewSubjectPage() {
 
               <div className="ml-0">
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-light-100">Enter SubTopic Name (if any)</h3>
+                  <h3 className="text-light-100 font-styrene">Enter SubTopic Name (if any)</h3>
                   <div className="flex items-center gap-2">
                     <span className="text-light-300 text-sm">{isBulkMode ? 'Bulk Mode' : 'Individual Mode'}</span>
                     <button

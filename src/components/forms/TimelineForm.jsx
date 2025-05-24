@@ -17,10 +17,10 @@ const TimelineForm = () => {
 
     return (
         <div>
-            <h3 className="text-xl font-semibold text-light-100 mb-4">Study Timeline</h3>
+            <h3 className="text-xl font-semibold text-light-100 mb-4 font-styrene">Study Timeline</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                    <label className="block text-light-100 mb-2">Weeks</label>
+                    <label className="block text-light-100 mb-2 font-styrene">Weeks</label>
                     <Input
                         type="number"
                         min="1"
@@ -31,7 +31,7 @@ const TimelineForm = () => {
                     />
                 </div>
                 <div>
-                    <label className="block text-light-100 mb-2">Days per week</label>
+                    <label className="block text-light-100 mb-2 font-styrene">Days per week</label>
                     <Input
                         type="number"
                         min="1"
@@ -43,7 +43,7 @@ const TimelineForm = () => {
                     />
                 </div>
                 <div>
-                    <label className="block text-light-100 mb-2">Hours per day</label>
+                    <label className="block text-light-100 mb-2 font-styrene">Hours per day</label>
                     <Input
                         type="number"
                         min="1"

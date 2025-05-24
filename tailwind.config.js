@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        styrene: ['var(--font-styrene)'],
+        tiempos: ['var(--font-tiempos)'],
+      },
       colors: {
         // New color palette
         primary: '#A9D47F',       // accent

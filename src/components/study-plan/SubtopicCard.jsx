@@ -88,7 +88,7 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                             className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
                             disabled={syncing}
                         />
-                        <h3 className="text-lg font-medium text-light-100">
+                        <h3 className="text-lg font-medium text-light-100 font-styrene">
                             {stepNumber}. {name}
                         </h3>
                     </div>
