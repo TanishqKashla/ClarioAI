@@ -4,6 +4,11 @@ import StudyPlanWrapper from "@/components/providers/StudyPlanWrapper";
 import Sidebar from "@/components/layout/Sidebar";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import localFont from 'next/font/local';
+import { ThemeProvider } from "@/components/theme/theme-provider";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { Separator } from "@/components/ui/separator"
+import { ModeToggle } from "@/components/theme/ModeToggle";
 
 const styrene = localFont({
   src: [
@@ -50,17 +55,32 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${styrene.variable} ${tiempos.variable}`}>
-      <body className="flex flex-col bg-dark-200 font-tiempos">
+    <html lang="en" suppressHydrationWarning className={`${styrene.variable} ${tiempos.variable}`}>
+      <body className="font-tiempos">
         <SessionProvider>
-          <StudyPlanWrapper>
-            <div className="flex h-full">
-                <Navbar />
-              <Sidebar >
-                <main className="overflow-auto mt-16">{children}</main>
-              </Sidebar>
-            </div>
-          </StudyPlanWrapper>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SidebarProvider>
+              <AppSidebar />
+              <SidebarInset>
+
+                <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+                  <SidebarTrigger className="-ml-1" />
+                  <Separator orientation="vertical" className="mr-2 h-4" />
+                  <ModeToggle />
+                </header>
+                {/* <Navbar />
+              <Sidebar > */}
+                <main className="">{children}</main>
+                {/* </Sidebar> */}
+              </SidebarInset>
+            </SidebarProvider>
+
+          </ThemeProvider>
         </SessionProvider>
       </body>
     </html>

@@ -14,7 +14,7 @@ import SignInOverlay from '@/components/auth/SignInOverlay';
 
 export default function NewSubjectPage() {
   const { data: session, status } = useSession();
-  const { isLoading, error, setIsLoading, setError, setStudyPlan, setSubjects } = useStudyPlan();
+  // const { isLoading, error, set, setError, setStudyPlan, setSubjects } = useStudyPlan();
   const router = useRouter();
   const [subjectName, setSubjectName] = useState('');
   const [topicName, setTopicName] = useState('');
@@ -100,12 +100,12 @@ export default function NewSubjectPage() {
     };
 
     // Set subjects in context
-    setSubjects([subject]);
+    // setSubjects([subject]);
 
-    // Generate the plan
-    setIsLoading(true);
-    setError('');
-    setStudyPlan([]);
+    // // Generate the plan
+    // setIsLoading(true);
+    // setError('');
+    // setStudyPlan([]);
 
     try {
       const plan = await generateStudyPlan({
@@ -153,7 +153,7 @@ export default function NewSubjectPage() {
       setError('Failed to generate study plan. Please try again.');
       console.error(err);
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 
@@ -267,8 +267,8 @@ export default function NewSubjectPage() {
             <Button
               size='lg'
               type="submit"
-              disabled={isLoading}
-              isLoading={isLoading}
+              // disabled={isLoading}
+              // isLoading={isLoading}
               fullWidth
               className="mt-8"
             >
@@ -277,11 +277,11 @@ export default function NewSubjectPage() {
           </div>
         </form>
 
-        {error && (
+        {/* {error && (
           <div className="bg-warning-faded text-warning border border-warning/30 rounded-xl p-6 mt-8 shadow-dark-lg">
             {error}
           </div>
-        )}
+        )} */}
       </div>
 
       <SignInOverlay 
