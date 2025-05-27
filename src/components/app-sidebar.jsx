@@ -16,152 +16,26 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSkeleton,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { Button } from "./ui/button"
 import { MailOpen, Plus } from "lucide-react"
 import Link from "next/link"
 import { NavUser } from "./nav-user"
-
-// This is sample data.
-const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
-  navMain: [
-    {
-      title: "Getting Started",
-      url: "#",
-      items: [
-        {
-          title: "Installation",
-          url: "#",
-        },
-        {
-          title: "Project Structure",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Building Your Application",
-      url: "#",
-      items: [
-        {
-          title: "Routing",
-          url: "#",
-        },
-        {
-          title: "Data Fetching",
-          url: "#",
-          isActive: true,
-        },
-        {
-          title: "Rendering",
-          url: "#",
-        },
-        {
-          title: "Caching",
-          url: "#",
-        },
-        {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "API Reference",
-      url: "#",
-      items: [
-        {
-          title: "Components",
-          url: "#",
-        },
-        {
-          title: "File Conventions",
-          url: "#",
-        },
-        {
-          title: "Functions",
-          url: "#",
-        },
-        {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
-          url: "#",
-        },
-      ],
-    },
-  ],
-}
-
-
+import { CollapsibleTrigger } from "./ui/collapsible"
+import { ChevronRight } from "lucide-react"
+import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible"
 
 export function AppSidebar({
   ...props
 }) {
 
   const [plans, setPlans] = useState([]);
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
@@ -174,10 +48,10 @@ export function AppSidebar({
       const res = await fetch('/api/studyplans');
       const data = await res.json();
       setPlans(data);
-      // setLoading(false);
+      setLoading(false);
     } catch (error) {
       console.error('Failed to fetch plans:', error);
-      // setLoading(false);
+      setLoading(false);
     }
   };
   console.log('From sidebar', plans);
@@ -193,7 +67,7 @@ export function AppSidebar({
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
 
-
+        <SidebarGroup></SidebarGroup>
         <SidebarGroup>
           <Button asChild className="w-2/3 mx-auto">
             <Link href="/newsubject"> <Plus /> Add Subject</Link>
@@ -201,28 +75,62 @@ export function AppSidebar({
 
           <SidebarGroupLabel>Your Subjects</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {plans.length ? (
-                plans.map(plan => (
+            {loading ? (
+              <SidebarMenu>
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <SidebarMenuItem key={index}>
+                    <SidebarMenuSkeleton />
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            ) : plans.length ? (
+              <SidebarMenu>
+                {plans.map(plan =>
                   plan.studyPlan.map((subject, idx) => (
-                    <SidebarMenuItem key={subject.subjectId || idx}>
-                      <SidebarMenuButton asChild isActive={false}>
-                        <a href={`/studyplan/subject/${subject.subjectId}`}><span className="font-styrene">{subject.subjectName}</span></a>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))))) : (
-                <p>hi</p>
-              )
-              }
-            </SidebarMenu>
+                    <Collapsible
+                      key={subject.subjectId || idx}
+                      asChild
+                      defaultOpen={false}
+                      className="group/collapsible"
+                    >
+                      <SidebarMenuItem>
+                        <CollapsibleTrigger asChild>
+                          <SidebarMenuButton isActive={false} className="group/subject">
+                            <a href={`/studyplan/subject/${subject.subjectId}`} className="overflow-hidden text-ellipsis whitespace-nowrap flex items-center">
+                              <span className="font-styrene truncate">{subject.subjectName}</span>
+                            </a>
+                            <ChevronRight size={5} className="ml-auto hidden hover:bg-zinc-700 rounded-sm group-hover/subject:inline transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                          </SidebarMenuButton>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <SidebarMenuSub>
+                            {subject.topics?.map((topic, idx) => (
+                              <SidebarMenuSubItem key={topic.topicId || idx}>
+                                <SidebarMenuSubButton asChild>
+                                  <a href={`/studyplan/subject/${subject.subjectId}/topic/${topic.topicId}`} className="flex items-center">
+                                    <span>{topic.name}</span>
+                                  </a>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            ))}
+                          </SidebarMenuSub>
+                        </CollapsibleContent>
+                      </SidebarMenuItem>
+                    </Collapsible>
+                  ))
+                )}
+              </SidebarMenu>
+            ) : (
+              <p>hi</p>
+            )}
           </SidebarGroupContent>
         </SidebarGroup>
 
       </SidebarContent>
       <SidebarFooter>
-       <NavUser/>
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
-    </Sidebar>
+    </Sidebar >
   );
 }

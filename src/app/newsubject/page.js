@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Button from '@/components/common/Button';
+// import Button from '@/components/common/Button';
 import { useStudyPlan } from '@/contexts/StudyPlanContext';
 import { generateStudyPlan } from '@/services/groqService';
 import { getSession, useSession } from 'next-auth/react';
 import { nanoid } from 'nanoid';
 import SignInOverlay from '@/components/auth/SignInOverlay';
+import { Button } from "@/components/ui/button"
+import { Loader2 } from 'lucide-react';
 
 //check if the user is logged in
 
@@ -23,6 +25,7 @@ export default function NewSubjectPage() {
   const [isBulkMode, setIsBulkMode] = useState(false);
   const [formError, setFormError] = useState('');
   const [showSignInOverlay, setShowSignInOverlay] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAddSubtopic = () => {
     setSubtopics([...subtopics, '']);
@@ -104,6 +107,7 @@ export default function NewSubjectPage() {
 
     // // Generate the plan
     // setIsLoading(true);
+    setIsLoading(true);
     // setError('');
     // setStudyPlan([]);
 
@@ -141,9 +145,9 @@ export default function NewSubjectPage() {
         if (plan[0]?.subjectId) {
           router.push(`/studyplan/subject/${plan[0].subjectId}`);
         } else {
-          router.push('/studyplan');
+          router.push('/');
         }
-        setStudyPlan(plan);
+        // setStudyPlan(plan);
         window.dispatchEvent(new Event('studyPlanUpdated'));
       } else {
         console.error("Save failed:", result.error);
@@ -153,51 +157,52 @@ export default function NewSubjectPage() {
       setError('Failed to generate study plan. Please try again.');
       console.error(err);
     } finally {
-      // setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-dark-200 p-8">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold text-light-100 mb-8 font-styrene">Create New Subject</h1>
-        
-        <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="bg-dark-100 rounded-2xl p-8 shadow-dark-lg border border-border/40">
-            <h2 className="text-2xl font-semibold text-light-100 mb-6 font-styrene">Syllabus Details</h2>
+    <div className="min-h-screen p-8">
+      <div className="max-w-2xl p-5 mx-auto bg-sidebar rounded-xl border border-border">
+        <h1 className="text-2xl font-bold text-light-100 mb-8 font-styrene">New Subject</h1>
+
+        <form onSubmit={handleSubmit} className="">
+          <fieldset disabled={isLoading} className="">
 
             <div className="space-y-6">
               <div>
-                <h3 className="text-light-100 mb-2 font-styrene">Enter Subject Name</h3>
+                <h3 className="text-light-100 mb-2 font-styrene">Subject Name*</h3>
                 <input
                   type="text"
                   placeholder="Enter Subject"
                   value={subjectName}
                   onChange={(e) => setSubjectName(e.target.value)}
-                  className="input w-full"
+                  className="w-full bg-sidebar border p-3 rounded-md text-light-100 placeholder:text-light-300 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+                  required
                 />
               </div>
 
               <div className="ml-0">
-                <h3 className="text-light-100 mb-2 font-styrene">Enter Topic Name</h3>
+                <h3 className="text-light-100 mb-2 font-styrene">Topic Name*</h3>
                 <input
                   type="text"
                   placeholder="Enter Topic"
                   value={topicName}
                   onChange={(e) => setTopicName(e.target.value)}
-                  className="input w-full"
+                  className="w-full bg-sidebar border p-3 rounded-md text-light-100 placeholder:text-light-300 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+                  required
                 />
               </div>
 
               <div className="ml-0">
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-light-100 font-styrene">Enter SubTopic Name (if any)</h3>
+                  <h3 className="text-light-100 font-styrene">SubTopic Name (if any)</h3>
                   <div className="flex items-center gap-2">
                     <span className="text-light-300 text-sm">{isBulkMode ? 'Bulk Mode' : 'Individual Mode'}</span>
                     <button
                       type="button"
                       onClick={handleToggleMode}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isBulkMode ? 'bg-primary' : 'bg-dark-300'}`}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isBulkMode ? 'bg-background' : 'bg-secondary'}`}
                     >
                       <span
                         className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isBulkMode ? 'translate-x-6' : 'translate-x-1'}`}
@@ -212,7 +217,7 @@ export default function NewSubjectPage() {
                       placeholder="Paste your syllabus content here"
                       value={bulkSubtopics}
                       onChange={(e) => setBulkSubtopics(e.target.value)}
-                      className="input w-full min-h-[120px]"
+                      className="input w-full min-h-[120px] bg-inherit border p-3 rounded-md text-light-100 placeholder:text-light-300 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
                       rows={5}
                     />
                   </div>
@@ -225,12 +230,12 @@ export default function NewSubjectPage() {
                           placeholder={`Enter SubTopic${index + 1}`}
                           value={subtopic}
                           onChange={(e) => handleSubtopicChange(index, e.target.value)}
-                          className="input w-full"
+                          className="w-full bg-sidebar border p-3 rounded-md text-light-100 placeholder:text-light-300 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
                         />
                         <button
                           type="button"
                           onClick={() => handleDeleteSubtopic(index)}
-                          className="bg-warning-faded text-warning hover:bg-warning/20 rounded-md w-8 h-8 flex items-center justify-center flex-shrink-0"
+                          className="bg-destructive text-warning hover:bg-warning/20 rounded-md w-8 h-8 flex items-center justify-center flex-shrink-0"
                           disabled={subtopics.length <= 1}
                           title="Delete subtopic"
                         >
@@ -264,7 +269,7 @@ export default function NewSubjectPage() {
               </div>
             )}
 
-            <Button
+            {/* <Button
               size='lg'
               type="submit"
               // disabled={isLoading}
@@ -273,8 +278,16 @@ export default function NewSubjectPage() {
               className="mt-8"
             >
               Generate Study Plan
+            </Button> */}
+            <Button
+              type="submit"
+              disabled={!subjectName || !topicName || isLoading}
+              className="mt-8 w-full"
+            >
+              {isLoading ? <><Loader2 className="animate-spin mr-2" /> Generating</> : 'Generate'}
             </Button>
-          </div>
+
+          </fieldset>
         </form>
 
         {/* {error && (
@@ -284,9 +297,9 @@ export default function NewSubjectPage() {
         )} */}
       </div>
 
-      <SignInOverlay 
-        isOpen={showSignInOverlay} 
-        onClose={() => setShowSignInOverlay(false)} 
+      <SignInOverlay
+        isOpen={showSignInOverlay}
+        onClose={() => setShowSignInOverlay(false)}
       />
     </div>
   );

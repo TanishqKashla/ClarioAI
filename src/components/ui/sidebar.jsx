@@ -433,7 +433,7 @@ const sidebarMenuButtonVariants = cva(
           "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
       },
       size: {
-        default: "h-8 text-sm",
+        default: "h-9 text-sm",
         sm: "h-7 text-xs",
         lg: "h-12 text-sm group-data-[collapsible=icon]:!p-0",
       },
@@ -550,7 +550,7 @@ const SidebarMenuSkeleton = React.forwardRef(({ className, showIcon = false, ...
         <Skeleton className="size-4 rounded-md" data-sidebar="menu-skeleton-icon" />
       )}
       <Skeleton
-        className="h-4 max-w-[--skeleton-width] flex-1"
+        className="h-7 max-w-[--skeleton-width] flex-1"
         data-sidebar="menu-skeleton-text"
         style={
           {
