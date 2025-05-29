@@ -18,9 +18,10 @@ const SubtopicNotes = ({ subject, topic, subtopic, planId }) => {
         setError(null);
 
         try {
-            const result = await generateSubtopicNotes(subject, topic, subtopic.name);
+            console.log("Generating notes for:", subject.subjectName, topic.name, subtopic.name);
+            const result = await generateSubtopicNotes(subject.subjectName, topic.name, subtopic.name);
             setNotes(result);
-            
+
             // Store the generated notes in the database
             await fetch('/api/studyplans', {
                 method: 'PATCH',

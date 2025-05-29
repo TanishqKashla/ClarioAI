@@ -23,12 +23,13 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { Button } from "./ui/button"
-import { MailOpen, Plus } from "lucide-react"
+import { MailOpen, MoreHorizontal, Plus } from "lucide-react"
 import Link from "next/link"
 import { NavUser } from "./nav-user"
 import { CollapsibleTrigger } from "./ui/collapsible"
 import { ChevronRight } from "lucide-react"
 import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible"
+import { DropdownMenu, DropdownMenuTrigger } from "./ui/dropdown-menu"
 
 export function AppSidebar({
   ...props
@@ -95,12 +96,16 @@ export function AppSidebar({
                     >
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
-                          <SidebarMenuButton isActive={false} className="group/subject">
-                            <a href={`/studyplan/subject/${subject.subjectId}`} className="overflow-hidden text-ellipsis whitespace-nowrap flex items-center">
-                              <span className="font-styrene truncate">{subject.subjectName}</span>
-                            </a>
-                            <ChevronRight size={5} className="ml-auto hidden hover:bg-zinc-700 rounded-sm group-hover/subject:inline transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                          </SidebarMenuButton>
+                            <SidebarMenuButton isActive={false} className="group/subject">
+                                <ChevronRight
+                                  className="absolute left-2 hidden bg-zinc-700 rounded-sm group-hover/subject:inline transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                                <a
+                                  href={`/studyplan/subject/${subject.subjectId}`}
+                                  className="overflow-hidden text-ellipsis whitespace-nowrap flex items-center"
+                                >
+                                  <span className="font-styrene truncate">{subject.subjectName}</span>
+                                </a>
+                            </SidebarMenuButton>
                         </CollapsibleTrigger>
                         <CollapsibleContent>
                           <SidebarMenuSub>

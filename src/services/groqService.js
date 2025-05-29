@@ -98,24 +98,59 @@ Make sure to:
 }
 
 export async function generateSubtopicNotes(subject, topic, subtopic) {
-  const prompt = `As a subject matter expert in ${subject}, specifically focusing on ${topic}, create comprehensive and insightful educational content about "${subtopic}".
+  const prompt = `As a subject matter expert in "${subject}", specifically focusing on the topic "${topic}", your task is to generate clear, structured, and insightful educational content about the subtopic: "${subtopic}".
 
-Feel free to structure this content in the way you believe will be most effective for deep learning. You should include any relevant elements such as:
+🧠 Very Important: "${subtopic}" must be explained strictly within the context of "${topic}" under the umbrella of "${subject}". Do not generalize the subtopic or drift into other disciplines or applications unless explicitly instructed. Always prioritize relevance to the specified topic and subject.
 
-- Core concepts, principles, and theoretical frameworks
-- Mathematical formulas, equations, and notations only where applicable
-- Chemical reactions, biological processes, or physical laws with proper notation only where applicable
-- Algorithms, code snippets, or pseudocode for technical concepts only where applicable
-- Historical context and development of ideas only where applicable
-- Practical applications and real-world examples
-- Advanced insights that go beyond basic understanding
-- Visual descriptions or conceptual models when helpful
-- Connections to related fields or interdisciplinary perspectives
-- Thought-provoking questions that encourage critical thinking
+Please include:
 
-For technical subjects in mathematics, physics, chemistry, engineering, computer science, or similar fields, be sure to include all relevant formulas, equations, and technical notations properly formatted.
-Provide Algorithms, code snippets, or pseudocode ONLY for technical subjects.
-Don't feel constrained by conventional formats - organize the information in whatever way best represents the knowledge architecture of this topic. Your goal is to create content that would genuinely help someone develop expertise in this area.`;
+1. 🎯 **Introduction**  
+   - Define the subtopic clearly in context.  
+   - Why is it important or useful within "${topic}"?
+
+2. 📚 **Key Concepts & Terminology**  
+   - Explain important concepts, features, or terms.  
+   - Use section-wise breakdowns with clear subheadings.
+
+3. 💻 **Code/Examples (if applicable)**  
+   - Provide language-specific, context-relevant examples.  
+   - Show proper usage and best practices.
+
+4. 🌍 **Use Cases / Applications**  
+   - Describe how it applies in real-world scenarios — but still tied to the current domain.
+
+5. ⚠️ **Common Pitfalls / Misconceptions**  
+   - Mention things people often get wrong in this subtopic.
+
+6. 📌 **Summary Checklist / Table**  
+   - Create a compact reference guide at the end.
+
+🗣️ **Tone & Style**  
+- Friendly, not overly academic  
+- Structured and beginner-friendly, but useful for professionals too  
+- Use bullets, icons (📌🛠️✅), and tables sparingly to aid readability
+
+🎯 **Assume your audience is a curious learner — not necessarily a student or expert.**
+`
+
+
+
+  // Feel free to structure this content in the way you believe will be most effective for deep learning. You should include any relevant elements such as:
+
+  // - Core concepts, principles, and theoretical frameworks
+  // - Mathematical formulas, equations, and notations only where applicable
+  // - Chemical reactions, biological processes, or physical laws with proper notation only where applicable
+  // - Algorithms, code snippets, or pseudocode for technical concepts only where applicable
+  // - Historical context and development of ideas only where applicable
+  // - Practical applications and real-world examples
+  // - Advanced insights that go beyond basic understanding
+  // - Visual descriptions or conceptual models when helpful
+  // - Connections to related fields or interdisciplinary perspectives
+  // - Thought-provoking questions that encourage critical thinking
+
+  // For technical subjects in mathematics, physics, chemistry, engineering, computer science, or similar fields, be sure to include all relevant formulas, equations, and technical notations properly formatted.
+  // Provide Algorithms, code snippets, or pseudocode ONLY for technical subjects.
+  // Don't feel constrained by conventional formats - organize the information in whatever way best represents the knowledge architecture of this topic. Your goal is to create content that would genuinely help someone develop expertise in this area.`;
 
   try {
     const chatCompletion = await groq.chat.completions.create({
