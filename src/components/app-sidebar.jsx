@@ -68,11 +68,13 @@ export function AppSidebar({
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
 
-        <SidebarGroup></SidebarGroup>
         <SidebarGroup>
+
           <Button asChild className="w-2/3 mx-auto">
             <Link href="/newsubject"> <Plus /> Add Subject</Link>
           </Button>
+        </SidebarGroup>
+        <SidebarGroup>
 
           <SidebarGroupLabel>Your Subjects</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -96,16 +98,16 @@ export function AppSidebar({
                     >
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
-                            <SidebarMenuButton isActive={false} className="group/subject">
-                                <ChevronRight
-                                  className="absolute left-2 hidden bg-zinc-700 rounded-sm group-hover/subject:inline transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                                <a
-                                  href={`/studyplan/subject/${subject.subjectId}`}
-                                  className="overflow-hidden text-ellipsis whitespace-nowrap flex items-center"
-                                >
-                                  <span className="font-styrene truncate">{subject.subjectName}</span>
-                                </a>
-                            </SidebarMenuButton>
+                          <SidebarMenuButton isActive={false} className="group/subject">
+                            <ChevronRight
+                              className="absolute left-2 hidden bg-zinc-700 rounded-sm group-hover/subject:inline transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                            <a
+                              href={`/studyplan/subject/${subject.subjectId}`}
+                              className="overflow-hidden text-ellipsis whitespace-nowrap flex items-center"
+                            >
+                              <span className="font-styrene truncate">{subject.subjectName}</span>
+                            </a>
+                          </SidebarMenuButton>
                         </CollapsibleTrigger>
                         <CollapsibleContent>
                           <SidebarMenuSub>

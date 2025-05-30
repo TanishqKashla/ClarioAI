@@ -5,7 +5,7 @@ const VideoPlayer = ({ videoId, title }) => {
 
     return (
         <div className="video-container">
-            <h2>{title}</h2>
+            {/* <h2>{title}</h2> */}
             <div className="responsive-iframe-container">
                 <iframe
                     width="560"

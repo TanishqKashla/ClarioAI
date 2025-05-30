@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import VideoPlayer from './VideoPlayer';
 import { searchYouTubeVideos } from '@/utils/youtubeApi';
+import { FolderOpenDot } from 'lucide-react';
 
 const YouTubeSearch = ({ searchTerm, isOpen, planId, subjectId, topicId, subtopicId, selectedVideoId, onVideoSelect, syncing, recommendedVideos: initialRecommendedVideos }) => {
     const [videos, setVideos] = useState(initialRecommendedVideos || []);
@@ -69,18 +70,24 @@ const YouTubeSearch = ({ searchTerm, isOpen, planId, subjectId, topicId, subtopi
     return (
         <div className="">
             {isOpen && (
-                <div className="space-y-4">
+                <div className="">
                     {loading && <div className="text-center py-4">Loading videos...</div>}
                     {error && <div className="text-warning py-2">{error}</div>}
                     {videos.length > 0 && (
                         <>
-                            <div className="flex items-center gap-3">
-                                <label htmlFor="videoSelect" className="text-light-100">Select Video:</label>
+                            {selectedVideo && (
+                                <VideoPlayer
+                                    videoId={selectedVideo.id}
+                                    title={selectedVideo.title}
+                                />
+                            )}
+                            <div className="flex items-center gap-2">
+                                <label htmlFor="videoSelect" className="text-light-100"> <FolderOpenDot /></label>
                                 <select
                                     id="videoSelect"
                                     value={selectedIdx}
                                     onChange={handleSelect}
-                                    className="bg-dark-200 text-light-100 border border-border rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary"
+                                    className="bg-card text-light-100 border border-border truncate rounded-md px-3 py-1.5 w-full focus:outline-none focus:ring-2 focus:ring-primary"
                                     disabled={syncing}
                                 >
                                     {videos.map((video, index) => (
@@ -90,12 +97,6 @@ const YouTubeSearch = ({ searchTerm, isOpen, planId, subjectId, topicId, subtopi
                                     ))}
                                 </select>
                             </div>
-                            {selectedVideo && (
-                                <VideoPlayer
-                                    videoId={selectedVideo.id}
-                                    title={selectedVideo.title}
-                                />
-                            )}
                         </>
                     )}
                 </div>

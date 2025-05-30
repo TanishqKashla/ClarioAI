@@ -1,19 +1,49 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 
 const SubjectPage = () => {
+
+    // const pseudoSubject = {
+    //     subjectId: "placeholder-id",
+    //     subjectName: "Sample Subject",
+    //     topics: [
+    //         {
+    //             topicId: "topic-1",
+    //             name: "Introduction to Sample",
+    //             subtopics: [
+    //                 { subtopicId: "sub-1", name: "Overview", isCompleted: false },
+    //                 { subtopicId: "sub-2", name: "Basics", isCompleted: true }
+    //             ]
+    //         },
+    //         {
+    //             topicId: "topic-2",
+    //             name: "Advanced Concepts",
+    //             subtopics: [
+    //                 { subtopicId: "sub-3", name: "Deep Dive", isCompleted: false },
+    //                 { subtopicId: "sub-4", name: "Case Studies", isCompleted: false }
+    //             ]
+    //         }
+    //     ]
+    // };
+
     const router = useRouter();
     const { subjectid } = useParams();
     const [subject, setSubject] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    // useEffect(() => {
+    //     setSubject(pseudoSubject); // Simulating fetching subject data
+    //     setLoading(false);
+    // }
+    //     , [subjectid]);
+
     useEffect(() => {
         const fetchSubject = async () => {
             const res = await fetch('/api/studyplans');
             const plans = await res.json();
-            
+
             for (const plan of plans) {
                 const found = plan.studyPlan.find(sub => sub.subjectId === subjectid);
                 if (found) {
@@ -49,25 +79,26 @@ const SubjectPage = () => {
 
     return (
         <div className=" w-full p-4">
-            <h1 className="text-3xl font-bold mb-6 text-white font-styrene">{subject.subjectName}</h1>
+            <h1 className="text-xl md:text-3xl font-bold mb-6 text-white font-styrene">{subject.subjectName}</h1>
 
             {subject.topics && subject.topics.length > 0 ? (
                 subject.topics.map(topic => (
                     <div
                         key={topic.topicId}
-                        className="mb-6 bg-dark-100 border border-border rounded-md p-4 px-5 flex justify-between items-center gap-5 cursor-pointer hover:bg-secondary transition"
+                        className="mb-6 overflow-hidden relative bg-dark-100 border border-border rounded-md p-4 px-5 flex justify-between items-center gap-5 cursor-pointer hover:bg-secondary transition"
                         onClick={() => handleTopicClick(topic.topicId)}
                     >
-                        <h2 className="text-lg font-semibold font-styrene">{topic.name}</h2>
-                        <div className='flex items-center gap-3 flex-1 max-w-96 '>
-                            <div className="w-full bg-dark-200 rounded-full h-2">
+                        <div className="flex justify-between items-center gap-1 w-full">
+                            <h2 className="md:text-lg text-md font-semibold font-styrene truncate">{topic.name}</h2>
+                            <p className="text-sm ">{progressPercentage}%</p>
+                        </div>
+                        
+                            <div className="w-full bg-secondary h-1.5 absolute bottom-0 left-0">
                                 <div
-                                    className="bg-primary h-2 rounded-full transition-all duration-300"
+                                    className="bg-primary h-1.5 rounded-l-none rounded-full transition-all duration-300"
                                     style={{ width: `${progressPercentage}%` }}
                                 ></div>
                             </div>
-                            <p className="text-sm ">{progressPercentage}%</p>
-                        </div>
                     </div>
                 ))
             ) : (

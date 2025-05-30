@@ -68,14 +68,14 @@ export default function RootLayout({ children }) {
               <AppSidebar />
               <SidebarInset>
 
-                <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+                <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 fixed w-full z-10 bg-background/60 backdrop-blur-md">
                   <SidebarTrigger className="-ml-1" />
                   <Separator orientation="vertical" className="mr-2 h-4" />
                   <ModeToggle />
                 </header>
                 {/* <Navbar />
               <Sidebar > */}
-                <main className="">{children}</main>
+                <main className="mt-16">{children}</main>
                 {/* </Sidebar> */}
               </SidebarInset>
             </SidebarProvider>

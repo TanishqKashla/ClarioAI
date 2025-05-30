@@ -82,16 +82,16 @@ const TopicPage = () => {
     const percentage = total > 0 ? Math.round((completedCount / total) * 100) : 0;
 
     return (
-        <div className="min-h-screen bg-dark-200 p-8">
+        <div className="min-h-screen bg-background p-3">
             <h2 className="text-lg text-light-100 mb-2 font-styrene">
                 {subject.subjectName}
             </h2>
-            <h1 className="text-3xl font-bold mb-6 font-styrene">
+            <h1 className="text-2xl md:text-3xl font-bold mb-6 font-styrene">
                 {topic.name}
             </h1>
 
             {/* Progress Bar */}
-            <div className="w-full bg-dark-100 rounded-full h-2 mb-3">
+            <div className="w-full bg-secondary rounded-full h-2 mb-3">
                 <div
                     className="bg-primary h-2 rounded-full transition-all duration-300"
                     style={{ width: `${percentage}%` }}

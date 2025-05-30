@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import YouTubeSearch from '@/components/youtube/YouTubeSearch';
 import SubtopicNotes from '@/components/notes/SubtopicNotes';
+import {
+    ResizableHandle,
+    ResizablePanel,
+    ResizablePanelGroup,
+} from "@/components/ui/resizable"
+import { Separator } from '../ui/separator';
 
 const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange, planId }) => {
     const { name, searchTerm, description, focusAreas } = subtopic;
@@ -68,14 +74,14 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
     };
 
     return (
-        <div className="bg-dark-100 overflow-hidden rounded-md w-full relative">
+        <div className="overflow-hidden rounded-md w-full relative border border-border transition hover:border-primary/40 hover:shadow-lg">
             {syncing && (
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center z-10">
                     <span className="text-primary font-semibold">Syncing...</span>
                 </div>
             )}
             <button
-                className={`p-4 flex gap-3 w-full text-left ${syncing ? 'opacity-60 pointer-events-none' : ''}`}
+                className={`p-3 md:p-4 flex items-center bg-card gap-3 w-full text-left ${syncing ? 'opacity-60 pointer-events-none' : ''}`}
                 onClick={toggleDropdown}
                 disabled={syncing}
             >
@@ -85,7 +91,7 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                             type="checkbox"
                             checked={isCompleted}
                             onChange={toggleCompletion}
-                            className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+                            className="w-6 h-5 md:w-4 md:h-4 rounded border-gray-300 text-primary focus:ring-primary"
                             disabled={syncing}
                         />
                         <h3 className="text-lg font-medium text-light-100 font-styrene">
@@ -108,15 +114,69 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
             </button>
 
             {isOpen && (
-                <div className="space-y-3 p-6 pt-0 text-light-200 mt-3 gap-5 flex">
-                    <div className="flex-1 max-h-[700px] pr-5 overflow-y-scroll">
+                <div className="p-2 md:p-4 pt-0 text-light-200 mt-3 gap-5">
+                    {/* Desktop: ResizablePanelGroup */}
+                    <div className="hidden md:block">
+                        <ResizablePanelGroup
+                            direction="horizontal"
+                            className="min-h-[200px] rounded-lg border md:min-w-[450px] border-none"
+                        >
+                            <ResizablePanel defaultSize={60}>
+                                <div className="flex-1 max-h-[700px] pr-5">
+                                    <div>
+                                        <span className="font-medium text-light-100 block mb-2">Focus Areas: </span>
+                                        <ul className="flex flex-wrap gap-2">
+                                            {focusAreas.map((area, index) => (
+                                                <li
+                                                    key={index}
+                                                    className="bg-card px-3 py-1 rounded-full text-sm text-primary border border-primary/20"
+                                                >
+                                                    {area}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                    <div className="my-5 text-sm">{description}</div>
+                                    <div>
+                                        <SubtopicNotes
+                                            subject={subject || ''}
+                                            topic={topic || ''}
+                                            subtopic={subtopic}
+                                            planId={planId}
+                                        />
+                                    </div>
+                                </div>
+                            </ResizablePanel>
+                            <ResizableHandle withHandle />
+                            <ResizablePanel defaultSize={40}>
+                                <div className="pl-5">
+                                    <span className="font-medium text-light-100">YouTube Search: </span>
+                                    {searchTerm}
+                                    <YouTubeSearch
+                                        searchTerm={searchTerm}
+                                        isOpen={isOpen}
+                                        planId={planId}
+                                        subjectId={subject?.subjectId}
+                                        topicId={topic?.topicId}
+                                        subtopicId={subtopic?.subtopicId}
+                                        selectedVideoId={selectedVideoId}
+                                        onVideoSelect={handleVideoSelect}
+                                        syncing={syncing}
+                                        recommendedVideos={subtopic.recommendedVideos}
+                                    />
+                                </div>
+                            </ResizablePanel>
+                        </ResizablePanelGroup>
+                    </div>
+                    {/* Mobile: stacked layout */}
+                    <div className="block md:hidden ">
                         <div>
                             <span className="font-medium text-light-100 block mb-2">Focus Areas: </span>
                             <ul className="flex flex-wrap gap-2">
                                 {focusAreas.map((area, index) => (
                                     <li
                                         key={index}
-                                        className="info px-3 py-1 rounded-full text-sm text-primary border border-primary/20"
+                                        className="bg-card px-3 py-1 rounded-full text-sm text-primary border border-primary/20"
                                     >
                                         {area}
                                     </li>
@@ -124,7 +184,7 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                             </ul>
                         </div>
                         <div className="my-5">{description}</div>
-                        <div>
+                        <div >
                             <SubtopicNotes
                                 subject={subject || ''}
                                 topic={topic || ''}
@@ -132,22 +192,23 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                                 planId={planId}
                             />
                         </div>
-                    </div>
-                    <div className="w-[550px]">
-                        <span className="font-medium text-light-100">YouTube Search: </span>
-                        {searchTerm}
-                        <YouTubeSearch 
-                            searchTerm={searchTerm} 
-                            isOpen={isOpen}
-                            planId={planId}
-                            subjectId={subject?.subjectId}
-                            topicId={topic?.topicId}
-                            subtopicId={subtopic?.subtopicId}
-                            selectedVideoId={selectedVideoId}
-                            onVideoSelect={handleVideoSelect}
-                            syncing={syncing}
-                            recommendedVideos={subtopic.recommendedVideos}
-                        />
+                        <Separator className='my-3'/>
+                        <div>
+                            <span className="font-medium text-light-100">YouTube Search: </span>
+                            {searchTerm}
+                            <YouTubeSearch
+                                searchTerm={searchTerm}
+                                isOpen={isOpen}
+                                planId={planId}
+                                subjectId={subject?.subjectId}
+                                topicId={topic?.topicId}
+                                subtopicId={subtopic?.subtopicId}
+                                selectedVideoId={selectedVideoId}
+                                onVideoSelect={handleVideoSelect}
+                                syncing={syncing}
+                                recommendedVideos={subtopic.recommendedVideos}
+                            />
+                        </div>
                     </div>
                 </div>
             )}

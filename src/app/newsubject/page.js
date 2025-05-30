@@ -162,8 +162,8 @@ export default function NewSubjectPage() {
   };
 
   return (
-    <div className="min-h-screen p-8">
-      <div className="max-w-2xl p-5 mx-auto bg-sidebar rounded-xl border border-border">
+    <div className="min-h-screen p-3 md:p-8">
+      <div className="max-w-2xl p-5 mx-auto bg-card rounded-xl border border-border">
         <h1 className="text-2xl font-bold text-light-100 mb-8 font-styrene">New Subject</h1>
 
         <form onSubmit={handleSubmit} className="">
@@ -177,7 +177,7 @@ export default function NewSubjectPage() {
                   placeholder="Enter Subject"
                   value={subjectName}
                   onChange={(e) => setSubjectName(e.target.value)}
-                  className="w-full bg-sidebar border p-3 rounded-md text-light-100 placeholder:text-light-300 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+                  className="w-full bg-inherit border p-3 rounded-md text-light-100 placeholder:text-light-300 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
                   required
                 />
               </div>
@@ -189,16 +189,16 @@ export default function NewSubjectPage() {
                   placeholder="Enter Topic"
                   value={topicName}
                   onChange={(e) => setTopicName(e.target.value)}
-                  className="w-full bg-sidebar border p-3 rounded-md text-light-100 placeholder:text-light-300 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+                  className="w-full bg-inherit border p-3 rounded-md text-light-100 placeholder:text-light-300 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
                   required
                 />
               </div>
 
               <div className="ml-0">
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-light-100 font-styrene">SubTopic Name (if any)</h3>
+                  <h3 className="text-light-100 font-styrene flex flex-col md:flex-none md:flex-row">SubTopic Name <span>(if any)</span></h3>
                   <div className="flex items-center gap-2">
-                    <span className="text-light-300 text-sm">{isBulkMode ? 'Bulk Mode' : 'Individual Mode'}</span>
+                    <span className="text-light-300 text-xs md:text-md">{isBulkMode ? 'Bulk Mode' : 'Individual Mode'}</span>
                     <button
                       type="button"
                       onClick={handleToggleMode}
@@ -230,12 +230,12 @@ export default function NewSubjectPage() {
                           placeholder={`Enter SubTopic${index + 1}`}
                           value={subtopic}
                           onChange={(e) => handleSubtopicChange(index, e.target.value)}
-                          className="w-full bg-sidebar border p-3 rounded-md text-light-100 placeholder:text-light-300 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+                          className="w-full bg-inherit border p-3 rounded-md text-light-100 placeholder:text-light-300 focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
                         />
                         <button
                           type="button"
                           onClick={() => handleDeleteSubtopic(index)}
-                          className="bg-destructive text-warning hover:bg-warning/20 rounded-md w-8 h-8 flex items-center justify-center flex-shrink-0"
+                          className="bg-destructive text-warning hover:bg-destructive/70 rounded-md w-8 h-8 flex items-center justify-center flex-shrink-0"
                           disabled={subtopics.length <= 1}
                           title="Delete subtopic"
                         >
@@ -248,7 +248,7 @@ export default function NewSubjectPage() {
                     <div className="flex justify-center mt-2">
                       <button
                         onClick={handleAddSubtopic}
-                        className="bg-dark-300 text-primary hover:bg-dark-400 rounded-md w-10 h-10 flex items-center justify-center"
+                        className="bg-secondary text-primary hover:bg-secondary/70 rounded-md w-10 h-10 flex items-center justify-center"
                         type="button"
                       >
                         +
