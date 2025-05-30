@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useState, useEffect } from "react"
-
+import { useRouter } from "next/navigation"
 import { SearchForm } from "@/components/search-form"
 import { VersionSwitcher } from "@/components/version-switcher"
 import {
@@ -23,21 +23,32 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { Button } from "./ui/button"
-import { MailOpen, MoreHorizontal, Plus } from "lucide-react"
+import { MailOpen, MoreHorizontal, Plus, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { NavUser } from "./nav-user"
 import { CollapsibleTrigger } from "./ui/collapsible"
 import { ChevronRight } from "lucide-react"
 import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible"
-import { DropdownMenu, DropdownMenuTrigger } from "./ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "./ui/dropdown-menu"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 export function AppSidebar({
   ...props
 }) {
-
+  const router = useRouter();
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [subjectToDelete, setSubjectToDelete] = useState(null);
 
   useEffect(() => {
     fetchPlans();
@@ -57,13 +68,46 @@ export function AppSidebar({
   };
   console.log('From sidebar', plans);
 
+  const handleDeleteSubject = async (subjectId) => {
+    try {
+      // Find the plan that contains this subject
+      const plan = plans.find(p => 
+        p.studyPlan.some(subject => subject.subjectId === subjectId)
+      );
+
+      if (!plan) {
+        console.error('Could not find plan containing subject');
+        return;
+      }
+
+      const response = await fetch(`/api/studyplans?planId=${plan.id}&subjectId=${subjectId}`, {
+        method: 'DELETE',
+      });
+      
+      if (response.ok) {
+        // Refresh the plans list after successful deletion
+        fetchPlans();
+      } else {
+        console.error('Failed to delete subject');
+      }
+    } catch (error) {
+      console.error('Error deleting subject:', error);
+    }
+    setDeleteDialogOpen(false);
+    setSubjectToDelete(null);
+  };
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
+      <SidebarHeader onClick={() => {
+        router.push('/');
+      }}
+      >
         {/* <VersionSwitcher versions={data.versions} defaultVersion={data.versions[0]} />
         <SearchForm /> */}
-        <span className="font-styrene font-bold text-xl  text-center">ClarioAI</span>
+        <span className="font-styrene font-bold text-xl  text-center cursor-pointer" onClick={() => {
+          router.push('/');
+        }}>ClarioAI</span>
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
@@ -98,25 +142,51 @@ export function AppSidebar({
                     >
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
-                          <SidebarMenuButton isActive={false} className="group/subject">
-                            <ChevronRight
-                              className="absolute left-2 hidden bg-zinc-700 rounded-sm group-hover/subject:inline transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                            <a
-                              href={`/studyplan/subject/${subject.subjectId}`}
-                              className="overflow-hidden text-ellipsis whitespace-nowrap flex items-center"
-                            >
-                              <span className="font-styrene truncate">{subject.subjectName}</span>
-                            </a>
-                          </SidebarMenuButton>
+                          <div className="group/subject flex w-full items-center">
+                            <SidebarMenuButton isActive={false} className="flex-1">
+                              <ChevronRight
+                                className="absolute left-2 hidden bg-zinc-700 rounded-sm group-hover/subject:inline transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                              <Link
+                                href={`/studyplan/subject/${subject.subjectId}`}
+                                className="overflow-hidden text-ellipsis whitespace-nowrap flex items-center"
+                              >
+                                <span className="font-styrene truncate">{subject.subjectName}</span>
+                              </Link>
+                            </SidebarMenuButton>
+                            <div className="ml-auto">
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    className="h-8 w-8 p-0 md:opacity-0 group-hover/subject:opacity-100 transition-opacity"
+                                  >
+                                    <MoreHorizontal className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuItem
+                                    className="text-destructive focus:text-destructive"
+                                    onClick={() => {
+                                      setSubjectToDelete(subject.subjectId);
+                                      setDeleteDialogOpen(true);
+                                    }}
+                                  >
+                                    <Trash2 className="mr-2 h-4 w-4" />
+                                    Delete
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
+                          </div>
                         </CollapsibleTrigger>
                         <CollapsibleContent>
                           <SidebarMenuSub>
                             {subject.topics?.map((topic, idx) => (
                               <SidebarMenuSubItem key={topic.topicId || idx}>
                                 <SidebarMenuSubButton asChild>
-                                  <a href={`/studyplan/subject/${subject.subjectId}/topic/${topic.topicId}`} className="flex items-center">
+                                  <Link href={`/studyplan/subject/${subject.subjectId}/topic/${topic.topicId}`} className="flex items-center">
                                     <span>{topic.name}</span>
-                                  </a>
+                                  </Link>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
                             ))}
@@ -138,6 +208,26 @@ export function AppSidebar({
         <NavUser />
       </SidebarFooter>
       <SidebarRail />
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the subject
+              and all its associated topics.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => subjectToDelete && handleDeleteSubject(subjectToDelete)}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Sidebar >
   );
 }
