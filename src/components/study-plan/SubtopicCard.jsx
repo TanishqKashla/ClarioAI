@@ -122,7 +122,7 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                             className="min-h-[200px] rounded-lg border md:min-w-[450px] border-none"
                         >
                             <ResizablePanel defaultSize={60}>
-                                <div className="flex-1 max-h-[700px] pr-5">
+                                <div className="flex-1 max-h-[700px] pr-5 overflow-y-scroll">
                                     <div>
                                         <span className="font-medium text-light-100 block mb-2">Focus Areas: </span>
                                         <ul className="flex flex-wrap gap-2">
