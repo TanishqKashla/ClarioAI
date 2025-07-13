@@ -9,6 +9,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/s
 import { AppSidebar } from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator"
 import { ModeToggle } from "@/components/theme/ModeToggle";
+import { Toaster } from "@/components/ui/sonner";
 
 const styrene = localFont({
   src: [
@@ -79,7 +80,7 @@ export default function RootLayout({ children }) {
                 {/* </Sidebar> */}
               </SidebarInset>
             </SidebarProvider>
-
+            <Toaster />
           </ThemeProvider>
         </SessionProvider>
       </body>

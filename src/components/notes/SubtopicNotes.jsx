@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { generateSubtopicNotes, regenerateSubtopicNotes } from '@/services/groqService';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { showRateLimitNotification } from "@/lib/notifications";
 
 const SubtopicNotes = ({ subject, topic, subtopic, planId }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -25,8 +25,32 @@ const SubtopicNotes = ({ subject, topic, subtopic, planId }) => {
 
         try {
             console.log("Generating notes for:", subject.subjectName, topic.name, subtopic.name);
-            const result = await generateSubtopicNotes(subject.subjectName, topic.name, subtopic.name);
-            setNotes(result);
+            
+            // Call the new API route with rate limiting
+            const response = await fetch('/api/ai-notes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    subject: subject.subjectName,
+                    topic: topic.name,
+                    subtopic: subtopic.name
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                if (response.status === 429) {
+                    showRateLimitNotification(data.message || 'Rate limit exceeded. Please try again tomorrow.');
+                } else {
+                    setError(data.error || 'Failed to generate notes. Please try again.');
+                }
+                return;
+            }
+
+            setNotes(data.notes);
 
             // Store the generated notes in the database
             await fetch('/api/studyplans', {
@@ -39,7 +63,7 @@ const SubtopicNotes = ({ subject, topic, subtopic, planId }) => {
                     subjectId: subject.subjectId,
                     topicId: topic.topicId,
                     subtopicId: subtopic.subtopicId,
-                    aiNotes: result
+                    aiNotes: data.notes
                 }),
             });
         } catch (err) {
@@ -57,14 +81,33 @@ const SubtopicNotes = ({ subject, topic, subtopic, planId }) => {
         setError(null);
 
         try {
-            const result = await regenerateSubtopicNotes(
-                subject.subjectName,
-                topic.name,
-                subtopic.name,
-                userFeedback,
-                notes
-            );
-            setNotes(result);
+            // Call the new API route for regeneration with rate limiting
+            const response = await fetch('/api/regenerate-notes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    subject: subject.subjectName,
+                    topic: topic.name,
+                    subtopic: subtopic.name,
+                    userFeedback,
+                    previousNotes: notes
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                if (response.status === 429) {
+                    showRateLimitNotification(data.message || 'Rate limit exceeded. You can only regenerate once per day.');
+                } else {
+                    setError(data.error || 'Failed to regenerate notes. Please try again.');
+                }
+                return;
+            }
+
+            setNotes(data.notes);
 
             // Store the regenerated notes in the database
             await fetch('/api/studyplans', {
@@ -77,7 +120,7 @@ const SubtopicNotes = ({ subject, topic, subtopic, planId }) => {
                     subjectId: subject.subjectId,
                     topicId: topic.topicId,
                     subtopicId: subtopic.subtopicId,
-                    aiNotes: result
+                    aiNotes: data.notes
                 }),
             });
 

@@ -15,6 +15,18 @@ model StudyPlan {
   updatedAt DateTime @updatedAt
 }
 
+model RateLimit {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  endpoint  String   // 'study-plan', 'ai-notes', 'regenerate-notes'
+  window    String   // 'day'
+  count     Int      @default(0)
+  resetAt   DateTime
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, endpoint, window])
+}
+
 // Auth.js required models:
 
 model User {

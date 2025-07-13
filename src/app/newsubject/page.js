@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 // import Button from '@/components/common/Button';
 import { useStudyPlan } from '@/contexts/StudyPlanContext';
-import { generateStudyPlan } from '@/services/groqService';
 import { getSession, useSession } from 'next-auth/react';
 import { nanoid } from 'nanoid';
 import SignInOverlay from '@/components/auth/SignInOverlay';
 import { Button } from "@/components/ui/button"
 import { Loader2 } from 'lucide-react';
+import { showRateLimitNotification } from "@/lib/notifications";
 
 //check if the user is logged in
 
@@ -102,59 +102,74 @@ export default function NewSubjectPage() {
       }]
     };
 
-    // Set subjects in context
-    // setSubjects([subject]);
-
-    // // Generate the plan
-    // setIsLoading(true);
     setIsLoading(true);
-    // setError('');
-    // setStudyPlan([]);
 
     try {
-      const plan = await generateStudyPlan({
-        subjects: [subject]
-      });
-
-      plan.forEach((subject) => {
-        subject.subjectId = nanoid();
-        subject.topics.forEach((topic) => {
-          topic.topicId = nanoid();
-          topic.subtopics.forEach((subtopic) => {
-            subtopic.subtopicId = nanoid();
-          });
-        });
-      });
-
-      const res = await fetch('/api/studyplans', {
+      // Call the API route with rate limiting instead of the service directly
+      const response = await fetch('/api/generate-study-plan', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: session.user.email,
-          studyPlan: plan,
+          studyPlan: [subject]
         }),
       });
 
-      const result = await res.json();
+      const result = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          showRateLimitNotification(result.message || 'Rate limit exceeded. You can only generate 3 study plans per day.');
+        } else {
+          setFormError(result.error || 'Failed to generate study plan. Please try again.');
+        }
+        return;
+      }
 
       if (result.success) {
-        console.log("Saved successfully with ID:", result.id);
-        // Redirect first, before updating context
-        if (plan[0]?.subjectId) {
-          router.push(`/studyplan/subject/${plan[0].subjectId}`);
+        // Add IDs to the generated plan
+        const planWithIds = result.studyPlan.map(subject => ({
+          ...subject,
+          subjectId: nanoid(),
+          topics: subject.topics.map(topic => ({
+            ...topic,
+            topicId: nanoid(),
+            subtopics: topic.subtopics.map(subtopic => ({
+              ...subtopic,
+              subtopicId: nanoid()
+            }))
+          }))
+        }));
+
+        // Save the plan to the database
+        const saveResponse = await fetch('/api/studyplans', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            studyPlan: planWithIds
+          }),
+        });
+
+        const saveResult = await saveResponse.json();
+
+        if (saveResult.success) {
+          console.log("Saved successfully with ID:", saveResult.id);
+          // Redirect to the study plan
+          router.push(`/studyplan/subject/${planWithIds[0].subjectId}`);
+          window.dispatchEvent(new Event('studyPlanUpdated'));
         } else {
-          router.push('/');
+          console.error("Save failed:", saveResult.error);
+          setFormError('Failed to save study plan. Please try again.');
         }
-        // setStudyPlan(plan);
-        window.dispatchEvent(new Event('studyPlanUpdated'));
       } else {
-        console.error("Save failed:", result.error);
-        setError('Failed to save study plan. Please try again.');
+        console.error("Generation failed:", result.error);
+        setFormError('Failed to generate study plan. Please try again.');
       }
     } catch (err) {
-      setError('Failed to generate study plan. Please try again.');
+      setFormError('Failed to generate study plan. Please try again.');
       console.error(err);
     } finally {
       setIsLoading(false);

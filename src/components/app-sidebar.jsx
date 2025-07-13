@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { SearchForm } from "@/components/search-form"
 import { VersionSwitcher } from "@/components/version-switcher"
 import {
@@ -45,6 +45,7 @@ export function AppSidebar({
   ...props
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -52,6 +53,17 @@ export function AppSidebar({
 
   useEffect(() => {
     fetchPlans();
+    
+    // Listen for study plan updates
+    const handleStudyPlanUpdate = () => {
+      fetchPlans();
+    };
+    
+    window.addEventListener('studyPlanUpdated', handleStudyPlanUpdate);
+    
+    return () => {
+      window.removeEventListener('studyPlanUpdated', handleStudyPlanUpdate);
+    };
   }, []);
 
   const fetchPlans = async () => {
@@ -67,6 +79,16 @@ export function AppSidebar({
     }
   };
   console.log('From sidebar', plans);
+
+  // Helper function to check if a subject is currently active
+  const isSubjectActive = (subjectId) => {
+    return pathname.includes(`/studyplan/subject/${subjectId}`);
+  };
+
+  // Helper function to check if a topic is currently active
+  const isTopicActive = (subjectId, topicId) => {
+    return pathname.includes(`/studyplan/subject/${subjectId}/topic/${topicId}`);
+  };
 
   const handleDeleteSubject = async (subjectId) => {
     try {
@@ -137,13 +159,16 @@ export function AppSidebar({
                     <Collapsible
                       key={subject.subjectId || idx}
                       asChild
-                      defaultOpen={false}
+                      defaultOpen={isSubjectActive(subject.subjectId)}
                       className="group/collapsible"
                     >
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
                           <div className="group/subject flex w-full items-center">
-                            <SidebarMenuButton isActive={false} className="flex-1">
+                            <SidebarMenuButton 
+                              isActive={isSubjectActive(subject.subjectId)} 
+                              className="flex-1"
+                            >
                               <ChevronRight
                                 className="absolute left-2 hidden bg-zinc-700 rounded-sm group-hover/subject:inline transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                               <Link
@@ -183,7 +208,10 @@ export function AppSidebar({
                           <SidebarMenuSub>
                             {subject.topics?.map((topic, idx) => (
                               <SidebarMenuSubItem key={topic.topicId || idx}>
-                                <SidebarMenuSubButton asChild>
+                                <SidebarMenuSubButton 
+                                  asChild
+                                  isActive={isTopicActive(subject.subjectId, topic.topicId)}
+                                >
                                   <Link href={`/studyplan/subject/${subject.subjectId}/topic/${topic.topicId}`} className="flex items-center">
                                     <span>{topic.name}</span>
                                   </Link>

@@ -1,50 +1,65 @@
-// import { AppSidebar } from "@/components/app-sidebar"
-// import {
-//   Breadcrumb,
-//   BreadcrumbItem,
-//   BreadcrumbLink,
-//   BreadcrumbList,
-//   BreadcrumbPage,
-//   BreadcrumbSeparator,
-// } from "@/components/ui/breadcrumb"
-// import { Separator } from "@/components/ui/separator"
-// import {
-//   SidebarInset,
-//   SidebarProvider,
-//   SidebarTrigger,
-// } from "@/components/ui/sidebar"
+'use client';
 
-// export default function Page() {
-//   return (
-//     <SidebarProvider>
-//       <AppSidebar />
-//       <SidebarInset>
-//         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-//           <SidebarTrigger className="-ml-1" />
-//           <Separator orientation="vertical" className="mr-2 h-4" />
-//           {/* <Breadcrumb>
-//             <BreadcrumbList>
-//               <BreadcrumbItem className="hidden md:block">
-//                 <BreadcrumbLink href="#">
-//                   Building Your Application
-//                 </BreadcrumbLink>
-//               </BreadcrumbItem>
-//               <BreadcrumbSeparator className="hidden md:block" />
-//               <BreadcrumbItem>
-//                 <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-//               </BreadcrumbItem>
-//             </BreadcrumbList>
-//           </Breadcrumb> */}
-//         </header>
-//         {/* <div className="flex flex-1 flex-col gap-4 p-4">
-//           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-//             <div className="aspect-video rounded-xl bg-muted/50" />
-//             <div className="aspect-video rounded-xl bg-muted/50" />
-//             <div className="aspect-video rounded-xl bg-muted/50" />
-//           </div>
-//           <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-//         </div> */}
-//       </SidebarInset>
-//     </SidebarProvider>
-//   );
-// }
+import { useSession } from 'next-auth/react';
+import UsageDisplay from '@/components/UsageDisplay';
+import RecentStudyPlans from '@/components/RecentStudyPlans';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+
+export default function DashboardPage() {
+  const { data: session, status } = useSession();
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-light-100">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-light-100">Please sign in to access the dashboard.</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen p-6">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-light-100 mb-2">Welcome back, {session.user.name}!</h1>
+          <p className="text-light-200">Manage your study plans and track your usage.</p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <div>
+            <h2 className="text-xl font-semibold text-light-100 mb-4">Quick Actions</h2>
+            <div className="space-y-3">
+              <Link href="/newsubject">
+                <Button className="w-full justify-start">
+                  Create New Study Plan
+                </Button>
+              </Link>
+              <Link href="/">
+                <Button variant="outline" className="w-full justify-start">
+                  View All Study Plans
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          <div>
+            <UsageDisplay />
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold text-light-100 mb-4">Recent Study Plans</h2>
+          <RecentStudyPlans />
+        </div>
+      </div>
+    </div>
+  );
+}
