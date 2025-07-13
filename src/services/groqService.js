@@ -175,3 +175,46 @@ Please include:
     throw error;
   }
 }
+
+export async function regenerateSubtopicNotes(subject, topic, subtopic, userFeedback, previousNotes) {
+  const prompt = `As a subject matter expert in "${subject}", specifically focusing on the topic "${topic}", your task is to improve the following notes about the subtopic: "${subtopic}".
+
+🧠 Very Important: "${subtopic}" must be explained strictly within the context of "${topic}" under the umbrella of "${subject}". Do not generalize the subtopic or drift into other disciplines or applications unless explicitly instructed. Always prioritize relevance to the specified topic and subject.
+
+Previous Notes:
+${previousNotes}
+
+User Feedback for Improvement:
+${userFeedback}
+
+Please improve the notes by addressing the user's feedback while maintaining the same structure and format. Make sure to:
+1. Keep the same sections and organization
+2. Address the specific feedback points
+3. Maintain the same tone and style
+4. Keep all relevant information from the previous notes
+5. Add new information or clarification as needed based on the feedback
+
+Return the improved notes in the same format as the previous notes.`;
+
+  try {
+    const chatCompletion = await groq.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: "You are a world-class expert and educator with deep knowledge across multiple domains including highly technical subjects. You create rich, nuanced educational content that reflects sophisticated understanding and pedagogical excellence. Your explanations are authoritative, technically precise, and include all relevant formulas, equations, and specialized notations when appropriate to the subject matter."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.5
+    });
+
+    return chatCompletion.choices[0]?.message?.content || "Unable to generate notes.";
+  } catch (error) {
+    console.error("Error regenerating subtopic notes:", error);
+    throw error;
+  }
+}
