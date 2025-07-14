@@ -40,6 +40,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import Image from "next/image"
 
 export function AppSidebar({
   ...props
@@ -53,14 +54,14 @@ export function AppSidebar({
 
   useEffect(() => {
     fetchPlans();
-    
+
     // Listen for study plan updates
     const handleStudyPlanUpdate = () => {
       fetchPlans();
     };
-    
+
     window.addEventListener('studyPlanUpdated', handleStudyPlanUpdate);
-    
+
     return () => {
       window.removeEventListener('studyPlanUpdated', handleStudyPlanUpdate);
     };
@@ -93,7 +94,7 @@ export function AppSidebar({
   const handleDeleteSubject = async (subjectId) => {
     try {
       // Find the plan that contains this subject
-      const plan = plans.find(p => 
+      const plan = plans.find(p =>
         p.studyPlan.some(subject => subject.subjectId === subjectId)
       );
 
@@ -105,7 +106,7 @@ export function AppSidebar({
       const response = await fetch(`/api/studyplans?planId=${plan.id}&subjectId=${subjectId}`, {
         method: 'DELETE',
       });
-      
+
       if (response.ok) {
         // Refresh the plans list after successful deletion
         fetchPlans();
@@ -127,9 +128,25 @@ export function AppSidebar({
       >
         {/* <VersionSwitcher versions={data.versions} defaultVersion={data.versions[0]} />
         <SearchForm /> */}
-        <span className="font-styrene font-bold text-xl  text-center cursor-pointer" onClick={() => {
-          router.push('/');
-        }}>ClarioAI</span>
+        <div className="flex gap-3 items-center py-3 pl-2">
+          <img
+            src="/logo.svg"
+            alt="ClarioAI Logo"
+            width={25}
+            height={25}
+            className="rounded-full cursor-pointer"
+            onClick={() => router.push('/')}
+            style={{ width: 25, height: 25 }}
+          />
+          <span
+            className="font-styrene font-bold text-xl text-center cursor-pointer"
+            onClick={() => {
+              router.push('/');
+            }}
+          >
+            ClarioAI
+          </span>
+        </div>
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
@@ -165,8 +182,8 @@ export function AppSidebar({
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
                           <div className="group/subject flex w-full items-center">
-                            <SidebarMenuButton 
-                              isActive={isSubjectActive(subject.subjectId)} 
+                            <SidebarMenuButton
+                              isActive={isSubjectActive(subject.subjectId)}
                               className="flex-1"
                             >
                               <ChevronRight
@@ -208,7 +225,7 @@ export function AppSidebar({
                           <SidebarMenuSub>
                             {subject.topics?.map((topic, idx) => (
                               <SidebarMenuSubItem key={topic.topicId || idx}>
-                                <SidebarMenuSubButton 
+                                <SidebarMenuSubButton
                                   asChild
                                   isActive={isTopicActive(subject.subjectId, topic.topicId)}
                                 >

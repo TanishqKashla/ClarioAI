@@ -49,9 +49,9 @@ const tiempos = localFont({
 });
 
 export const metadata = {
-  title: "ClarioAI - Your AI Study Companion",
+  title: "ClarioAI",
   description:
-    "AI-powered study plan generator to help you prepare for exams effectively",
+    "Your AI Study Companion",
 };
 
 export default function RootLayout({ children }) {
