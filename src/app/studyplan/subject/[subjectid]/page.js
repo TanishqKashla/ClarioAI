@@ -2,6 +2,9 @@
 import React, { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
 
 const SubjectPage = () => {
 
@@ -79,7 +82,15 @@ const SubjectPage = () => {
 
     return (
         <div className=" w-full p-4">
-            <h1 className="text-xl md:text-3xl font-bold mb-6 text-white font-styrene">{subject.subjectName}</h1>
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-xl md:text-3xl font-bold mb-6 text-white font-styrene">{subject.subjectName}</h1>
+                <Button
+                    onClick={() => router.push(`/studyplan/subject/${subjectid}/addtopic`)}
+                >
+                    <Plus /> Add Topic
+
+                </Button>
+            </div>
 
             {subject.topics && subject.topics.length > 0 ? (
                 subject.topics.map(topic => (
@@ -92,13 +103,13 @@ const SubjectPage = () => {
                             <h2 className="md:text-lg text-md font-semibold font-styrene truncate">{topic.name}</h2>
                             <p className="text-sm ">{progressPercentage}%</p>
                         </div>
-                        
-                            <div className="w-full bg-secondary h-1.5 absolute bottom-0 left-0">
-                                <div
-                                    className="bg-primary h-1.5 rounded-l-none rounded-full transition-all duration-300"
-                                    style={{ width: `${progressPercentage}%` }}
-                                ></div>
-                            </div>
+
+                        <div className="w-full bg-secondary h-1.5 absolute bottom-0 left-0">
+                            <div
+                                className="bg-primary h-1.5 rounded-l-none rounded-full transition-all duration-300"
+                                style={{ width: `${progressPercentage}%` }}
+                            ></div>
+                        </div>
                     </div>
                 ))
             ) : (

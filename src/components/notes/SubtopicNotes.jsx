@@ -179,7 +179,7 @@ const SubtopicNotes = ({ subject, topic, subtopic, planId }) => {
                                             Regenerate with Feedback
                                         </Button>
                                     </DialogTrigger>
-                                    <DialogContent className="sm:max-w-[425px] bg-dark-300 border-border">
+                                    <DialogContent className="sm:max-w-[425px] bg-popover border-border">
                                         <DialogHeader>
                                             <DialogTitle className="text-light-100">Provide Feedback</DialogTitle>
                                         </DialogHeader>
