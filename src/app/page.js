@@ -5,10 +5,15 @@ import { BackgroundBeams } from '@/components/ui/background-beams';
 import { SquareArrowOutUpRight } from 'lucide-react';
 import { FeaturesSection } from '@/components/landinpage/Features';
 import ValueProposition from '@/components/landinpage/ValueProposition';
+import { FeedbackForm } from '@/components/feedback-form';
+import { FAQSection } from '@/components/faq-section';
+import { TextHoverEffect } from '@/components/ui/text-hover-effect';
+import Image from 'next/image';
+import { Footer } from '@/components/Footer';
 
 const page = () => {
     return (
-        <div className="relative mx-auto flex flex-col items-center justify-center mb-20">
+        <div className="relative mx-auto flex flex-col items-center justify-center">
             <div className="px-4 py-10 h-[70vh] md:py-20 flex flex-col justify-center items-center">
                 <h1 className="relative z-10 text-center md:max-w-2xl lg:max-w-5xl max-w-lg text-4xl  font-bold text-slate-700 md:text-5xl lg:text-7xl dark:text-slate-300 font-styrene">
                     {"From Scattered to Streamlined in Seconds"
@@ -71,8 +76,22 @@ const page = () => {
             <div className='w-full bg-background p-3'>
                 <ValueProposition />
                 <FeaturesSection />
+                <FAQSection />
+                {/* <div className='flex justify-center gap-16 items-center mt-20'>
+                    <div className='relative w-96 h-96 hidden lg:block'>
+                        <Image
+                            src="/illustrations/illustration1.png"
+                            alt="illustration"
+                            fill
+                            className="object-contain"
+                        />
+                    </div>
+                    <FeedbackForm />
+                </div> */}
+                <TextHoverEffect text={"ClarioAI"} />
             </div>
 
+            <Footer />
         </div>
     )
 }

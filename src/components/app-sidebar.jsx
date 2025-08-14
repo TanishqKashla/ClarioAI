@@ -79,7 +79,6 @@ export function AppSidebar({
       setLoading(false);
     }
   };
-  console.log('From sidebar', plans);
 
   // Helper function to check if a subject is currently active
   const isSubjectActive = (subjectId) => {

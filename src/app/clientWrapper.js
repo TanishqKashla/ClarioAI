@@ -66,7 +66,7 @@ export default function ClientWrapper({ children }) {
                         <SidebarInset>
 
                             <header className="flex h-16 items-center gap-2 border-b px-4 w-[100%] z-10 bg-background/60 backdrop-blur-md">
-                                <div className="flex items-center gap-2 justify-between bg-gray-700 w-full ">
+                                <div className="flex items-center gap-2 justify-between w-full ">
                                     <div className="flex items-center gap-2">
 
                                         <SidebarTrigger className="-ml-1" />
