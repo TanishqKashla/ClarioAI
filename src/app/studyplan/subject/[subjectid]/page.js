@@ -1,43 +1,13 @@
 'use client';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 
 const SubjectPage = () => {
-
-    // const pseudoSubject = {
-    //     subjectId: "placeholder-id",
-    //     subjectName: "Sample Subject",
-    //     topics: [
-    //         {
-    //             topicId: "topic-1",
-    //             name: "Introduction to Sample",
-    //             subtopics: [
-    //                 { subtopicId: "sub-1", name: "Overview", isCompleted: false },
-    //                 { subtopicId: "sub-2", name: "Basics", isCompleted: true }
-    //             ]
-    //         },
-    //         {
-    //             topicId: "topic-2",
-    //             name: "Advanced Concepts",
-    //             subtopics: [
-    //                 { subtopicId: "sub-3", name: "Deep Dive", isCompleted: false },
-    //                 { subtopicId: "sub-4", name: "Case Studies", isCompleted: false }
-    //             ]
-    //         }
-    //     ]
-    // };
-
     const router = useRouter();
     const { subjectid } = useParams();
     const [subject, setSubject] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    // useEffect(() => {
-    //     setSubject(pseudoSubject); // Simulating fetching subject data
-    //     setLoading(false);
-    // }
-    //     , [subjectid]);
 
     useEffect(() => {
         const fetchSubject = async () => {
