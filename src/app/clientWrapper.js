@@ -65,16 +65,13 @@ export default function ClientWrapper({ children }) {
                         <AppSidebar />
                         <SidebarInset>
 
-                            <header className="flex h-16 items-center gap-2 border-b px-4 w-[100%] z-10 bg-background/60 backdrop-blur-md">
+                            <header className="flex fixed h-16 items-center gap-2 border-b px-4 w-[100%] z-10 bg-background/60 backdrop-blur-md">
                                 <div className="flex items-center gap-2 justify-between w-full ">
                                     <div className="flex items-center gap-2">
 
                                         <SidebarTrigger className="-ml-1" />
                                         <Separator orientation="vertical" className="mr-2 h-4" />
                                         <ModeToggle />
-                                    </div>
-                                    <div>
-                                        checking
                                     </div>
                                 </div>
                             </header>

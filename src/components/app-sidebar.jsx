@@ -122,7 +122,7 @@ export function AppSidebar({
   return (
     <Sidebar {...props}>
       <SidebarHeader onClick={() => {
-        router.push('/');
+        router.push('/app');
       }}
       >
         {/* <VersionSwitcher versions={data.versions} defaultVersion={data.versions[0]} />
@@ -134,14 +134,10 @@ export function AppSidebar({
             width={25}
             height={25}
             className="rounded-full cursor-pointer"
-            onClick={() => router.push('/')}
             style={{ width: 25, height: 25 }}
           />
           <span
             className="font-styrene font-bold text-xl text-center cursor-pointer"
-            onClick={() => {
-              router.push('/');
-            }}
           >
             ClarioAI
           </span>
