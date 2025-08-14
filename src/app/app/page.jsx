@@ -29,7 +29,7 @@ export default function DashboardPage() {
     <div className="min-h-screen p-6">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-light-100 mb-2">Welcome back, {session.user.name}!</h1>
+          <h1 className="text-3xl font-bold text-light-100 mb-2">Welcome, {session.user.name}!</h1>
           <p className="text-light-200">Manage your study plans and track your usage.</p>
         </div>
 
