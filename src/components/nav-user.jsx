@@ -44,9 +44,9 @@ export function NavUser() {
                     {isLoading ? (
                         <SidebarMenuButton
                             size="lg"
-                            className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                            className="data-[state=open]:bg-sidebar-accent w-full data-[state=open]:text-sidebar-accent-foreground"
                         >
-                            <div className="h-8 w-24 bg-gray-600 animate-pulse rounded"></div>
+                            <div className="h-8 w-full bg-gray-600 animate-pulse rounded"></div>
                         </SidebarMenuButton>
                     ) : session ? (
                         <DropdownMenuTrigger asChild>

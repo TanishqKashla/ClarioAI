@@ -5,16 +5,13 @@ import UsageDisplay from '@/components/UsageDisplay';
 import RecentStudyPlans from '@/components/RecentStudyPlans';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import AppSkeleton from '@/components/skeleton-loaders/AppSkeleton';
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
 
   if (status === 'loading') {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-light-100">Loading...</div>
-      </div>
-    );
+   return <AppSkeleton />
   }
 
   if (!session) {
@@ -39,12 +36,12 @@ export default function DashboardPage() {
             <div className="space-y-3">
               <Link href="/newsubject">
                 <Button className="w-full justify-start">
-                  Create New Study Plan
+                  Add New Subject
                 </Button>
               </Link>
               <Link href="/">
                 <Button variant="outline" className="w-full justify-start">
-                  View All Study Plans
+                  View All Subjects
                 </Button>
               </Link>
             </div>
@@ -56,7 +53,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="mt-8">
-          <h2 className="text-xl font-semibold text-light-100 mb-4">Recent Study Plans</h2>
+          <h2 className="text-xl font-semibold text-light-100 mb-4">Recent Subjects</h2>
           <RecentStudyPlans />
         </div>
       </div>

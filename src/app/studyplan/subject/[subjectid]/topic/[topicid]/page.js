@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import SubtopicCard from '@/components/study-plan/SubtopicCard';
+import TopicSkeleton from '@/components/skeleton-loaders/TopicSkeleton';
 
 const TopicPage = () => {
     const { subjectid, topicid } = useParams();
@@ -75,7 +76,7 @@ const TopicPage = () => {
         }
     };
 
-    if (loading) return <div className="text-light-100 p-4">Loading...</div>;
+    if (loading) return <TopicSkeleton />
     if (!topic || !subject) return <div className="text-light-100 p-4">Topic not found.</div>;
 
     const total = topic.subtopics.length;
