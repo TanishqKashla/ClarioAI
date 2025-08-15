@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-// import Button from '@/components/common/Button';
-import { useStudyPlan } from '@/contexts/StudyPlanContext';
+
 import { getSession, useSession } from 'next-auth/react';
 import { nanoid } from 'nanoid';
 import SignInOverlay from '@/components/auth/SignInOverlay';
@@ -16,7 +15,7 @@ import { showRateLimitNotification } from "@/lib/notifications";
 
 export default function NewSubjectPage() {
   const { data: session, status } = useSession();
-  // const { isLoading, error, set, setError, setStudyPlan, setSubjects } = useStudyPlan();
+
   const router = useRouter();
   const [subjectName, setSubjectName] = useState('');
   const [topicName, setTopicName] = useState('');
