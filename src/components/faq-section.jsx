@@ -64,10 +64,10 @@ export function FAQSection() {
             className="border border-border rounded-lg bg-card overflow-hidden transition-all duration-200 hover:shadow-md">
             <button
               onClick={() => toggleItem(item.id)}
-              className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-accent/50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-inset"
+              className="w-full p-2 px-4 md:px-6 md:py-4 text-left flex items-center justify-between hover:bg-accent/50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-inset"
               aria-expanded={isOpen}
               aria-controls={`faq-answer-${item.id}`}>
-              <h3 className="text-lg font-styrene text-[#a9d47f] pr-4">{item.question}</h3>
+              <h3 className="font-sm md:text-lg font-styrene text-[#a9d47f] pr-4">{item.question}</h3>
               <div className="flex-shrink-0">
                 {isOpen ? (
                   <Minus
