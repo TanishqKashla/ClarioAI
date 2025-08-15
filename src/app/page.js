@@ -5,7 +5,7 @@ import { BackgroundBeams } from '@/components/ui/background-beams';
 import { SquareArrowOutUpRight } from 'lucide-react';
 import { FeaturesSection } from '@/components/landinpage/Features';
 import ValueProposition from '@/components/landinpage/ValueProposition';
-import { FeedbackForm } from '@/components/feedback-form';
+
 import { FAQSection } from '@/components/faq-section';
 import { TextHoverEffect } from '@/components/ui/text-hover-effect';
 import Image from 'next/image';

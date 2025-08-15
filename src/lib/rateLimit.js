@@ -99,15 +99,4 @@ export async function getUserUsage(userId) {
   return usage;
 }
 
-/**
- * Clean up old rate limit records (run periodically)
- */
-export async function cleanupOldRateLimits() {
-  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-  
-  await prisma.rateLimit.deleteMany({
-    where: {
-      createdAt: { lt: thirtyDaysAgo }
-    }
-  });
-} 
+ 

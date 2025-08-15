@@ -9,10 +9,12 @@ import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 
 export default function ClientWrapper({ children }) {
 
+    const router = useRouter();
     const pathname = usePathname();
     return (
         <SessionProvider>
@@ -22,7 +24,7 @@ export default function ClientWrapper({ children }) {
                 enableSystem
                 disableTransitionOnChange
             >
-                {pathname == "/" ? (
+                {(pathname == "/" || pathname == "/login") ? (
                     <>
                         <header className="flex h-16 items-center gap-2 border-b px-4 fixed top-0 w-[100%] z-50 bg-background/60 backdrop-blur-md">
                             <div className="flex items-center gap-2 justify-between  w-full ">
@@ -50,7 +52,8 @@ export default function ClientWrapper({ children }) {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <ModeToggle />
-                                    <Button asChild>
+
+                                    <Button asChild className={`${pathname === "/login" ? "hidden" : "block"}`}>
                                         <Link href="/login" className="ml-2">
                                             Login
                                         </Link>

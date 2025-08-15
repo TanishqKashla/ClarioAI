@@ -1,17 +1,14 @@
 'use client';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import SubjectSkeleton from '@/components/skeleton-loaders/SubjectSkeleton';
 
 const SubjectPage = () => {
-
-
     const router = useRouter();
     const { subjectid } = useParams();
     const [subject, setSubject] = useState(null);
     const [loading, setLoading] = useState(true);
-
 
     useEffect(() => {
         const fetchSubject = async () => {
@@ -66,13 +63,13 @@ const SubjectPage = () => {
                             <h2 className="md:text-lg text-md font-semibold font-styrene truncate">{topic.name}</h2>
                             <p className="text-sm ">{progressPercentage}%</p>
                         </div>
-                        
-                            <div className="w-full bg-secondary h-1.5 absolute bottom-0 left-0">
-                                <div
-                                    className="bg-primary h-1.5 rounded-l-none rounded-full transition-all duration-300"
-                                    style={{ width: `${progressPercentage}%` }}
-                                ></div>
-                            </div>
+
+                        <div className="w-full bg-secondary h-1.5 absolute bottom-0 left-0">
+                            <div
+                                className="bg-primary h-1.5 rounded-l-none rounded-full transition-all duration-300"
+                                style={{ width: `${progressPercentage}%` }}
+                            ></div>
+                        </div>
                     </div>
                 ))
             ) : (
