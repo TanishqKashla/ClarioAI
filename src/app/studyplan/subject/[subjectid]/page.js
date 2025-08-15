@@ -3,14 +3,20 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import SubjectSkeleton from '@/components/skeleton-loaders/SubjectSkeleton';
+import { useSession } from 'next-auth/react';
 
 const SubjectPage = () => {
     const router = useRouter();
     const { subjectid } = useParams();
     const [subject, setSubject] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { data: session, status } = useSession();
 
     useEffect(() => {
+        if (status === "unauthenticated") {
+            router.replace("/login");
+        }
+
         const fetchSubject = async () => {
             const res = await fetch('/api/studyplans');
             const plans = await res.json();
@@ -25,7 +31,7 @@ const SubjectPage = () => {
             setLoading(false);
         };
         fetchSubject();
-    }, [subjectid]);
+    }, [subjectid, session]);
 
     const handleTopicClick = (topicId) => {
         router.push(`/studyplan/subject/${subjectid}/topic/${topicId}`);

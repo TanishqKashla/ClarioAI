@@ -22,7 +22,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { Button } from "./ui/button"
-import { MailOpen, MoreHorizontal, Plus, Trash2 } from "lucide-react"
+import { LayoutDashboard, MailOpen, MoreHorizontal, Plus, SquarePen, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { NavUser } from "./nav-user"
 import { CollapsibleTrigger } from "./ui/collapsible"
@@ -40,6 +40,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import Image from "next/image"
+import { Separator } from "@radix-ui/react-dropdown-menu"
 
 export function AppSidebar({
   ...props
@@ -145,14 +146,18 @@ export function AppSidebar({
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
 
-        <SidebarGroup>
+        <SidebarGroup className="flex flex-col gap-2">
 
-          <Button asChild className="w-2/3 mx-auto">
-            <Link href="/newsubject"> <Plus /> Add Subject</Link>
+          <Button asChild className="w-full justify-start">
+            <Link className="flex gap-2 items-center text-left justify-start" href="/newsubject"> <SquarePen size={17} /> Add Subject</Link>
           </Button>
-        </SidebarGroup>
-        <SidebarGroup>
+          <Button asChild className="w-full justify-start" variant="ghost">
+            <Link className="flex gap-2 items-center text-left justify-start" href="/app"> <LayoutDashboard size={17} />Dashboard</Link>
+          </Button>
 
+        </SidebarGroup>
+        
+        <SidebarGroup>
           <SidebarGroupLabel>Your Subjects</SidebarGroupLabel>
           <SidebarGroupContent>
             {loading ? (
@@ -175,7 +180,7 @@ export function AppSidebar({
                     >
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
-                          <div className="group/subject flex w-full items-center">
+                          <div className="group/subject flex w-full items-center hover:bg-sidebar-accent rounded-lg">
                             <SidebarMenuButton
                               isActive={isSubjectActive(subject.subjectId)}
                               className="flex-1"
@@ -237,7 +242,7 @@ export function AppSidebar({
                 )}
               </SidebarMenu>
             ) : (
-              <p>hi</p>
+              <></>
             )}
           </SidebarGroupContent>
         </SidebarGroup>

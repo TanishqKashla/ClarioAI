@@ -3,33 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { Calendar, BookOpen, Clock } from 'lucide-react';
+import { Calendar, BookOpen, Clock, SquarePen } from 'lucide-react';
+import Image from 'next/image';
+import { Button } from './ui/button';
 
-const RecentStudyPlans = () => {
-    const { data: session } = useSession();
-    const [studyPlans, setStudyPlans] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        if (session) {
-            fetchStudyPlans();
-        }
-    }, [session]);
-
-    const fetchStudyPlans = async () => {
-        try {
-            const response = await fetch('/api/studyplans');
-            const data = await response.json();
-            
-            if (Array.isArray(data)) {
-                setStudyPlans(data.slice(0, 5)); // Show only the 5 most recent
-            }
-        } catch (error) {
-            console.error('Failed to fetch study plans:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+const RecentStudyPlans = ({ studyPlans }) => {
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -68,25 +46,22 @@ const RecentStudyPlans = () => {
         }, 0);
     };
 
-    if (loading) {
-        return (
-            <div className="space-y-3">
-                {[1, 2, 3].map((i) => (
-                    <div key={i} className="bg-dark-200 border border-border rounded-lg p-4 animate-pulse">
-                        <div className="h-4 bg-dark-300 rounded w-3/4 mb-2"></div>
-                        <div className="h-3 bg-dark-300 rounded w-1/2"></div>
-                    </div>
-                ))}
-            </div>
-        );
-    }
 
-    if (studyPlans.length === 0) {
+    if (!studyPlans || studyPlans.length === 0) {
         return (
-            <div className="bg-dark-200 border border-border rounded-lg p-6 text-center">
-                <BookOpen className="w-8 h-8 text-light-300 mx-auto mb-3" />
-                <p className="text-light-200 mb-2">No study plans yet</p>
-                <p className="text-light-300 text-sm">Create your first study plan to get started</p>
+            <div className='flex w-full flex-col items-center gap-4 h-full'>
+                <div className="relative w-40 h-40 md:w-72 md:h-72 mt-5">
+                    <Image
+                        src="/illustrations/illustration1.png"
+                        alt="hero"
+                        fill
+                        className="object-contain"
+                    />
+                </div>
+                <h2 className='text-light-100 font-medium text-md md:text-2xl'>Start by adding your first subject</h2>
+                <Button className=" justify-start">
+                    <Link className="flex gap-2 items-center text-left justify-start" href="/newsubject"> <SquarePen size={17} /> Add Subject</Link>
+                </Button>
             </div>
         );
     }
@@ -134,7 +109,7 @@ const RecentStudyPlans = () => {
                 );
             })}
             
-            {studyPlans.length >= 5 && (
+            {/* {studyPlans.length >= 5 && (
                 <div className="text-center pt-2">
                     <Link 
                         href="/" 
@@ -143,7 +118,7 @@ const RecentStudyPlans = () => {
                         View all study plans →
                     </Link>
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

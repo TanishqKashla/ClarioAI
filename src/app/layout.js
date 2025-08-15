@@ -4,6 +4,7 @@ import "./globals.css";
 import localFont from 'next/font/local';
 
 import ClientWrapper from "./clientWrapper";
+import { Analytics } from "@vercel/analytics/next"
 
 const styrene = localFont({
   src: [
@@ -55,6 +56,7 @@ export default function RootLayout({ children }) {
       <body className="font-tiempos">
         <ClientWrapper>
           {children}
+          <Analytics />
         </ClientWrapper>
       </body>
     </html>

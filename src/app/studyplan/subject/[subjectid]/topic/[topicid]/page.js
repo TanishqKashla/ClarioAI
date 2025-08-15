@@ -1,8 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import SubtopicCard from '@/components/study-plan/SubtopicCard';
 import TopicSkeleton from '@/components/skeleton-loaders/TopicSkeleton';
+import { useSession } from 'next-auth/react';
 
 const TopicPage = () => {
     const { subjectid, topicid } = useParams();
@@ -11,6 +12,8 @@ const TopicPage = () => {
     const [loading, setLoading] = useState(true);
     const [completedCount, setCompletedCount] = useState(0);
     const [planId, setPlanId] = useState(null);
+    const { data: session, status } = useSession();
+    const router = useRouter();
 
     const updateProgress = (updatedSubtopics) => {
         const completed = updatedSubtopics.filter(sub => sub.isCompleted).length;
@@ -18,6 +21,11 @@ const TopicPage = () => {
     };
 
     useEffect(() => {
+
+        if (status === "unauthenticated") {
+            router.replace("/login");
+        }
+
         const fetchTopic = async () => {
             const res = await fetch('/api/studyplans');
             const plans = await res.json();
@@ -45,7 +53,7 @@ const TopicPage = () => {
             setLoading(false);
         };
         fetchTopic();
-    }, [subjectid, topicid]);
+    }, [subjectid, topicid, session]);
 
     const handleCompletionChange = async (index, newStatus) => {
         const updatedSubtopics = [...topic.subtopics];

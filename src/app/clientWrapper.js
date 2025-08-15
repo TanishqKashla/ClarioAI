@@ -52,7 +52,7 @@ export default function ClientWrapper({ children }) {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <ModeToggle />
+                                    {/* <ModeToggle /> */}
 
                                     <Button asChild className={`${pathname === "/login" ? "hidden" : "block"}`}>
                                         <Link href="/login" className="ml-2">
@@ -63,7 +63,7 @@ export default function ClientWrapper({ children }) {
                             </div>
                         </header>
                         <main className="mt-16">{children}</main>
-                        <Footer />
+                        {pathname == "/" ? (<Footer />) : (<></>)}
                     </>
                 ) : (
                     <SidebarProvider>
@@ -75,8 +75,8 @@ export default function ClientWrapper({ children }) {
                                     <div className="flex items-center gap-2">
 
                                         <SidebarTrigger className="-ml-1" />
-                                        <Separator orientation="vertical" className="mr-2 h-4" />
-                                        <ModeToggle />
+                                        {/* <Separator orientation="vertical" className="mr-2 h-4" />
+                                        <ModeToggle /> */}
                                     </div>
                                 </div>
                             </header>
