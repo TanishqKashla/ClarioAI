@@ -10,9 +10,9 @@ export const Footer = () => {
             <div className="mx-auto max-w-7xl px-4 py-12 md:py-16">
                 <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
                     <div>
-                        <div className="text-xl font-semibold text-white">ClarioAI</div>
-                        <p className="mt-3 max-w-sm text-sm text-neutral-400">
-                            From scattered to streamlined—your learning, organized.
+                        <div className="text-xl font-semibold text-white font-styrene">ClarioAI</div>
+                        <p className="mt-3 max-w-sm text-sm text-neutral-400 ">
+                            From scattered to streamlined - your learning, organized.
                         </p>
                     </div>
 

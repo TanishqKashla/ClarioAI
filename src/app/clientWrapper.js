@@ -9,6 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Footer } from "@/components/Footer";
 import { useRouter } from "next/navigation";
 
 
@@ -62,6 +63,7 @@ export default function ClientWrapper({ children }) {
                             </div>
                         </header>
                         <main className="mt-16">{children}</main>
+                        <Footer />
                     </>
                 ) : (
                     <SidebarProvider>
