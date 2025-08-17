@@ -31,9 +31,8 @@ export const Footer = () => {
                     <p className="text-xs text-neutral-500">© {currentYear} ClarioAI, Inc. All rights reserved.</p>
                     <div className="flex flex-col items-start gap-4 md:flex-row md:items-center md:gap-6">
                         <nav className="flex gap-4 text-xs">
-                            <a className="hover:text-white" href="#privacy">Privacy</a>
-                            <a className="hover:text-white" href="#terms">Terms</a>
-                            <a className="hover:text-white" href="#cookie">Cookie Policy</a>
+                            <a className="hover:text-white" href="/privacy-policy">Privacy</a>
+                            <a className="hover:text-white" href="/terms">Terms</a>
                         </nav>
                         <div className="flex items-center gap-3">
                             <a aria-label="GitHub" className="rounded p-1 hover:text-white" href="https://github.com/" target="_blank" rel="noreferrer noopener">

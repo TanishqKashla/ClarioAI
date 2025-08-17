@@ -25,7 +25,7 @@ export default function ClientWrapper({ children }) {
                 enableSystem
                 disableTransitionOnChange
             >
-                {(pathname == "/" || pathname == "/login" || pathname == "/pricing" || pathname == "/about" || pathname == "/contact" || pathname == "/features") ? (
+                {(pathname == "/" || pathname == "/login" || pathname == "/pricing" || pathname == "/about" || pathname == "/contact" || pathname == "/features" || pathname == "/privacy-policy" || pathname == "/terms") ? (
                     <>
                         <header className="flex h-16 items-center gap-2 border-b px-4 fixed top-0 w-[100%] z-50 bg-background/60 backdrop-blur-md">
                             <div className="flex items-center gap-2 justify-between  w-full ">
