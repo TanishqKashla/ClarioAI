@@ -31,7 +31,7 @@ const FeaturesPage = () => {
                             Coming Soon
                         </h2>
                         <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
-                            We're preparing a comprehensive overview of all the amazing features that make ClarioAI the ultimate learning companion. 
+                            We&apos;re preparing a comprehensive overview of all the amazing features that make ClarioAI the ultimate learning companion. 
                             From AI-powered note generation to intelligent study planning, discover what makes us special.
                         </p>
                         

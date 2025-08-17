@@ -31,7 +31,7 @@ export default function NewSubjectPage() {
     if (status === "unauthenticated") {
       router.replace("/login");
     }
-  }, [session]);
+  }, [session, status, router]);
 
   const handleAddSubtopic = () => {
     setSubtopics([...subtopics, '']);

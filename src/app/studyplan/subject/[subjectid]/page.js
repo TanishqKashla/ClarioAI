@@ -31,7 +31,7 @@ const SubjectPage = () => {
             setLoading(false);
         };
         fetchSubject();
-    }, [subjectid, session]);
+    }, [subjectid, session, status, router]);
 
     const handleTopicClick = (topicId) => {
         router.push(`/studyplan/subject/${subjectid}/topic/${topicId}`);

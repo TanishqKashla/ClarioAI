@@ -31,8 +31,8 @@ const ContactPage = () => {
                             Coming Soon
                         </h2>
                         <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
-                            We're setting up multiple ways for you to get in touch with our team. Whether you have questions, 
-                            feedback, or need support, we'll have the perfect communication channels ready for you soon.
+                            We&apos;re setting up multiple ways for you to get in touch with our team. Whether you have questions, 
+                            feedback, or need support, we&apos;ll have the perfect communication channels ready for you soon.
                         </p>
                         
                         <div className="mt-8">

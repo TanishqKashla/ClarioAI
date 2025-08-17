@@ -31,8 +31,8 @@ const PricingPage = () => {
                             Coming Soon
                         </h2>
                         <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
-                            We're crafting flexible pricing plans that will give you access to all the powerful features of ClarioAI. 
-                            From free tiers to premium options, we'll have the perfect plan for every learner and educator.
+                            We&apos;re crafting flexible pricing plans that will give you access to all the powerful features of ClarioAI. 
+                            From free tiers to premium options, we&apos;ll have the perfect plan for every learner and educator.
                         </p>
                         
                         <div className="mt-8">

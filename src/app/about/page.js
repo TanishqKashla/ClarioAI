@@ -31,8 +31,8 @@ const AboutPage = () => {
                             Coming Soon
                         </h2>
                         <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
-                            We're working hard to bring you detailed information about our team, mission, and the story behind ClarioAI. 
-                            This page will be available soon with exciting content about how we're revolutionizing the learning experience.
+                            We&apos;re working hard to bring you detailed information about our team, mission, and the story behind ClarioAI. 
+                            This page will be available soon with exciting content about how we&apos;re revolutionizing the learning experience.
                         </p>
                         
                         <div className="mt-8">

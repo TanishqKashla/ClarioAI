@@ -53,7 +53,7 @@ const TopicPage = () => {
             setLoading(false);
         };
         fetchTopic();
-    }, [subjectid, topicid, session]);
+    }, [subjectid, topicid, session, status, router]);
 
     const handleCompletionChange = async (index, newStatus) => {
         const updatedSubtopics = [...topic.subtopics];

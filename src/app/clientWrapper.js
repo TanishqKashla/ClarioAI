@@ -40,6 +40,7 @@ export default function ClientWrapper({ children }) {
                                             className="rounded-full cursor-pointer"
                                             onClick={() => router.push('/')}
                                             style={{ width: 25, height: 25 }}
+                                            loading="eager"
                                         />
                                         <span
                                             className="font-styrene font-bold text-xl text-center cursor-pointer"
