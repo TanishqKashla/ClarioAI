@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 const faqData = [
   {
     id: "1",
-    question: "Can I need to upload my entire syllabus?",
+    question: "Do I need to upload my entire syllabus?",
     answer:
       "You can paste your syllabus topics or even just a few keywords. ClarioAI will still generate structured notes and find relevant videos for you.",
   },
