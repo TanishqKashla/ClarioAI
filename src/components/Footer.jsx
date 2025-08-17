@@ -8,7 +8,7 @@ export const Footer = () => {
     return (
         <footer className="w-full border-t border-neutral-800 bg-black text-neutral-400">
             <div className="mx-auto max-w-7xl px-4 py-12 md:py-16">
-                <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
+                <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
                     <div>
                         <div className="text-xl font-semibold text-white font-styrene">ClarioAI</div>
                         <p className="mt-3 max-w-sm text-sm text-neutral-400 ">
@@ -17,32 +17,12 @@ export const Footer = () => {
                     </div>
 
                     <div>
-                        <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-300">Product</h3>
+                        <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-300">Additional Links</h3>
                         <ul className="mt-4 space-y-2 text-sm">
-                            <li><a className="hover:text-white" href="#features">Features</a></li>
-                            <li><a className="hover:text-white" href="#pricing">Pricing</a></li>
-                            <li><a className="hover:text-white" href="#docs">Docs</a></li>
-                            <li><a className="hover:text-white" href="#changelog">Changelog</a></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-300">Company</h3>
-                        <ul className="mt-4 space-y-2 text-sm">
-                            <li><a className="hover:text-white" href="#about">About</a></li>
-                            <li><a className="hover:text-white" href="#blog">Blog</a></li>
-                            <li><a className="hover:text-white" href="#careers">Careers</a></li>
-                            <li><a className="hover:text-white" href="#contact">Contact</a></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-300">Resources</h3>
-                        <ul className="mt-4 space-y-2 text-sm">
-                            <li><a className="hover:text-white" href="#help">Help Center</a></li>
-                            <li><a className="hover:text-white" href="#status">Status</a></li>
-                            <li><a className="hover:text-white" href="#api">API</a></li>
-                            <li><a className="hover:text-white" href="#community">Community</a></li>
+                            <li><a className="hover:text-white" href="/about">About Us</a></li>
+                            <li><a className="hover:text-white" href="/features">Features</a></li>
+                            <li><a className="hover:text-white" href="/contact">Contact Us</a></li>
+                            <li><a className="hover:text-white" href="/pricing">Pricing</a></li>
                         </ul>
                     </div>
                 </div>

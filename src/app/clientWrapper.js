@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { useRouter } from "next/navigation";
-
+import { FeedbackSystem } from "@/components/feedback";
 
 export default function ClientWrapper({ children }) {
 
@@ -25,7 +25,7 @@ export default function ClientWrapper({ children }) {
                 enableSystem
                 disableTransitionOnChange
             >
-                {(pathname == "/" || pathname == "/login") ? (
+                {(pathname == "/" || pathname == "/login" || pathname == "/pricing" || pathname == "/about" || pathname == "/contact" || pathname == "/features") ? (
                     <>
                         <header className="flex h-16 items-center gap-2 border-b px-4 fixed top-0 w-[100%] z-50 bg-background/60 backdrop-blur-md">
                             <div className="flex items-center gap-2 justify-between  w-full ">
@@ -64,6 +64,7 @@ export default function ClientWrapper({ children }) {
                         </header>
                         <main className="mt-16">{children}</main>
                         {pathname == "/" ? (<Footer />) : (<></>)}
+                        <FeedbackSystem />
                     </>
                 ) : (
                     <SidebarProvider>
@@ -83,6 +84,7 @@ export default function ClientWrapper({ children }) {
                             <main className="mt-16">{children}</main>
                         </SidebarInset>
                         <Toaster />
+                        <FeedbackSystem />
                     </SidebarProvider>
                 )
                 }

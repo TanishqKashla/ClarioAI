@@ -122,8 +122,8 @@ Please include:
 5. ⚠️ **Common Pitfalls / Misconceptions**  
    - Mention things people often get wrong in this subtopic.
 
-6. 📌 **Summary Checklist / Table**  
-   - Create a compact reference guide at the end.
+6. 📌 **Summary Checklist**  
+   - Create a compact reference summary list at the end.
 
 🗣️ **Tone & Style**  
 - Friendly, not overly academic  

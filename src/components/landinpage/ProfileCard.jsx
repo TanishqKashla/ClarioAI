@@ -32,7 +32,7 @@ const teamMembers = [
 export function ProfileCard() {
 
     return (
-        <div className="py-10 pb-12">
+        <div id="meet-the-devs" className="py-10 pb-12">
             <h2 className="font-styrene text-3xl md:text-5xl font-medium text-center pb-10">Meet the Devs</h2>
             <div className="flex flex-row flex-wrap sm:flex-nowrap  items-center justify-center gap-5 md:gap-8">
                 {

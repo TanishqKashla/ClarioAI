@@ -20,6 +20,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { Button } from "./ui/button"
 import { LayoutDashboard, MailOpen, MoreHorizontal, Plus, SquarePen, Trash2 } from "lucide-react"
@@ -47,6 +48,7 @@ export function AppSidebar({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { setOpenMobile } = useSidebar();
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -88,6 +90,11 @@ export function AppSidebar({
   // Helper function to check if a topic is currently active
   const isTopicActive = (subjectId, topicId) => {
     return pathname.includes(`/studyplan/subject/${subjectId}/topic/${topicId}`);
+  };
+
+  // Function to handle subject click and close mobile sidebar
+  const handleSubjectClick = () => {
+    setOpenMobile(false);
   };
 
   const handleDeleteSubject = async (subjectId) => {
@@ -190,6 +197,7 @@ export function AppSidebar({
                               <Link
                                 href={`/studyplan/subject/${subject.subjectId}`}
                                 className="overflow-hidden text-ellipsis whitespace-nowrap flex items-center"
+                                onClick={handleSubjectClick}
                               >
                                 <span className="font-styrene truncate">{subject.subjectName}</span>
                               </Link>
@@ -228,7 +236,7 @@ export function AppSidebar({
                                   asChild
                                   isActive={isTopicActive(subject.subjectId, topic.topicId)}
                                 >
-                                  <Link href={`/studyplan/subject/${subject.subjectId}/topic/${topic.topicId}`} className="flex items-center">
+                                  <Link href={`/studyplan/subject/${subject.subjectId}/topic/${topic.topicId}`} className="flex items-center" onClick={handleSubjectClick}>
                                     <span>{topic.name}</span>
                                   </Link>
                                 </SidebarMenuSubButton>
