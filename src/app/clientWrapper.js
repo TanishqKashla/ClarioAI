@@ -12,6 +12,7 @@ import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { useRouter } from "next/navigation";
 import { FeedbackSystem } from "@/components/feedback";
+import Image from "next/image";
 
 export default function ClientWrapper({ children }) {
 
@@ -32,7 +33,7 @@ export default function ClientWrapper({ children }) {
                                 <div className="flex items-center gap-2">
 
                                     <div className="flex gap-3 items-center">
-                                        <img
+                                        <Image
                                             src="/logo.svg"
                                             alt="ClarioAI Logo"
                                             width={25}
