@@ -1,16 +1,30 @@
 "use client"
 import React from 'react'
 import { Github, Twitter, Linkedin } from 'lucide-react'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 export const Footer = () => {
     const currentYear = new Date().getFullYear()
+    const router = useRouter()
 
     return (
         <footer className="w-full border-t border-neutral-800 bg-black text-neutral-400">
             <div className="mx-auto max-w-7xl px-4 py-12 md:py-16">
                 <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
                     <div>
-                        <div className="text-xl font-semibold text-white font-styrene">ClarioAI</div>
+                        <div className='flex gap-2' onClick={() => router.push('/')}>
+                            <Image
+                                src="/logo.svg"
+                                alt="ClarioAI Logo"
+                                width={25}
+                                height={25}
+                                className="rounded-full cursor-pointer"
+                                style={{ width: 25, height: 25 }}
+                                loading="eager"
+                            />
+                            <div className="text-xl font-semibold text-white font-styrene cursor-pointer">ClarioAI</div>
+                        </div>
                         <p className="mt-3 max-w-sm text-sm text-neutral-400 ">
                             From scattered to streamlined - your learning, organized.
                         </p>

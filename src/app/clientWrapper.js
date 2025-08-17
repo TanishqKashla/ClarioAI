@@ -65,7 +65,7 @@ export default function ClientWrapper({ children }) {
                             </div>
                         </header>
                         <main className="mt-16">{children}</main>
-                        {pathname == "/" ? (<Footer />) : (<></>)}
+                        {pathname == "/login" ? (<></>) : (<Footer />)}
                         <FeedbackSystem />
                     </>
                 ) : (
