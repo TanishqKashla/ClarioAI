@@ -148,10 +148,10 @@ export function AppSidebar({
 
         <SidebarGroup className="flex flex-col gap-2">
 
-          <Button asChild className="w-full justify-start">
+          <Button asChild className="w-full justify-start" variant={pathname === '/newsubject' ? 'default' : 'ghost'}>
             <Link className="flex gap-2 items-center text-left justify-start" href="/newsubject"> <SquarePen size={17} /> Add Subject</Link>
           </Button>
-          <Button asChild className="w-full justify-start" variant="ghost">
+          <Button asChild className="w-full justify-start" variant={pathname === '/app' ? 'default' : 'ghost'}>
             <Link className="flex gap-2 items-center text-left justify-start" href="/app"> <LayoutDashboard size={17} />Dashboard</Link>
           </Button>
 
