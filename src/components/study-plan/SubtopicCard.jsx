@@ -149,7 +149,7 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                             </ResizablePanel>
                             <ResizableHandle withHandle />
                             <ResizablePanel defaultSize={40}>
-                                <div className="pl-5">
+                                <div className="md:pl-5 pl-0">
                                     <span className="font-medium text-light-100">YouTube Search: </span>
                                     {searchTerm}
                                     <YouTubeSearch
@@ -196,18 +196,6 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                         <div>
                             <span className="font-medium text-light-100">YouTube Search: </span>
                             {searchTerm}
-                            <YouTubeSearch
-                                searchTerm={searchTerm}
-                                isOpen={isOpen}
-                                planId={planId}
-                                subjectId={subject?.subjectId}
-                                topicId={topic?.topicId}
-                                subtopicId={subtopic?.subtopicId}
-                                selectedVideoId={selectedVideoId}
-                                onVideoSelect={handleVideoSelect}
-                                syncing={syncing}
-                                recommendedVideos={subtopic.recommendedVideos}
-                            />
                         </div>
                     </div>
                 </div>

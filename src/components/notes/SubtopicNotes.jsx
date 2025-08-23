@@ -15,7 +15,7 @@ const SubtopicNotes = ({ subject, topic, subtopic, planId }) => {
     const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
     const [userFeedback, setUserFeedback] = useState('');
     const [regenerating, setRegenerating] = useState(false);
-    console.log("PRINTING FROM SUBTOPICNOTES", subject, topic);
+    // console.log("PRINTING FROM SUBTOPICNOTES", subject, topic);
 
     const handleGenerateNotes = async () => {
         if (!subject || !topic || !subtopic) return;

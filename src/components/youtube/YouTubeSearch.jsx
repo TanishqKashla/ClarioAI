@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import VideoPlayer from './VideoPlayer';
 import { searchYouTubeVideos } from '@/utils/youtubeApi';
 import { FolderOpenDot } from 'lucide-react';
@@ -11,6 +11,7 @@ const YouTubeSearch = ({ searchTerm, isOpen, planId, subjectId, topicId, subtopi
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [hasPatched, setHasPatched] = useState(false);
+    const [hasSearched, setHasSearched] = useState(false);
 
     // Set initial selected index based on selectedVideoId
     useEffect(() => {
@@ -22,11 +23,17 @@ const YouTubeSearch = ({ searchTerm, isOpen, planId, subjectId, topicId, subtopi
 
     // Fetch videos if not present
     useEffect(() => {
+
         if (!isOpen) return;
         if (videos.length > 0) return;
         if (!searchTerm) return;
+        if (hasSearched) return; // Prevent duplicate searches
+
+        // console.log('🚀 Starting API call for:', searchTerm);
+        setHasSearched(true);
         setLoading(true);
         setError('');
+        
         searchYouTubeVideos(searchTerm)
             .then(results => {
                 // Map to minimal info for recommendedVideos
@@ -54,7 +61,13 @@ const YouTubeSearch = ({ searchTerm, isOpen, planId, subjectId, topicId, subtopi
             })
             .catch(() => setError('Failed to fetch videos.'))
             .finally(() => setLoading(false));
-    }, [isOpen, searchTerm, planId, subjectId, topicId, subtopicId, videos.length, hasPatched]);
+    }, [isOpen, searchTerm, planId, subjectId, topicId, subtopicId, hasPatched, hasSearched]);
+
+    // Reset search flag when searchTerm changes
+    useEffect(() => {
+        // console.log('🔄 Resetting hasSearched for new searchTerm:', searchTerm);
+        setHasSearched(false);
+    }, [searchTerm]);
 
     // Handle video selection
     const handleSelect = (e) => {
