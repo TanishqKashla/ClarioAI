@@ -70,9 +70,9 @@ const SubjectPage = () => {
                             <p className="text-sm ">{progressPercentage}%</p>
                         </div>
 
-                        <div className="w-full bg-secondary h-1.5 absolute bottom-0 left-0">
+                        <div className="w-full bg-[#151f0ae6] h-1.5 absolute bottom-0 left-0">
                             <div
-                                className="bg-primary h-1.5 rounded-l-none rounded-full transition-all duration-300"
+                                className="bg-[#a9d47f] h-1.5 rounded-l-none rounded-full transition-all duration-300"
                                 style={{ width: `${progressPercentage}%` }}
                             ></div>
                         </div>

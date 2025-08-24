@@ -87,14 +87,14 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
             >
                 <div className="flex-1">
                     <div className="flex items-center gap-3">
-                        <input
-                            type="checkbox"
-                            checked={isCompleted}
-                            onChange={toggleCompletion}
-                            className="w-6 h-5 md:w-4 md:h-4 rounded border-gray-300 text-primary focus:ring-primary"
-                            disabled={syncing}
-                        />
-                        <h3 className="text-lg font-medium text-light-100 font-styrene">
+                            <input
+                                type="checkbox"
+                                checked={isCompleted}
+                                onChange={toggleCompletion}
+                            className="w-6 h-5 md:w-4 md:h-4 rounded bg-[#a9d47f] border-gray-300 text-primary focus:ring-primary flex-shrink-0"
+                                disabled={syncing}
+                            />
+                        <h3 className="text-sm md:text-lg font-medium text-light-100 font-styrene break-words">
                             {stepNumber}. {name}
                         </h3>
                     </div>
@@ -129,7 +129,7 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                                             {focusAreas.map((area, index) => (
                                                 <li
                                                     key={index}
-                                                    className="bg-card px-3 py-1 rounded-full text-sm text-primary border border-primary/20"
+                                                    className="bg-[#1f2e10e6]  px-3 py-1 rounded-full text-sm text-primary border border-primary/20"
                                                 >
                                                     {area}
                                                 </li>
@@ -176,7 +176,7 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                                 {focusAreas.map((area, index) => (
                                     <li
                                         key={index}
-                                        className="bg-card px-3 py-1 rounded-full text-sm text-primary border border-primary/20"
+                                        className="bg-[#1f2e10e6] px-3 py-1 rounded-full text-sm text-primary border border-primary/20"
                                     >
                                         {area}
                                     </li>
@@ -192,10 +192,22 @@ const SubtopicCard = ({ subject, topic, subtopic, stepNumber, onCompletionChange
                                 planId={planId}
                             />
                         </div>
-                        <Separator className='my-3'/>
+                        <Separator className='my-3' />
                         <div>
                             <span className="font-medium text-light-100">YouTube Search: </span>
                             {searchTerm}
+                            <YouTubeSearch
+                                searchTerm={searchTerm}
+                                isOpen={isOpen}
+                                planId={planId}
+                                subjectId={subject?.subjectId}
+                                topicId={topic?.topicId}
+                                subtopicId={subtopic?.subtopicId}
+                                selectedVideoId={selectedVideoId}
+                                onVideoSelect={handleVideoSelect}
+                                syncing={syncing}
+                                recommendedVideos={subtopic.recommendedVideos}
+                            />
                         </div>
                     </div>
                 </div>

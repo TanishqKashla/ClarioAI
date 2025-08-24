@@ -22,8 +22,12 @@ export default function ClientWrapper({ children }) {
         <SessionProvider>
             <ThemeProvider
                 attribute="class"
-                defaultTheme="system"
-                enableSystem
+                theme="dark"
+                defaultTheme="dark"
+                // defaultTheme="light"
+                enableSystem={false}
+                forcedTheme="dark"
+                themes={["dark"]}
                 disableTransitionOnChange
             >
                 {(pathname == "/" || pathname == "/login" || pathname == "/pricing" || pathname == "/about" || pathname == "/contact" || pathname == "/features" || pathname == "/privacy-policy" || pathname == "/terms") ? (

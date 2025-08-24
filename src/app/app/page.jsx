@@ -71,7 +71,7 @@ export default function DashboardPage() {
       <div className="">
         <div className="mb-8 flex justify-between flex-col gap-4 md:flex-row md:items-end">
           <div>
-            <h1 className="text-3xl font-bold text-light-100 mb-2 font-styrene">Welcome,<span className='text-[#a9d47f]'>{session.user.name}</span>!</h1>
+            <h1 className="font-bold mb-2 font-styrene flex flex-col"><span className='text-xl'>Welcome,</span><span className='text-3xl'><span className='text-[#a9d47f]'>{session.user.name}</span>!</span></h1>
             <p className="text-light-200">Manage your subjects and track your usage.</p>
           </div>
           <div className="flex gap-3">

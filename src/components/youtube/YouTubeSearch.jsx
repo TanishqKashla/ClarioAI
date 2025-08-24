@@ -95,7 +95,7 @@ const YouTubeSearch = ({ searchTerm, isOpen, planId, subjectId, topicId, subtopi
                                 />
                             )}
                             <div className="flex items-center gap-2">
-                                <label htmlFor="videoSelect" className="text-light-100"> <FolderOpenDot /></label>
+                                <label htmlFor="videoSelect" className="text-light-100"> <FolderOpenDot color='#a9d47f'/></label>
                                 <select
                                     id="videoSelect"
                                     value={selectedIdx}
@@ -103,11 +103,19 @@ const YouTubeSearch = ({ searchTerm, isOpen, planId, subjectId, topicId, subtopi
                                     className="bg-card text-light-100 border border-border truncate rounded-md px-3 py-1.5 w-full focus:outline-none focus:ring-2 focus:ring-primary"
                                     disabled={syncing}
                                 >
-                                    {videos.map((video, index) => (
-                                        <option key={video.id} value={index}>
-                                            {video.title}
-                                        </option>
-                                    ))}
+                                    {videos.map((video, index) => {
+                                        // Decode HTML entities in video title
+                                        const decode = (str) => {
+                                            const txt = document.createElement('textarea');
+                                            txt.innerHTML = str;
+                                            return txt.value;
+                                        };
+                                        return (
+                                            <option key={video.id} value={index}>
+                                                {decode(video.title)}
+                                            </option>
+                                        );
+                                    })}
                                 </select>
                             </div>
                         </>

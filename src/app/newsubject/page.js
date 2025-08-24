@@ -21,7 +21,7 @@ export default function NewSubjectPage() {
   const [topicName, setTopicName] = useState('');
   const [subtopics, setSubtopics] = useState(['', '']);
   const [bulkSubtopics, setBulkSubtopics] = useState('');
-  const [isBulkMode, setIsBulkMode] = useState(false);
+  const [isBulkMode, setIsBulkMode] = useState(true);
   const [formError, setFormError] = useState('');
   const [showSignInOverlay, setShowSignInOverlay] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -185,7 +185,9 @@ export default function NewSubjectPage() {
   return (
     <div className="min-h-screen p-3 md:p-8">
       <div className="max-w-2xl p-5 mx-auto bg-card rounded-xl border border-border">
-        <h1 className="text-2xl font-bold text-light-100 mb-8 font-styrene">New Subject</h1>
+        <h1 className="text-2xl font-bold text-light-100 mb-8 font-styrene flex gap-2 items-center">
+          <img src="/logo.svg" alt="Logo" className='h-6 w-6' />
+          New Subject</h1>
 
         <form onSubmit={handleSubmit} className="">
           <fieldset disabled={isLoading} className="">
@@ -223,7 +225,7 @@ export default function NewSubjectPage() {
                     <button
                       type="button"
                       onClick={handleToggleMode}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isBulkMode ? 'bg-background' : 'bg-secondary'}`}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isBulkMode ? 'bg-[#1f2e10]' : 'bg-secondary'}`}
                     >
                       <span
                         className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isBulkMode ? 'translate-x-6' : 'translate-x-1'}`}
