@@ -46,7 +46,7 @@ const UsageDisplay = () => {
             </div>
             <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                    <span className="text-light-200 text-sm">Study Plans</span>
+                    <span className="text-light-200 text-sm">Subject Creation</span>
                     <span className="text-light-100 text-sm">
                         {usage['study-plan'].current}/{usage['study-plan'].limit}
                     </span>

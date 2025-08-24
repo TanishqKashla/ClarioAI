@@ -147,7 +147,7 @@ const SubtopicNotes = ({ subject, topic, subtopic, planId }) => {
                 onClick={toggleDropdown}
                 className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-white bg-dark-200 border border-border rounded-md hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
             >
-                <span>Generate Expert Notes</span>
+                <span>Generate AI Notes</span>
                 <svg
                     className={`w-5 h-5 transition-transform duration-200 ${isOpen ? 'transform rotate-180' : ''}`}
                     xmlns="http://www.w3.org/2000/svg"
